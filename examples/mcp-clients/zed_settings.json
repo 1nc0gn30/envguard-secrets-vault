@@ -1,0 +1,14 @@
+{
+  "context_servers": {
+    "envguard": {
+      "command": "python3",
+      "args": [
+        "-m",
+        "envguard.mcp"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

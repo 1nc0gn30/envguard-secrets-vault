@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "envguard": {
+      "command": "python3",
+      "args": [
+        "-m",
+        "envguard.mcp"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "scan_env",
+        "audit_secrets",
+        "sanitize_env"
+      ]
+    }
+  }
+}

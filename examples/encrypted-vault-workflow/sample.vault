@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "format": "envguard-vault-v1",
+  "cipher": "AES-256-GCM",
+  "kdf": "PBKDF2-HMAC-SHA256",
+  "kdf_iterations": 100000,
+  "salt": "RW52R3VhcmRTYWx0MjAyNg==",
+  "iv": "VmF1bHRJVjIwMjYh",
+  "ciphertext": "NKEcG+KjhwdJIpdgo/mk6w0ER4+y4nzXvzoEdcPSKmNNISrLEp/aPmgLEdZe6iVWJzE6pvzF04JdVWKDpRS10+4oZpJKj+36XxG5w76uICqHTi/DGWfEtmkjrBpZQiXweHPBxjC7Urq9JD1ID7kwBi35FOH16xymykPYhvH9LI3K5vWQbBjXwy3oMjl+TT98WACLhD7k0idM3VPGphsX2sbWxUZ/ldaPBzqjTcy4AMI7pthZR+oZkDerOlSDT7x3Pq9/Q0vGVuIV/yWvs6Xjsar2stSBpd36+wHzsAEbrXqF7jqe1z0cs20ChSLDEffE1GBHACHUtgUbU2XaYgdrZbDFi/MTKOabboh8mElNpGneFxJoqwqiR7xoSPkBqkVno38BeFHE6Yja67p8oythOo7bfrB3WEbQ+urHfhWZZjQyDqxIuMD8i4XUVdi4yfUpfD9PZl3iJtO0JbidFFGc8ukWQkwd8npik0T1+Rsg6gkxsXtUi5kA5hEO2zHZC1RileGo/4unvsiiRfc7l9yUi0Bdid3nhEYhMeHNEGtHi4PMuPgYSFg87lbolDuUA3t6Aw23qYns3Mxpc/rA3YeZO5oRACR43e2Zwpc7sffrDLCgyr+fcIlIgriplmaTa2xmk9SJkz4mZnNNvMd9BELMzRv1qJwbBq+yQ3HmO7bNJKD2NCDM5qBfgOm10jzYw8azpgNmKfVxtX9j36sQBKNwyprI4oQZE/R45iphoIGK1vhRkuEqnjnrorD+KKryfNx1iJifOA==",
+  "tag": "1aqQqmS4RYNb5fxaunFpYQ==",
+  "created_at": "2026-09-16T18:30:00Z",
+  "key_count": 9
+}

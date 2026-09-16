@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "envguard": {
+      "command": "python3",
+      "args": [
+        "-m",
+        "envguard.mcp"
+      ],
+      "env": {
+        "ENVGUARD_VAULT_PASSWORD": "${ENVGUARD_VAULT_PASSWORD}",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

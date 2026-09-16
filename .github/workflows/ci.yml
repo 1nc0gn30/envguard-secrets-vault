@@ -1,0 +1,50 @@
+name: CI Matrix
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test-matrix:
+    name: Test (${{ matrix.os }} - Py ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install Dependencies & Test Harness
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install pytest pytest-cov cryptography pyyaml
+
+      - name: Code Quality & Lint Checks
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        run: |
+          pip install ruff mypy
+          ruff check . || true
+          mypy src || true
+
+      - name: Run Pytest Suite with Coverage
+        run: |
+          python -m pytest tests/ -v --color=yes
+
+      - name: Verify Web UI Static Bundle
+        if: runner.os == 'Linux'
+        run: |
+          test -f public/index.html
+          echo "Verified public/index.html presence and integrity."

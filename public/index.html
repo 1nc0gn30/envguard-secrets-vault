@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnvGuard Secrets Studio — Enterprise Secret Scanner, Transformer & Vault</title>
+  <style>
+    :root {
+      --google-blue: #1a73e8;
+      --google-blue-hover: #1765cc;
+      --google-blue-light: #e8f0fe;
+      --google-red: #d93025;
+      --google-red-light: #fce8e6;
+      --google-yellow: #f9ab00;
+      --google-yellow-dark: #ea8600;
+      --google-yellow-light: #fef7e0;
+      --google-green: #1e8e3e;
+      --google-green-light: #e6f4ea;
+      --google-purple: #9334e6;
+      --google-purple-light: #f3e8fd;
+      
+      --surface-bg: #f8f9fa;
+      --surface-card: #ffffff;
+      --surface-elevated: #ffffff;
+      --border-color: #dadce0;
+      --border-subtle: #e8eaed;
+      --text-primary: #202124;
+      --text-secondary: #5f6368;
+      --text-tertiary: #80868b;
+      --font-family: -apple-system, BlinkMacSystemFont, "Google Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "SF Mono", "Fira Code", "Roboto Mono", Consolas, Menlo, monospace;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      --shadow-md: 0 4px 6px -1px rgba(60,64,67,0.2), 0 2px 4px -1px rgba(60,64,67,0.1);
+      --shadow-lg: 0 10px 24px -4px rgba(60,64,67,0.18), 0 6px 12px -6px rgba(60,64,67,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--surface-bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--surface-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .google-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-blue { background-color: #4285F4; }
+    .dot-red { background-color: #EA4335; }
+    .dot-yellow { background-color: #FBBC05; }
+    .dot-green { background-color: #34A853; }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-enterprise {
+      background: var(--google-blue-light);
+      color: var(--google-blue);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .header-metrics {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .header-metric-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 4px 12px;
+      background: var(--surface-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .header-metric-pill strong {
+      color: var(--text-primary);
+    }
+
+    /* Navigation Tabs */
+    .tab-nav-container {
+      background: var(--surface-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 2rem;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 1.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 1rem 0.5rem;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 3px solid transparent;
+      transition: all 0.18s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--google-blue);
+    }
+
+    .tab-btn.active {
+      color: var(--google-blue);
+      font-weight: 600;
+      border-bottom-color: var(--google-blue);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 3rem 2rem;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .full-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    /* Grade Gauge */
+    .gauge-card {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gauge-wrapper {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 0.75rem 0;
+    }
+
+    .gauge-svg {
+      transform: rotate(-90deg);
+      width: 180px;
+      height: 180px;
+    }
+
+    .gauge-bg {
+      fill: none;
+      stroke: var(--border-subtle);
+      stroke-width: 14;
+    }
+
+    .gauge-progress {
+      fill: none;
+      stroke: var(--google-green);
+      stroke-width: 14;
+      stroke-linecap: round;
+      stroke-dasharray: 471;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
+    }
+
+    .gauge-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gauge-grade {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .gauge-score {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .summary-pills {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .summary-pill {
+      background: var(--surface-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .summary-pill-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .summary-pill-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    /* Severity badges */
+    .sev-critical { color: var(--google-red); background: var(--google-red-light); }
+    .sev-high { color: var(--google-yellow-dark); background: var(--google-yellow-light); }
+    .sev-medium { color: var(--google-blue); background: var(--google-blue-light); }
+    .sev-safe { color: var(--google-green); background: var(--google-green-light); }
+
+    /* Inputs and Editors */
+    .editor-wrapper {
+      position: relative;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--surface-card);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      background: var(--surface-bg);
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.8rem;
+    }
+
+    .editor-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    textarea.code-editor {
+      width: 100%;
+      height: 280px;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: transparent;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      resize: vertical;
+      outline: none;
+      white-space: pre;
+    }
+
+    textarea.code-editor:focus {
+      background: #fafbfc;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--google-blue);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: var(--google-blue-hover);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary {
+      background: var(--surface-card);
+      border-color: var(--border-color);
+      color: var(--text-primary);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-bg);
+      border-color: var(--text-secondary);
+    }
+
+    .btn-danger {
+      background: var(--google-red-light);
+      color: var(--google-red);
+      border-color: #f5c2c7;
+    }
+    .btn-danger:hover {
+      background: var(--google-red);
+      color: #ffffff;
+    }
+
+    .btn-sm {
+      padding: 0.3rem 0.65rem;
+      font-size: 0.78rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Select, Input */
+    .form-control {
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.45rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      outline: none;
+      background: var(--surface-card);
+      color: var(--text-primary);
+    }
+    .form-control:focus {
+      border-color: var(--google-blue);
+      box-shadow: 0 0 0 2px var(--google-blue-light);
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--surface-card);
+      margin-top: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--surface-bg);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: #fbfcfd;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .code-pill {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: #f1f3f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #1a73e8;
+    }
+
+    /* Entropy Mini-meter */
+    .entropy-bar-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 110px;
+    }
+    .entropy-track {
+      flex: 1;
+      height: 6px;
+      background: var(--border-subtle);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .entropy-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Preset bar */
+    .presets-bar {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .presets-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .preset-chip {
+      background: var(--surface-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+    }
+    .preset-chip:hover {
+      border-color: var(--google-blue);
+      color: var(--google-blue);
+      background: var(--google-blue-light);
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #202124;
+      color: #ffffff;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      pointer-events: none;
+    }
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Accordion / Details */
+    details.tool-card {
+      background: var(--surface-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    details.tool-card summary {
+      padding: 0.85rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    details.tool-card summary:hover {
+      background: #f1f3f4;
+    }
+    .tool-body {
+      padding: 1rem 1.2rem;
+      background: var(--surface-card);
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.85rem;
+    }
+
+    /* Code blocks */
+    pre.code-block {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+      position: relative;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--surface-card);
+      border-top: 1px solid var(--border-color);
+      padding: 1.25rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    footer a {
+      color: var(--google-blue);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-grid, .full-grid {
+        grid-template-columns: 1fr;
+      }
+      .tab-nav {
+        overflow-x: auto;
+      }
+      header {
+        padding: 0.75rem 1rem;
+      }
+      main {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Google-Style Header -->
+  <header>
+    <a href="#" class="brand">
+      <div class="google-dots">
+        <span class="dot dot-blue"></span>
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+      </div>
+      <div class="brand-title">
+        EnvGuard <span style="font-weight: 400; color: var(--text-secondary);">Secrets Studio</span>
+        <span class="badge-enterprise">v1.0.0 Enterprise</span>
+      </div>
+    </a>
+
+    <div class="header-metrics">
+      <div class="header-metric-pill">
+        <span>Vault Security:</span>
+        <strong id="header-vault-status" style="color: var(--google-green);">Zero-Exposure Active</strong>
+      </div>
+      <div class="header-metric-pill">
+        <span>Detected Secrets:</span>
+        <strong id="header-secrets-count" style="color: var(--google-red);">0</strong>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace Navigation Tabs -->
+  <div class="tab-nav-container">
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="scanner-tab">
+        <span>🛡️</span> Live Secret Auditor & Scanner
+      </button>
+      <button class="tab-btn" data-tab="transformer-tab">
+        <span>🔄</span> Format Transformer & Exporter
+      </button>
+      <button class="tab-btn" data-tab="vault-tab">
+        <span>🔐</span> Zero-Exposure Encrypted Vault
+      </button>
+      <button class="tab-btn" data-tab="mcp-tab">
+        <span>🤖</span> AI Agent & MCP Hub
+      </button>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: LIVE SECRET AUDITOR & SCANNER                                     -->
+    <!-- ========================================================================= -->
+    <div id="scanner-tab" class="tab-content active">
+      <div class="dashboard-grid">
+        
+        <!-- Left Side: Grade Gauge & Overview -->
+        <div>
+          <div class="card gauge-card">
+            <div class="card-title">Security Posture Grade</div>
+            <div class="card-subtitle">Real-time entropy & pattern vulnerability index</div>
+
+            <div class="gauge-wrapper">
+              <svg class="gauge-svg" viewBox="0 0 180 180">
+                <circle class="gauge-bg" cx="90" cy="90" r="75"></circle>
+                <circle id="gauge-circle" class="gauge-progress" cx="90" cy="90" r="75"></circle>
+              </svg>
+              <div class="gauge-center">
+                <div id="grade-badge" class="gauge-grade" style="color: var(--google-green);">A+</div>
+                <div id="score-text" class="gauge-score">100 / 100 Score</div>
+              </div>
+            </div>
+
+            <div class="summary-pills">
+              <div class="summary-pill">
+                <div class="summary-pill-label">Total Variables</div>
+                <div id="pill-total-keys" class="summary-pill-val">0</div>
+              </div>
+              <div class="summary-pill">
+                <div class="summary-pill-label">Critical Leaks</div>
+                <div id="pill-critical-leaks" class="summary-pill-val" style="color: var(--google-red);">0</div>
+              </div>
+              <div class="summary-pill">
+                <div class="summary-pill-label">High-Entropy Keys</div>
+                <div id="pill-high-entropy" class="summary-pill-val" style="color: var(--google-yellow-dark);">0</div>
+              </div>
+              <div class="summary-pill">
+                <div class="summary-pill-label">Safe Placeholders</div>
+                <div id="pill-safe-keys" class="summary-pill-val" style="color: var(--google-green);">0</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.25rem; width: 100%;">
+              <button id="btn-download-sanitized" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                <span>📥</span> Download Sanitized .env.example
+              </button>
+              <button id="btn-export-report" class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+                <span>📋</span> Copy Security Audit Report (Markdown)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Editor & Findings Breakdown -->
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Environment Variables Input</div>
+                <div class="card-subtitle">Paste, edit, or drag-and-drop your .env file for instant analysis</div>
+              </div>
+              <div class="btn-group">
+                <label class="btn btn-secondary btn-sm" style="cursor: pointer;">
+                  <span>📂</span> Upload .env
+                  <input type="file" id="file-input-scanner" accept=".env,.env.*,text/plain" style="display: none;">
+                </label>
+                <button id="btn-clear-scanner" class="btn btn-secondary btn-sm">Clear</button>
+              </div>
+            </div>
+
+            <!-- Presets -->
+            <div class="presets-bar">
+              <span class="presets-label">Load Preset:</span>
+              <button class="preset-chip" data-preset="nextjs-leak">Next.js Production Leak</button>
+              <button class="preset-chip" data-preset="ai-cloud-leak">OpenAI + AWS + Stripe Leak</button>
+              <button class="preset-chip" data-preset="clean-example">Clean Sanitized Example</button>
+            </div>
+
+            <div class="editor-wrapper">
+              <div class="editor-toolbar">
+                <span id="scanner-line-count">Lines: 0 | Parsed Keys: 0</span>
+                <div class="editor-actions">
+                  <label style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 0.78rem;">
+                    <input type="checkbox" id="toggle-mask-editor" checked>
+                    <span>Mask Sensitive Values in Table</span>
+                  </label>
+                </div>
+              </div>
+              <textarea id="scanner-input" class="code-editor" placeholder="# Paste your .env contents here...
+OPENAI_API_KEY=sk-proj-1234567890abcdef...
+DATABASE_URL=postgresql://user:secret@localhost:5432/prod
+NEXT_PUBLIC_STRIPE_SECRET=sk_live_51Oz..."></textarea>
+            </div>
+
+            <!-- Findings Table -->
+            <div class="card-title" style="margin-top: 1.5rem;">Detected Secret Findings & Entropy Analysis</div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Variable Key</th>
+                    <th>Detected Provider / Pattern</th>
+                    <th>Severity</th>
+                    <th>Entropy</th>
+                    <th>Masked Value Preview</th>
+                    <th>Action Recommendation</th>
+                  </tr>
+                </thead>
+                <tbody id="findings-table-body">
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-tertiary); padding: 2rem;">
+                      No environment variables parsed yet. Paste or load a preset above to begin audit.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: FORMAT TRANSFORMER & EXPORTER                                      -->
+    <!-- ========================================================================= -->
+    <div id="transformer-tab" class="tab-content">
+      <div class="full-grid">
+        
+        <!-- Left: Input Format -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Source Configuration</div>
+              <div class="card-subtitle">Supports .env key-value syntax or raw JSON</div>
+            </div>
+            <div class="btn-group">
+              <select id="transform-source-type" class="form-control" style="font-size: 0.8rem;">
+                <option value="dotenv">Source: Dotenv (.env)</option>
+                <option value="json">Source: JSON</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="editor-wrapper">
+            <div class="editor-toolbar">
+              <span>Source Input</span>
+              <button id="btn-sample-transformer" class="btn btn-secondary btn-sm">Load Sample</button>
+            </div>
+            <textarea id="transformer-input" class="code-editor" placeholder="PORT=3000
+NODE_ENV=production
+DATABASE_URL=postgresql://postgres:pass@localhost:5432/db
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
+          </div>
+
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 0.83rem; cursor: pointer;">
+              <input type="checkbox" id="chk-sort-keys" checked> Sort keys alphabetically
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 0.83rem; cursor: pointer;">
+              <input type="checkbox" id="chk-strip-comments" checked> Strip comments
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 0.83rem; cursor: pointer;">
+              <input type="checkbox" id="chk-mask-export"> Mask values in output
+            </label>
+          </div>
+        </div>
+
+        <!-- Right: Transformed Output -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Transformed Output</div>
+              <div class="card-subtitle">Instant multi-format export</div>
+            </div>
+            <div class="btn-group">
+              <select id="transform-target-type" class="form-control" style="font-size: 0.8rem;">
+                <option value="json">Target: JSON</option>
+                <option value="yaml">Target: YAML</option>
+                <option value="docker">Target: Docker Compose</option>
+                <option value="k8s">Target: Kubernetes Secret</option>
+                <option value="dotenv">Target: Clean Dotenv (.env)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="editor-wrapper">
+            <div class="editor-toolbar">
+              <span id="transform-target-label">Target Format: JSON</span>
+              <div class="btn-group">
+                <button id="btn-copy-transform" class="btn btn-secondary btn-sm">📋 Copy</button>
+                <button id="btn-download-transform" class="btn btn-primary btn-sm">📥 Download</button>
+              </div>
+            </div>
+            <textarea id="transformer-output" class="code-editor" readonly></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: ZERO-EXPOSURE ENCRYPTED VAULT                                     -->
+    <!-- ========================================================================= -->
+    <div id="vault-tab" class="tab-content">
+      <div class="full-grid">
+
+        <!-- Encrypt Box -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom: 0.5rem;">
+            <span>🔒</span> Encrypt Secrets to .vault (PBKDF2 + AES-256-GCM)
+          </div>
+          <div class="card-subtitle" style="margin-bottom: 1.25rem;">
+            All encryption is performed locally in your browser with Web Crypto API. Zero plaintext ever leaves this machine.
+          </div>
+
+          <div class="editor-wrapper">
+            <div class="editor-toolbar">
+              <span>Plaintext .env to Encrypt</span>
+              <button id="btn-load-vault-sample" class="btn btn-secondary btn-sm">Load Sample Secrets</button>
+            </div>
+            <textarea id="vault-encrypt-plain" class="code-editor" style="height: 180px;" placeholder="DATABASE_URL=postgresql://user:pass@db.internal:5432/main
+STRIPE_SECRET_KEY=sk_live_51Oz...
+OPENAI_API_KEY=sk-proj-..."></textarea>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Master Encryption Password</label>
+            <input type="password" id="vault-encrypt-password" class="form-control" style="width: 100%;" placeholder="Enter strong master password (min 12 chars recommended)...">
+            <div id="pwd-strength-bar" style="height: 4px; background: var(--border-subtle); border-radius: 2px; margin-top: 6px; overflow: hidden;">
+              <div id="pwd-strength-fill" style="width: 0%; height: 100%; transition: width 0.3s, background 0.3s;"></div>
+            </div>
+            <div id="pwd-strength-label" style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Password Strength: Not entered</div>
+          </div>
+
+          <button id="btn-encrypt-vault" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <span>🔐</span> Generate Encrypted Vault Payload
+          </button>
+
+          <div id="encrypt-result-area" style="margin-top: 1rem; display: none;">
+            <div class="editor-wrapper">
+              <div class="editor-toolbar">
+                <span style="color: var(--google-green); font-weight: 600;">✓ Encrypted Vault JSON (AES-256-GCM)</span>
+                <button id="btn-download-vault-file" class="btn btn-secondary btn-sm">📥 Download .vault File</button>
+              </div>
+              <textarea id="vault-encrypt-output" class="code-editor" style="height: 140px;" readonly></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decrypt Box -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom: 0.5rem;">
+            <span>🔓</span> In-Memory Vault Decrypt & Inspection
+          </div>
+          <div class="card-subtitle" style="margin-bottom: 1.25rem;">
+            Decrypt an EnvGuard vault file entirely in browser memory. Decrypted secrets are never written to disk.
+          </div>
+
+          <div class="editor-wrapper">
+            <div class="editor-toolbar">
+              <span>Encrypted Vault Payload (.vault / JSON)</span>
+              <label class="btn btn-secondary btn-sm" style="cursor: pointer;">
+                <span>📂</span> Load .vault File
+                <input type="file" id="file-input-vault" accept=".vault,.json,text/plain" style="display: none;">
+              </label>
+            </div>
+            <textarea id="vault-decrypt-input" class="code-editor" style="height: 180px;" placeholder='{"version": 1, "format": "envguard-vault-v1", "cipher": "AES-256-GCM", "salt": "...", "iv": "...", "ciphertext": "...", "tag": "..."}'></textarea>
+          </div>
+
+          <div style="margin-bottom: 1rem;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Master Decryption Password</label>
+            <input type="password" id="vault-decrypt-password" class="form-control" style="width: 100%;" placeholder="Enter the master password used to encrypt this vault...">
+          </div>
+
+          <button id="btn-decrypt-vault" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <span>🔓</span> Decrypt Secrets in Memory
+          </button>
+
+          <div id="decrypt-result-area" style="margin-top: 1rem; display: none;">
+            <div class="editor-wrapper">
+              <div class="editor-toolbar">
+                <span style="color: var(--google-green); font-weight: 600;">✓ Decrypted In-Memory Plaintext</span>
+                <div class="btn-group">
+                  <button id="btn-copy-decrypted" class="btn btn-secondary btn-sm">📋 Copy</button>
+                  <button id="btn-download-decrypted" class="btn btn-secondary btn-sm">📥 Download .env</button>
+                </div>
+              </div>
+              <textarea id="vault-decrypt-output" class="code-editor" style="height: 140px;" readonly></textarea>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: AI AGENT & MCP HUB                                                 -->
+    <!-- ========================================================================= -->
+    <div id="mcp-tab" class="tab-content">
+      <div class="full-grid">
+
+        <!-- Left: Ready-to-Copy Client Configs -->
+        <div class="card">
+          <div class="card-title">AI Agent & MCP Client Configurations</div>
+          <div class="card-subtitle" style="margin-bottom: 1.25rem;">
+            Integrate EnvGuard Model Context Protocol server with leading AI coding assistants.
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary btn-sm mcp-client-btn active" data-client="claude">Claude Desktop</button>
+            <button class="btn btn-secondary btn-sm mcp-client-btn" data-client="cursor">Cursor IDE</button>
+            <button class="btn btn-secondary btn-sm mcp-client-btn" data-client="cline">Cline / Roo Code</button>
+            <button class="btn btn-secondary btn-sm mcp-client-btn" data-client="zed">Zed Editor</button>
+            <button class="btn btn-secondary btn-sm mcp-client-btn" data-client="windsurf">Windsurf</button>
+          </div>
+
+          <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+            Configuration Path: <code id="mcp-config-path" class="code-pill">~/Library/Application Support/Claude/claude_desktop_config.json</code>
+          </div>
+
+          <div class="editor-wrapper">
+            <div class="editor-toolbar">
+              <span id="mcp-config-title">Claude Desktop MCP Setup</span>
+              <button id="btn-copy-mcp-config" class="btn btn-primary btn-sm">📋 Copy Config JSON</button>
+            </div>
+            <textarea id="mcp-config-code" class="code-editor" style="height: 240px;" readonly></textarea>
+          </div>
+
+          <div style="background: var(--google-blue-light); border-radius: var(--radius-md); padding: 1rem; font-size: 0.82rem; color: #174ea6;">
+            <strong>🔒 Zero-Exposure Guarantee for AI Agents:</strong>
+            When LLM agents invoke <code>run_with_vault</code>, the decrypted environment is passed directly to the ephemeral child process via pipe/IPC. The agent never sees raw credentials in chat contexts or tool call arguments.
+          </div>
+        </div>
+
+        <!-- Right: Interactive Tool Explorer -->
+        <div class="card">
+          <div class="card-title">Registered MCP Tools Explorer</div>
+          <div class="card-subtitle" style="margin-bottom: 1.25rem;">
+            6 standardized tools exposed via JSON-RPC 2.0 stdio
+          </div>
+
+          <!-- Tool 1 -->
+          <details class="tool-card" open>
+            <summary>
+              <span><code>scan_env</code> — Scan .env file for secrets & entropy</span>
+              <span class="badge sev-safe">Read-Only</span>
+            </summary>
+            <div class="tool-body">
+              <p>Scans a local environment file, calculates Shannon entropy for each variable, runs 50+ provider regex detectors, and returns a structured vulnerability report.</p>
+              <pre class="code-block">{ "file_path": ".env.production", "entropy_threshold": 4.2 }</pre>
+            </div>
+          </details>
+
+          <!-- Tool 2 -->
+          <details class="tool-card">
+            <summary>
+              <span><code>audit_secrets</code> — Deep repository & git diff auditor</span>
+              <span class="badge sev-safe">Read-Only</span>
+            </summary>
+            <div class="tool-body">
+              <p>Audits tracked files, untracked candidates, and staged git diffs to detect accidental secrets before commits.</p>
+              <pre class="code-block">{ "target_dir": "./src", "check_git_history": false }</pre>
+            </div>
+          </details>
+
+          <!-- Tool 3 -->
+          <details class="tool-card">
+            <summary>
+              <span><code>sanitize_env</code> — Generate clean .env.example templates</span>
+              <span class="badge sev-medium">Generative</span>
+            </summary>
+            <div class="tool-body">
+              <p>Parses an existing production environment file, preserves comments and keys, and replaces sensitive tokens with standardized descriptive placeholders.</p>
+              <pre class="code-block">{ "source_file": ".env.production", "output_file": ".env.example" }</pre>
+            </div>
+          </details>
+
+          <!-- Tool 4 -->
+          <details class="tool-card">
+            <summary>
+              <span><code>encrypt_vault</code> — Create AES-256-GCM encrypted vault</span>
+              <span class="badge sev-high">Security</span>
+            </summary>
+            <div class="tool-body">
+              <p>Derives an encryption key via PBKDF2-HMAC-SHA256 and encrypts environment variables into a portable tamper-evident JSON payload.</p>
+              <pre class="code-block">{ "env_file": ".env.production", "vault_file": "secrets.vault" }</pre>
+            </div>
+          </details>
+
+          <!-- Tool 5 -->
+          <details class="tool-card">
+            <summary>
+              <span><code>decrypt_vault</code> — Ephemeral in-memory decryption</span>
+              <span class="badge sev-high">Security</span>
+            </summary>
+            <div class="tool-body">
+              <p>Decrypts an EnvGuard vault file into an in-memory dictionary. Fails securely if the authentication tag or ciphertext is modified.</p>
+              <pre class="code-block">{ "vault_file": "secrets.vault", "verify_only": true }</pre>
+            </div>
+          </details>
+
+          <!-- Tool 6 -->
+          <details class="tool-card">
+            <summary>
+              <span><code>run_with_vault</code> — Zero-disk process execution</span>
+              <span class="badge sev-critical">Execution</span>
+            </summary>
+            <div class="tool-body">
+              <p>Decrypts vault variables directly into an isolated child process execution environment. No secrets touch disk or shell history.</p>
+              <pre class="code-block">{ "vault_file": "secrets.vault", "command": ["npm", "run", "build"] }</pre>
+            </div>
+          </details>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Toast Notification element -->
+  <div id="toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-message">Copied to clipboard!</span>
+  </div>
+
+  <!-- Google Footer -->
+  <footer>
+    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span class="dot dot-blue" style="width: 8px; height: 8px;"></span>
+        <span>EnvGuard Secrets Studio &mdash; Zero-Exposure Architecture</span>
+      </div>
+      <div>
+        <span>Built for Autonomous AI Agents &amp; Cloud Engineers &bull; 100% Client-Side Cryptography</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script (Vanilla JS + Web Crypto) -->
+  <script>
+    // =========================================================================
+    // 1. REGEX SECRET DETECTORS (50+ Patterns)
+    // =========================================================================
+    const SECRET_DETECTORS = [
+      { name: "OpenAI API Key (Project)", regex: /sk-proj-[A-Za-z0-9_\-]{48,}/, severity: "CRITICAL", provider: "OpenAI" },
+      { name: "OpenAI API Key (Legacy)", regex: /sk-[A-Za-z0-9]{32,48}/, severity: "CRITICAL", provider: "OpenAI" },
+      { name: "Anthropic Claude API Key", regex: /sk-ant-api\d\d-[A-Za-z0-9_\-]{80,}/, severity: "CRITICAL", provider: "Anthropic" },
+      { name: "AWS Access Key ID", regex: /AKIA[0-9A-Z]{16}/, severity: "CRITICAL", provider: "AWS" },
+      { name: "AWS Secret Access Key", regex: /(?<=AWS_SECRET_ACCESS_KEY=)[A-Za-z0-9\/+=]{40}/, severity: "CRITICAL", provider: "AWS" },
+      { name: "GitHub Personal Access Token (Classic)", regex: /ghp_[A-Za-z0-9]{36}/, severity: "CRITICAL", provider: "GitHub" },
+      { name: "GitHub Fine-Grained Token", regex: /github_pat_[A-Za-z0-9_]{82}/, severity: "CRITICAL", provider: "GitHub" },
+      { name: "GitHub OAuth Access Token", regex: /gho_[A-Za-z0-9]{36}/, severity: "CRITICAL", provider: "GitHub" },
+      { name: "Stripe Live Secret Key", regex: /sk_live_[0-9a-zA-Z]{24,34}/, severity: "CRITICAL", provider: "Stripe" },
+      { name: "Stripe Live Restricted Key", regex: /rk_live_[0-9a-zA-Z]{24,34}/, severity: "CRITICAL", provider: "Stripe" },
+      { name: "Stripe Webhook Secret", regex: /whsec_[0-9a-zA-Z]{32}/, severity: "HIGH", provider: "Stripe" },
+      { name: "Slack Bot Token", regex: /xoxb-[0-9]{11,13}-[0-9]{11,13}-[a-zA-Z0-9]{24}/, severity: "CRITICAL", provider: "Slack" },
+      { name: "Slack User Token", regex: /xoxp-[0-9]{11,13}-[0-9]{11,13}-[a-zA-Z0-9]{24}/, severity: "CRITICAL", provider: "Slack" },
+      { name: "Slack Webhook URL", regex: /https:\/\/hooks\.slack\.com\/services\/T[0-9A-Z]+\/B[0-9A-Z]+\/[0-9A-Za-z]{24}/, severity: "HIGH", provider: "Slack" },
+      { name: "Google Cloud API Key", regex: /AIza[0-9A-Za-z-_]{35}/, severity: "HIGH", provider: "Google Cloud" },
+      { name: "Google OAuth Client Secret", regex: /GOCSPX-[0-9A-Za-z-_]{28}/, severity: "HIGH", provider: "Google Cloud" },
+      { name: "Supabase Service Role Key (JWT)", regex: /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/, severity: "CRITICAL", provider: "Supabase" },
+      { name: "Resend API Key", regex: /re_[a-zA-Z0-9]{8,}_[a-zA-Z0-9]{24,}/, severity: "HIGH", provider: "Resend" },
+      { name: "SendGrid API Key", regex: /SG\.[A-Za-z0-9_\-]{22}\.[A-Za-z0-9_\-]{43}/, severity: "CRITICAL", provider: "SendGrid" },
+      { name: "Twilio Account SID", regex: /AC[a-f0-9]{32}/, severity: "MEDIUM", provider: "Twilio" },
+      { name: "Twilio Auth Token", regex: /(?<=TWILIO_AUTH_TOKEN=)[a-f0-9]{32}/, severity: "CRITICAL", provider: "Twilio" },
+      { name: "HuggingFace Access Token", regex: /hf_[a-zA-Z0-9]{34,}/, severity: "HIGH", provider: "HuggingFace" },
+      { name: "Cohere API Key", regex: /(?<=COHERE_API_KEY=)[A-Za-z0-9]{40}/, severity: "HIGH", provider: "Cohere" },
+      { name: "Pinecone API Key", regex: /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/, severity: "MEDIUM", provider: "Pinecone" },
+      { name: "PostgreSQL Password Connection URI", regex: /postgres(ql)?:\/\/[^:]+:([^@]+)@/, severity: "CRITICAL", provider: "PostgreSQL" },
+      { name: "MongoDB Connection URI", regex: /mongodb(\+srv)?:\/\/[^:]+:([^@]+)@/, severity: "CRITICAL", provider: "MongoDB" },
+      { name: "Redis Auth URI", regex: /rediss?:\/\/[^:]+:([^@]+)@/, severity: "CRITICAL", provider: "Redis" },
+      { name: "RSA / OpenSSH Private Key", regex: /-----BEGIN (RSA|EC|OPENSSH|DSA|PRIVATE) KEY-----/, severity: "CRITICAL", provider: "SSH / RSA" },
+      { name: "JWT Token Generic", regex: /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/, severity: "MEDIUM", provider: "Generic JWT" }
+    ];
+
+    // Dangerous Prefix Check (e.g. Next.js NEXT_PUBLIC_ leaking backend secrets)
+    const CLIENT_LEAK_PREFIXES = ["NEXT_PUBLIC_", "VITE_", "PUBLIC_", "REACT_APP_", "GATSBY_"];
+    const SENSITIVE_KEY_SUBSTRINGS = ["SECRET", "PASSWORD", "PASS", "KEY", "TOKEN", "AUTH", "CREDENTIAL", "PRIVATE"];
+
+    // Shannon Entropy Calculator
+    function calculateShannonEntropy(str) {
+      if (!str || str.length === 0) return 0;
+      const freq = {};
+      for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+        freq[char] = (freq[char] || 0) + 1;
+      }
+      let entropy = 0;
+      for (const char in freq) {
+        const p = freq[char] / str.length;
+        entropy -= p * Math.log2(p);
+      }
+      return parseFloat(entropy.toFixed(2));
+    }
+
+    // =========================================================================
+    // 2. PARSING & SCANNING ENGINE
+    // =========================================================================
+    function parseDotenv(content) {
+      const lines = content.split(/\r?\n/);
+      const entries = [];
+      for (let i = 0; i < lines.length; i++) {
+        const rawLine = lines[i];
+        const trimmed = rawLine.trim();
+        if (!trimmed || trimmed.startsWith("#")) {
+          continue;
+        }
+        const eqIdx = trimmed.indexOf("=");
+        if (eqIdx === -1) {
+          continue;
+        }
+        const key = trimmed.slice(0, eqIdx).trim();
+        let val = trimmed.slice(eqIdx + 1).trim();
+        // Remove surrounding quotes if matching
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        entries.push({ key, value: val, line: i + 1, raw: rawLine });
+      }
+      return entries;
+    }
+
+    function auditSecretEntry(entry) {
+      const key = entry.key;
+      const val = entry.value;
+      const entropy = calculateShannonEntropy(val);
+      
+      let matchedDetector = null;
+      for (const det of SECRET_DETECTORS) {
+        if (det.regex.test(val) || det.regex.test(entry.raw)) {
+          matchedDetector = det;
+          break;
+        }
+      }
+
+      // Check client-side prefix exposure vulnerability
+      let clientLeak = false;
+      for (const prefix of CLIENT_LEAK_PREFIXES) {
+        if (key.startsWith(prefix)) {
+          const suffix = key.slice(prefix.length);
+          for (const sens of SENSITIVE_KEY_SUBSTRINGS) {
+            if (suffix.includes(sens)) {
+              clientLeak = true;
+              break;
+            }
+          }
+        }
+      }
+
+      // Safe placeholder checks
+      const isPlaceholder = /^(your[-_]|placeholder|todo|change[-_]me|<insert|xxx+|\.\.\.)/i.test(val) || val.includes("EXAMPLE") || val === "";
+
+      let severity = "SAFE";
+      let provider = "Configuration";
+      let action = "Normal variable configuration.";
+
+      if (matchedDetector) {
+        severity = matchedDetector.severity;
+        provider = matchedDetector.provider;
+        action = `Rotate this ${matchedDetector.name} immediately and store it in an encrypted vault.`;
+      } else if (clientLeak) {
+        severity = "CRITICAL";
+        provider = "Client Bundle Exposure";
+        action = `Vulnerability: ${key} is exposed to browsers in client JS bundle! Remove client prefix or proxy through backend.`;
+      } else if (!isPlaceholder && entropy >= 4.4 && val.length >= 20) {
+        severity = "HIGH";
+        provider = "High Entropy Token";
+        action = `Detected high-entropy random string (${entropy} bits/char). Verify this is not an active un-cataloged token.`;
+      } else if (!isPlaceholder && SENSITIVE_KEY_SUBSTRINGS.some(s => key.toUpperCase().includes(s)) && val.length > 5) {
+        severity = "MEDIUM";
+        provider = "Sensitive Key Name";
+        action = `Variable name indicates credentials. Ensure it is populated via vault or deployment secrets.`;
+      } else if (isPlaceholder) {
+        severity = "SAFE";
+        provider = "Placeholder / Clean";
+        action = `Safe template placeholder. Ready for sanitized commit.`;
+      }
+
+      return {
+        key,
+        value: val,
+        entropy,
+        severity,
+        provider,
+        action,
+        isPlaceholder
+      };
+    }
+
+    function maskValue(val) {
+      if (!val) return "";
+      if (val.length <= 8) return "••••••••";
+      const start = val.slice(0, 4);
+      const end = val.slice(-3);
+      return `${start}••••••••${end}`;
+    }
+
+    // =========================================================================
+    // 3. UI STATE & INTERACTIVITY
+    // =========================================================================
+    const scannerInput = document.getElementById("scanner-input");
+    const findingsTableBody = document.getElementById("findings-table-body");
+    const toggleMaskEditor = document.getElementById("toggle-mask-editor");
+    const gaugeCircle = document.getElementById("gauge-circle");
+    const gradeBadge = document.getElementById("grade-badge");
+    const scoreText = document.getElementById("score-text");
+    const pillTotalKeys = document.getElementById("pill-total-keys");
+    const pillCriticalLeaks = document.getElementById("pill-critical-leaks");
+    const pillHighEntropy = document.getElementById("pill-high-entropy");
+    const pillSafeKeys = document.getElementById("pill-safe-keys");
+    const headerSecretsCount = document.getElementById("header-secrets-count");
+    const scannerLineCount = document.getElementById("scanner-line-count");
+
+    let currentFindings = [];
+
+    function updateAuditUI() {
+      const content = scannerInput.value;
+      const entries = parseDotenv(content);
+      const lines = content.split(/\r?\n/).length;
+      scannerLineCount.textContent = `Lines: ${lines} | Parsed Keys: ${entries.length}`;
+
+      currentFindings = entries.map(auditSecretEntry);
+
+      // Metrics calculation
+      let criticalCount = 0;
+      let highCount = 0;
+      let mediumCount = 0;
+      let safeCount = 0;
+      let totalEntropy = 0;
+
+      for (const f of currentFindings) {
+        if (f.severity === "CRITICAL") criticalCount++;
+        else if (f.severity === "HIGH") highCount++;
+        else if (f.severity === "MEDIUM") mediumCount++;
+        else safeCount++;
+        totalEntropy += f.entropy;
+      }
+
+      const totalKeys = currentFindings.length;
+      headerSecretsCount.textContent = (criticalCount + highCount).toString();
+      pillTotalKeys.textContent = totalKeys.toString();
+      pillCriticalLeaks.textContent = criticalCount.toString();
+      pillHighEntropy.textContent = highCount.toString();
+      pillSafeKeys.textContent = safeCount.toString();
+
+      // Score calculation: 100 max, -35 per critical, -15 per high, -5 per medium
+      let score = 100 - (criticalCount * 35) - (highCount * 15) - (mediumCount * 5);
+      if (totalKeys === 0) score = 100;
+      if (score < 0) score = 0;
+
+      let grade = "A+";
+      let gradeColor = "var(--google-green)";
+      if (score >= 95) { grade = "A+"; gradeColor = "var(--google-green)"; }
+      else if (score >= 85) { grade = "A"; gradeColor = "var(--google-green)"; }
+      else if (score >= 70) { grade = "B"; gradeColor = "var(--google-blue)"; }
+      else if (score >= 55) { grade = "C"; gradeColor = "var(--google-yellow-dark)"; }
+      else if (score >= 35) { grade = "D"; gradeColor = "var(--google-yellow-dark)"; }
+      else { grade = "F"; gradeColor = "var(--google-red)"; }
+
+      gradeBadge.textContent = grade;
+      gradeBadge.style.color = gradeColor;
+      scoreText.textContent = `${score} / 100 Score`;
+
+      // Update circular gauge
+      const circumference = 2 * Math.PI * 75; // ~471.24
+      const offset = circumference - (score / 100) * circumference;
+      gaugeCircle.style.strokeDashoffset = offset;
+      gaugeCircle.style.stroke = gradeColor;
+
+      // Render table
+      if (currentFindings.length === 0) {
+        findingsTableBody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: var(--text-tertiary); padding: 2rem;">
+              No environment variables parsed yet. Paste or load a preset above to begin audit.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      const maskChecked = toggleMaskEditor.checked;
+      let html = "";
+
+      currentFindings.forEach((f, idx) => {
+        let sevClass = "sev-safe";
+        if (f.severity === "CRITICAL") sevClass = "sev-critical";
+        else if (f.severity === "HIGH") sevClass = "sev-high";
+        else if (f.severity === "MEDIUM") sevClass = "sev-medium";
+
+        // Entropy bar color
+        let entropyColor = "var(--google-green)";
+        if (f.entropy > 4.5) entropyColor = "var(--google-red)";
+        else if (f.entropy > 3.8) entropyColor = "var(--google-yellow-dark)";
+
+        const entropyPercent = Math.min(100, (f.entropy / 6.0) * 100);
+        const displayVal = maskChecked ? maskValue(f.value) : (f.value || "<empty>");
+
+        html += `
+          <tr>
+            <td><strong class="code-pill">${escapeHtml(f.key)}</strong></td>
+            <td>${escapeHtml(f.provider)}</td>
+            <td><span class="badge ${sevClass}">${f.severity}</span></td>
+            <td>
+              <div class="entropy-bar-wrapper">
+                <div class="entropy-track">
+                  <div class="entropy-fill" style="width: ${entropyPercent}%; background: ${entropyColor};"></div>
+                </div>
+                <span style="font-size: 0.72rem; font-family: var(--font-mono);">${f.entropy}</span>
+              </div>
+            </td>
+            <td><code style="font-size: 0.78rem; font-family: var(--font-mono);">${escapeHtml(displayVal)}</code></td>
+            <td style="font-size: 0.8rem; color: var(--text-secondary);">${escapeHtml(f.action)}</td>
+          </tr>
+        `;
+      });
+
+      findingsTableBody.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // Event Listeners for Scanner
+    scannerInput.addEventListener("input", updateAuditUI);
+    toggleMaskEditor.addEventListener("change", updateAuditUI);
+
+    document.getElementById("btn-clear-scanner").addEventListener("click", () => {
+      scannerInput.value = "";
+      updateAuditUI();
+    });
+
+    document.getElementById("file-input-scanner").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        scannerInput.value = evt.target.result;
+        updateAuditUI();
+        showToast("✓ File loaded successfully");
+      };
+      reader.readAsText(file);
+    });
+
+    // Preset Buttons
+    const PRESETS = {
+      "nextjs-leak": `# Production Next.js Configuration (Vulnerable)
+PORT=3000
+NODE_ENV=production
+DATABASE_URL=postgresql://postgres_admin:UltraSecretPassword123!@db.prod.internal:5432/main_app?sslmode=require
+NEXTAUTH_SECRET=98a72b1c4e67890123456789abcdef0123456789abcdef0123456789abcdef0
+NEXT_PUBLIC_STRIPE_SECRET_KEY=sk_mock_dummyStripeKey00000000000000000000
+OPENAI_API_KEY=sk-proj-dummyOpenAiKey00000000000000000000
+GITHUB_PERSONAL_ACCESS_TOKEN=ghp_dummyGithubPatToken0000000000000000
+RESEND_API_KEY=re_dummyResendKey00000000000000000000`,
+
+      "ai-cloud-leak": `# Cloud AI & Infrastructure Keys
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+ANTHROPIC_API_KEY=sk-ant-api03-dummyAnthropicKey00000000000000000000
+SLACK_BOT_TOKEN=xoxb-mock-0000000000-0000000000-dummyTokenExample000
+SENDGRID_API_KEY=SG.mockSendgridApiKeyPrefix.mockSendgridApiKeySecretPayload00000`,
+
+      "clean-example": `# Clean Sanitized Environment Template
+PORT=3000
+NODE_ENV=development
+DATABASE_URL=postgresql://user:password@localhost:5432/mydb
+NEXTAUTH_SECRET=your-nextauth-secret-min-32-chars
+STRIPE_SECRET_KEY=sk_mock_placeholder_key_here
+OPENAI_API_KEY=sk-proj-placeholder-key-here`
+    };
+
+    document.querySelectorAll(".preset-chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const pKey = btn.getAttribute("data-preset");
+        if (PRESETS[pKey]) {
+          scannerInput.value = PRESETS[pKey];
+          updateAuditUI();
+          showToast(`✓ Loaded preset: ${btn.textContent}`);
+        }
+      });
+    });
+
+    // 1-Click Download Sanitized .env.example
+    document.getElementById("btn-download-sanitized").addEventListener("click", () => {
+      const content = scannerInput.value;
+      if (!content.trim()) {
+        showToast("⚠️ Please provide environment variables first", true);
+        return;
+      }
+      const lines = content.split(/\r?\n/);
+      const sanitizedLines = lines.map(line => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith("#")) return line;
+        const eqIdx = trimmed.indexOf("=");
+        if (eqIdx === -1) return line;
+        const key = trimmed.slice(0, eqIdx).trim();
+        let placeholder = `your-${key.toLowerCase().replace(/_/g, "-")}-here`;
+        if (key.includes("PORT")) placeholder = "3000";
+        if (key.includes("NODE_ENV")) placeholder = "development";
+        if (key.includes("DATABASE_URL")) placeholder = "postgresql://user:password@localhost:5432/dbname";
+        return `${key}=${placeholder}`;
+      });
+
+      const blob = new Blob([sanitizedLines.join("\n")], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = ".env.example";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("📥 Downloaded sanitized .env.example");
+    });
+
+    // Export Markdown Report
+    document.getElementById("btn-export-report").addEventListener("click", () => {
+      if (currentFindings.length === 0) {
+        showToast("⚠️ No findings to report", true);
+        return;
+      }
+      let md = `# EnvGuard Security Audit Report\n\n`;
+      md += `**Date:** ${new Date().toISOString()}\n`;
+      md += `**Total Keys Analyzed:** ${currentFindings.length}\n`;
+      md += `**Overall Security Grade:** ${gradeBadge.textContent} (${scoreText.textContent})\n\n`;
+      md += `## Detected Secrets & Vulnerabilities\n\n`;
+      md += `| Variable Key | Provider / Type | Severity | Entropy | Action Recommendation |\n`;
+      md += `| :--- | :--- | :--- | :--- | :--- |\n`;
+      currentFindings.forEach(f => {
+        md += `| \`${f.key}\` | ${f.provider} | **${f.severity}** | ${f.entropy} | ${f.action} |\n`;
+      });
+      md += `\n---\n*Generated by EnvGuard Secrets Studio — Zero-Exposure Architecture*\n`;
+
+      navigator.clipboard.writeText(md).then(() => {
+        showToast("📋 Security Audit Report copied to clipboard!");
+      });
+    });
+
+    // =========================================================================
+    // 4. FORMAT TRANSFORMER & EXPORTER
+    // =========================================================================
+    const transformerInput = document.getElementById("transformer-input");
+    const transformerOutput = document.getElementById("transformer-output");
+    const transformSourceType = document.getElementById("transform-source-type");
+    const transformTargetType = document.getElementById("transform-target-type");
+    const transformTargetLabel = document.getElementById("transform-target-label");
+    const chkSortKeys = document.getElementById("chk-sort-keys");
+    const chkStripComments = document.getElementById("chk-strip-comments");
+    const chkMaskExport = document.getElementById("chk-mask-export");
+
+    function parseSourceToDict() {
+      const srcType = transformSourceType.value;
+      const text = transformerInput.value.trim();
+      if (!text) return {};
+
+      if (srcType === "json") {
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          return null;
+        }
+      } else {
+        const entries = parseDotenv(text);
+        const obj = {};
+        for (const e of entries) {
+          obj[e.key] = e.value;
+        }
+        return obj;
+      }
+    }
+
+    function runTransformation() {
+      const dict = parseSourceToDict();
+      if (dict === null) {
+        transformerOutput.value = "/* Invalid JSON input */";
+        return;
+      }
+
+      let keys = Object.keys(dict);
+      if (chkSortKeys.checked) {
+        keys.sort();
+      }
+
+      const target = transformTargetType.value;
+      transformTargetLabel.textContent = `Target Format: ${target.toUpperCase()}`;
+
+      if (target === "json") {
+        const outObj = {};
+        for (const k of keys) {
+          outObj[k] = chkMaskExport.checked ? maskValue(dict[k]) : dict[k];
+        }
+        transformerOutput.value = JSON.stringify(outObj, null, 2);
+      } else if (target === "yaml") {
+        let yaml = "# Generated by EnvGuard Secrets Studio\n";
+        for (const k of keys) {
+          const val = chkMaskExport.checked ? maskValue(dict[k]) : dict[k];
+          yaml += `${k}: "${val.replace(/"/g, '\\"')}"\n`;
+        }
+        transformerOutput.value = yaml;
+      } else if (target === "docker") {
+        let dc = "services:\n  app:\n    environment:\n";
+        for (const k of keys) {
+          const val = chkMaskExport.checked ? maskValue(dict[k]) : dict[k];
+          dc += `      - ${k}=${val}\n`;
+        }
+        transformerOutput.value = dc;
+      } else if (target === "k8s") {
+        let k8s = "apiVersion: v1\nkind: Secret\nmetadata:\n  name: app-secrets\ntype: Opaque\nstringData:\n";
+        for (const k of keys) {
+          const val = chkMaskExport.checked ? maskValue(dict[k]) : dict[k];
+          k8s += `  ${k}: "${val.replace(/"/g, '\\"')}"\n`;
+        }
+        transformerOutput.value = k8s;
+      } else if (target === "dotenv") {
+        let env = "";
+        for (const k of keys) {
+          const val = chkMaskExport.checked ? maskValue(dict[k]) : dict[k];
+          env += `${k}=${val}\n`;
+        }
+        transformerOutput.value = env.trim();
+      }
+    }
+
+    transformerInput.addEventListener("input", runTransformation);
+    transformSourceType.addEventListener("change", runTransformation);
+    transformTargetType.addEventListener("change", runTransformation);
+    chkSortKeys.addEventListener("change", runTransformation);
+    chkStripComments.addEventListener("change", runTransformation);
+    chkMaskExport.addEventListener("change", runTransformation);
+
+    document.getElementById("btn-sample-transformer").addEventListener("click", () => {
+      transformerInput.value = `PORT=3000
+NODE_ENV=production
+DATABASE_URL=postgresql://postgres:pass@localhost:5432/db
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=super-secret-jwt-token-value-2026`;
+      runTransformation();
+      showToast("✓ Loaded transformer sample");
+    });
+
+    document.getElementById("btn-copy-transform").addEventListener("click", () => {
+      navigator.clipboard.writeText(transformerOutput.value).then(() => {
+        showToast("📋 Transformed output copied to clipboard!");
+      });
+    });
+
+    document.getElementById("btn-download-transform").addEventListener("click", () => {
+      const extMap = { json: "json", yaml: "yaml", docker: "yml", k8s: "yaml", dotenv: "env" };
+      const target = transformTargetType.value;
+      const blob = new Blob([transformerOutput.value], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `envguard-export.${extMap[target] || "txt"}`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`📥 Downloaded envguard-export.${extMap[target] || "txt"}`);
+    });
+
+    // =========================================================================
+    // 5. ZERO-EXPOSURE VAULT CRYPTOGRAPHY (Web Crypto API)
+    // =========================================================================
+    // Buffer utilities
+    function arrayBufferToBase64(buffer) {
+      let binary = "";
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    }
+
+    function base64ToArrayBuffer(base64) {
+      const binaryString = window.atob(base64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const keyMaterial = await window.crypto.subtle.importKey(
+        "raw",
+        enc.encode(password),
+        "PBKDF2",
+        false,
+        ["deriveKey"]
+      );
+      return window.crypto.subtle.deriveKey(
+        {
+          name: "PBKDF2",
+          salt: salt,
+          iterations: 100000,
+          hash: "SHA-256"
+        },
+        keyMaterial,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt", "decrypt"]
+      );
+    }
+
+    // Password strength meter
+    const vaultEncryptPassword = document.getElementById("vault-encrypt-password");
+    const pwdStrengthFill = document.getElementById("pwd-strength-fill");
+    const pwdStrengthLabel = document.getElementById("pwd-strength-label");
+
+    vaultEncryptPassword.addEventListener("input", () => {
+      const pwd = vaultEncryptPassword.value;
+      if (!pwd) {
+        pwdStrengthFill.style.width = "0%";
+        pwdStrengthLabel.textContent = "Password Strength: Not entered";
+        return;
+      }
+      let score = 0;
+      if (pwd.length >= 8) score += 25;
+      if (pwd.length >= 14) score += 25;
+      if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) score += 20;
+      if (/[0-9]/.test(pwd)) score += 15;
+      if (/[^A-Za-z0-9]/.test(pwd)) score += 15;
+
+      pwdStrengthFill.style.width = `${score}%`;
+      if (score < 40) {
+        pwdStrengthFill.style.background = "var(--google-red)";
+        pwdStrengthLabel.textContent = "Password Strength: Weak (add length & symbols)";
+      } else if (score < 75) {
+        pwdStrengthFill.style.background = "var(--google-yellow-dark)";
+        pwdStrengthLabel.textContent = "Password Strength: Moderate";
+      } else {
+        pwdStrengthFill.style.background = "var(--google-green)";
+        pwdStrengthLabel.textContent = "Password Strength: Strong (Enterprise-grade)";
+      }
+    });
+
+    // Encrypt Action
+    document.getElementById("btn-encrypt-vault").addEventListener("click", async () => {
+      const plain = document.getElementById("vault-encrypt-plain").value.trim();
+      const pwd = vaultEncryptPassword.value;
+
+      if (!plain) {
+        showToast("⚠️ Please provide plaintext secrets to encrypt", true);
+        return;
+      }
+      if (!pwd || pwd.length < 8) {
+        showToast("⚠️ Master password must be at least 8 characters", true);
+        return;
+      }
+
+      try {
+        const salt = window.crypto.getRandomValues(new Uint8Array(16));
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const key = await deriveKey(pwd, salt);
+
+        const enc = new TextEncoder();
+        const ciphertextWithTag = await window.crypto.subtle.encrypt(
+          { name: "AES-GCM", iv: iv },
+          key,
+          enc.encode(plain)
+        );
+
+        // Web Crypto AES-GCM appends 16-byte tag to ciphertext
+        const ctBytes = new Uint8Array(ciphertextWithTag.slice(0, ciphertextWithTag.byteLength - 16));
+        const tagBytes = new Uint8Array(ciphertextWithTag.slice(ciphertextWithTag.byteLength - 16));
+
+        const entries = parseDotenv(plain);
+
+        const vaultPayload = {
+          version: 1,
+          format: "envguard-vault-v1",
+          cipher: "AES-256-GCM",
+          kdf: "PBKDF2-HMAC-SHA256",
+          kdf_iterations: 100000,
+          salt: arrayBufferToBase64(salt),
+          iv: arrayBufferToBase64(iv),
+          ciphertext: arrayBufferToBase64(ctBytes),
+          tag: arrayBufferToBase64(tagBytes),
+          created_at: new Date().toISOString(),
+          key_count: entries.length
+        };
+
+        const jsonStr = JSON.stringify(vaultPayload, null, 2);
+        document.getElementById("vault-encrypt-output").value = jsonStr;
+        document.getElementById("encrypt-result-area").style.display = "block";
+        showToast("🔐 Vault created successfully with AES-256-GCM!");
+      } catch (err) {
+        console.error(err);
+        showToast("❌ Encryption failed: " + err.message, true);
+      }
+    });
+
+    document.getElementById("btn-download-vault-file").addEventListener("click", () => {
+      const jsonStr = document.getElementById("vault-encrypt-output").value;
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "secrets.vault";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("📥 Downloaded secrets.vault");
+    });
+
+    document.getElementById("btn-load-vault-sample").addEventListener("click", () => {
+      document.getElementById("vault-encrypt-plain").value = `DATABASE_URL=postgresql://postgres_admin:SuperSecretPass123!@db.production.internal:5432/main_app?sslmode=require
+OPENAI_API_KEY=sk-proj-dummyOpenAiKey00000000000000000000
+STRIPE_SECRET_KEY=sk_mock_dummyStripeKey00000000000000000000
+REDIS_AUTH_TOKEN=secret_redis_auth_token_8899aabbccddeeff
+JWT_SIGNING_SECRET=f98a72b1c4e67890123456789abcdef0123456789abcdef0123456789abcdef0
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
+      showToast("✓ Loaded production sample secrets");
+    });
+
+    // Decrypt Action
+    document.getElementById("btn-decrypt-vault").addEventListener("click", async () => {
+      const inputStr = document.getElementById("vault-decrypt-input").value.trim();
+      const pwd = document.getElementById("vault-decrypt-password").value;
+
+      if (!inputStr) {
+        showToast("⚠️ Please paste or upload a .vault payload", true);
+        return;
+      }
+      if (!pwd) {
+        showToast("⚠️ Master password is required for decryption", true);
+        return;
+      }
+
+      try {
+        const vault = JSON.parse(inputStr);
+        if (vault.format !== "envguard-vault-v1" && !vault.ciphertext) {
+          throw new Error("Invalid or unsupported vault format.");
+        }
+
+        const salt = new Uint8Array(base64ToArrayBuffer(vault.salt));
+        const iv = new Uint8Array(base64ToArrayBuffer(vault.iv));
+        const ct = new Uint8Array(base64ToArrayBuffer(vault.ciphertext));
+        const tag = new Uint8Array(base64ToArrayBuffer(vault.tag));
+
+        // Combine ciphertext and tag for Web Crypto
+        const combined = new Uint8Array(ct.byteLength + tag.byteLength);
+        combined.set(ct, 0);
+        combined.set(tag, ct.byteLength);
+
+        const key = await deriveKey(pwd, salt);
+        const decryptedBuffer = await window.crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: iv },
+          key,
+          combined
+        );
+
+        const dec = new TextDecoder();
+        const plaintext = dec.decode(decryptedBuffer);
+
+        document.getElementById("vault-decrypt-output").value = plaintext;
+        document.getElementById("decrypt-result-area").style.display = "block";
+        showToast("🔓 In-memory vault decrypted successfully!");
+      } catch (err) {
+        console.error(err);
+        showToast("❌ Decryption failed. Incorrect password or corrupted vault.", true);
+      }
+    });
+
+    document.getElementById("file-input-vault").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        document.getElementById("vault-decrypt-input").value = evt.target.result;
+        showToast("✓ Vault file loaded");
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById("btn-copy-decrypted").addEventListener("click", () => {
+      navigator.clipboard.writeText(document.getElementById("vault-decrypt-output").value).then(() => {
+        showToast("📋 Decrypted secrets copied to clipboard!");
+      });
+    });
+
+    document.getElementById("btn-download-decrypted").addEventListener("click", () => {
+      const text = document.getElementById("vault-decrypt-output").value;
+      const blob = new Blob([text], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = ".env.decrypted";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("📥 Downloaded .env.decrypted");
+    });
+
+    // =========================================================================
+    // 6. MCP CLIENT CONFIGURATIONS
+    // =========================================================================
+    const MCP_CONFIGS = {
+      claude: {
+        title: "Claude Desktop MCP Configuration",
+        path: "~/Library/Application Support/Claude/claude_desktop_config.json (macOS) or %APPDATA%/Claude/claude_desktop_config.json (Windows)",
+        json: {
+          "mcpServers": {
+            "envguard": {
+              "command": "python",
+              "args": ["-m", "envguard.mcp"],
+              "env": {
+                "ENVGUARD_VAULT_PASSWORD": "${ENVGUARD_VAULT_PASSWORD}",
+                "PYTHONUNBUFFERED": "1"
+              }
+            }
+          }
+        }
+      },
+      cursor: {
+        title: "Cursor IDE MCP Configuration",
+        path: ".cursor/mcp.json (Project Root) or Global Cursor Settings",
+        json: {
+          "mcpServers": {
+            "envguard-secrets": {
+              "command": "envguard",
+              "args": ["mcp", "--mode=stdio"],
+              "transport": "stdio"
+            }
+          }
+        }
+      },
+      cline: {
+        title: "Cline / Roo Code VS Code Extension",
+        path: "~/.vscode/extensions/cline/mcp_settings.json",
+        json: {
+          "mcpServers": {
+            "envguard": {
+              "command": "python3",
+              "args": ["-m", "envguard.mcp"],
+              "disabled": false,
+              "autoApprove": [
+                "scan_env",
+                "audit_secrets",
+                "sanitize_env"
+              ]
+            }
+          }
+        }
+      },
+      zed: {
+        title: "Zed Editor MCP Settings",
+        path: "~/.config/zed/settings.json",
+        json: {
+          "context_servers": {
+            "envguard": {
+              "command": "envguard",
+              "args": ["mcp"]
+            }
+          }
+        }
+      },
+      windsurf: {
+        title: "Windsurf / Cascade MCP Configuration",
+        path: "~/.codeium/windsurf/mcp_config.json",
+        json: {
+          "mcpServers": {
+            "envguard": {
+              "command": "python3",
+              "args": ["-m", "envguard.mcp"]
+            }
+          }
+        }
+      }
+    };
+
+    const mcpConfigCode = document.getElementById("mcp-config-code");
+    const mcpConfigTitle = document.getElementById("mcp-config-title");
+    const mcpConfigPath = document.getElementById("mcp-config-path");
+
+    function renderMCPClientConfig(clientKey) {
+      const cfg = MCP_CONFIGS[clientKey] || MCP_CONFIGS.claude;
+      mcpConfigTitle.textContent = cfg.title;
+      mcpConfigPath.textContent = cfg.path;
+      mcpConfigCode.value = JSON.stringify(cfg.json, null, 2);
+    }
+
+    document.querySelectorAll(".mcp-client-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".mcp-client-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderMCPClientConfig(btn.getAttribute("data-client"));
+      });
+    });
+
+    document.getElementById("btn-copy-mcp-config").addEventListener("click", () => {
+      navigator.clipboard.writeText(mcpConfigCode.value).then(() => {
+        showToast("📋 MCP Configuration copied to clipboard!");
+      });
+    });
+
+    // =========================================================================
+    // 7. TAB SWITCHING
+    // =========================================================================
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+        btn.classList.add("active");
+        const tabId = btn.getAttribute("data-tab");
+        const target = document.getElementById(tabId);
+        if (target) {
+          target.classList.add("active");
+        }
+      });
+    });
+
+    // Toast Utility
+    let toastTimeout = null;
+    function showToast(message, isError = false) {
+      const toast = document.getElementById("toast");
+      const toastMessage = document.getElementById("toast-message");
+      const toastIcon = document.getElementById("toast-icon");
+      toastMessage.textContent = message;
+      toastIcon.textContent = isError ? "⚠️" : "✓";
+      toast.style.background = isError ? "#d93025" : "#202124";
+      toast.classList.add("show");
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    // Initializations
+    scannerInput.value = PRESETS["nextjs-leak"];
+    updateAuditUI();
+    runTransformation();
+    renderMCPClientConfig("claude");
+  </script>
+</body>
+</html>

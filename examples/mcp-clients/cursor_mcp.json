@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "envguard-secrets": {
+      "command": "python3",
+      "args": [
+        "-m",
+        "envguard.mcp",
+        "--mode=stdio"
+      ],
+      "env": {
+        "ENVGUARD_DEFAULT_VAULT": "secrets.vault"
+      }
+    }
+  }
+}

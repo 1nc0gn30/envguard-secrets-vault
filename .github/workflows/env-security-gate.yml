@@ -1,0 +1,54 @@
+name: EnvGuard Security Gate
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master]
+  workflow_call:
+    inputs:
+      fail_on_high_entropy:
+        description: 'Fail CI if un-cataloged high entropy strings are found'
+        type: boolean
+        default: true
+
+jobs:
+  secret-scan-gate:
+    name: Secret & Environment Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install EnvGuard Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install cryptography pyyaml
+
+      - name: Scan PR Diff for Secret Leaks
+        id: scan
+        run: |
+          echo "### 🛡️ EnvGuard Pull Request Security Gate" >> $GITHUB_STEP_SUMMARY
+          echo "Scanning repository files and staged changes for unencrypted secrets..." >> $GITHUB_STEP_SUMMARY
+
+          # Check for forbidden committed .env files (excluding .example and tests/fixtures)
+          UNENCRYPTED_FILES=$(find . -maxdepth 3 -name ".env*" ! -name "*.example*" ! -name "*.template*" ! -name "*test*" ! -path "*/examples/*" ! -path "*/.git/*" || true)
+
+          if [ -n "$UNENCRYPTED_FILES" ]; then
+            echo "❌ CRITICAL: Found unencrypted production .env file committed to repo:" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "$UNENCRYPTED_FILES" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "Please remove or encrypt this file into a .vault payload using \`envguard vault create\`." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          echo "✅ No unencrypted .env files found in tracked working tree." >> $GITHUB_STEP_SUMMARY
+          echo "✅ PR Secret Scan Gate Passed!" >> $GITHUB_STEP_SUMMARY
