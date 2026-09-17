@@ -31,6 +31,15 @@ from envguard_secrets_vault.mcp_server import (
     vault_encrypt,
 )
 from envguard_secrets_vault.ui_server import create_server, start_server
+from envguard_secrets_vault.entropy_analyzer import (
+    AlphabetType,
+    EntropyProfile,
+    CompiledCustomRule,
+    detect_alphabet,
+    analyze_entropy_profile,
+    compile_custom_rules,
+    scan_with_custom_rules,
+)
 
 __all__ = [
     "__version__",
@@ -54,4 +63,11 @@ __all__ = [
     "create_server",
     "start_server",
     "cli_main",
+    "AlphabetType",
+    "EntropyProfile",
+    "CompiledCustomRule",
+    "detect_alphabet",
+    "analyze_entropy_profile",
+    "compile_custom_rules",
+    "scan_with_custom_rules",
 ]
