@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Security_Grade-A%2B_Certified-1e8e3e?style=for-the-badge&logo=google&logoColor=white" alt="Security Grade A+">
+  <img src="https://img.shields.io/badge/Security_Grade-A%2B_Certified-1e8e3e?style=for-the-badge&logoColor=white" alt="Security Grade A+">
   <img src="https://img.shields.io/badge/Cipher-AES--256--GCM-1a73e8?style=for-the-badge&logo=lock&logoColor=white" alt="AES-256-GCM">
   <img src="https://img.shields.io/badge/MCP-Protocol_Ready-9334e6?style=for-the-badge&logo=anthropic&logoColor=white" alt="MCP Ready">
   <img src="https://img.shields.io/badge/Python-3.9_--_3.13-f9ab00?style=for-the-badge&logo=python&logoColor=white" alt="Python Support">
@@ -29,7 +29,7 @@ It replaces fragile `.env` file handling with **military-grade envelope encrypti
 - ⚡ **Zero-Disk Process Execution (`envguard vault run`):** Decrypts secrets directly into process RAM and child environment blocks. No plaintext touches disk.
 - 🔄 **Format Transformer & Exporter:** Bidirectional conversion between `.env`, JSON, YAML, Docker Compose, and Kubernetes Secrets.
 - 🤖 **Native Model Context Protocol (MCP) Server:** 6 standardized tools (`scan_env`, `audit_secrets`, `sanitize_env`, `encrypt_vault`, `decrypt_vault`, `run_with_vault`) for AI agents.
-- 🌐 **Google Secrets Studio UI (`public/index.html`):** Offline-first, Google Material 3 web app with Web Crypto API encryption, risk gauges, and preset inspection.
+- 🌐 **EnvGuard Secrets Studio UI (`public/index.html`):** Offline-first web app (design influenced by Material 3) with Web Crypto API encryption, risk gauges, and preset inspection.
 
 ---
 
@@ -134,7 +134,7 @@ See the [MCP Client Integration Guide](file:///media/neo/f2fdda77-178b-4603-ae80
 
 ---
 
-## 🌐 Google Secrets Studio Web UI
+## 🌐 EnvGuard Secrets Studio Web UI (Design Influenced by Material 3)
 
 Open [`public/index.html`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/public/index.html) in your browser or run:
 

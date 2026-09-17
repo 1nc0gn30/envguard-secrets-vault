@@ -1,6 +1,6 @@
-"""EnvGuard Secrets Vault - Google Material 3 Secrets Studio UI Server & REST API.
+"""EnvGuard Secrets Vault - Secrets Studio UI Server & REST API.
 
-Zero-dependency HTTP server delivering the Google Material 3 Secrets Studio,
+Zero-dependency HTTP server delivering the Secrets Studio (design influenced by Material 3),
 REST APIs for live secret auditing, masking, example generation, AES-256 vault
 encryption/decryption, environment diffing, MCP client configurations,
 and 1-click hardened ZIP bundle exporting.

@@ -2,7 +2,7 @@
 """EnvGuard Secrets Vault - Command-Line Interface (CLI).
 
 Subcommands:
-  serve      - Start Google Material 3 Secrets Studio UI Server (Default port: 8087)
+  serve      - Start Secrets Studio UI Server (Default port: 8087)
   scan       - Audit a .env file or directory for leaked API keys, tokens & high entropy
   mask       - Redact sensitive credentials in .env (partial or full masking)
   example    - Auto-generate sanitized .env.example with descriptive placeholders
@@ -405,7 +405,7 @@ def cmd_platform(args: argparse.Namespace) -> int:
 
 
 def cmd_serve(args: argparse.Namespace) -> int:
-    """Starts Google Material 3 Secrets Studio."""
+    """Starts Secrets Studio (design influenced by Material 3)."""
     port = getattr(args, "port", 8087)
     host = getattr(args, "host", "0.0.0.0")
     print_banner()
@@ -428,7 +428,7 @@ def main(args: Optional[List[str]] = None) -> int:
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
 
     # serve
-    p_serve = subparsers.add_parser("serve", help="Start Google Material 3 Secrets Studio Web UI")
+    p_serve = subparsers.add_parser("serve", help="Start Secrets Studio Web UI (design influenced by Material 3)")
     p_serve.add_argument("--port", type=int, default=8087, help="HTTP port (default: 8087)")
     p_serve.add_argument("--host", type=str, default="0.0.0.0", help="HTTP host (default: 0.0.0.0)")
 

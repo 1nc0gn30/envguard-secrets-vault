@@ -331,7 +331,7 @@ class TestDocumentation:
         content = read_repo_file("README.md")
         assert len(content) > 1000
         assert "# 🛡️ EnvGuard Secrets Vault" in content
-        assert "Google Secrets Studio UI" in content
+        assert "EnvGuard Secrets Studio" in content
         assert "Quick Start (CLI)" in content
         assert "Python API Reference" in content
 
