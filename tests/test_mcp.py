@@ -74,7 +74,7 @@ def test_mcp_tools_list(mcp: MCPServer):
     assert resp is not None
     tools = resp["result"]["tools"]
     tool_names = [t["name"] for t in tools]
-    assert len(tools) == 7
+    assert len(tools) == 9
     assert "env_scan_secrets" in tool_names
     assert "env_mask_variables" in tool_names
     assert "env_generate_example" in tool_names
@@ -82,6 +82,8 @@ def test_mcp_tools_list(mcp: MCPServer):
     assert "env_vault_decrypt" in tool_names
     assert "env_diff_environments" in tool_names
     assert "env_get_diagnostics" in tool_names
+    assert "env_shamir_split" in tool_names
+    assert "env_shamir_combine" in tool_names
 
 
 def test_mcp_unknown_tool(mcp: MCPServer):

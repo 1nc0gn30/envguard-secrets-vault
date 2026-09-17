@@ -567,6 +567,35 @@ class StudioHTTPRequestHandler(SimpleHTTPRequestHandler):
             self._send_json_response(configs)
             return
 
+        if path == "/api/shamir/split":
+            from envguard_secrets_vault.shamir_quorum import split_secret_into_shares
+            secret = data.get("secret", "")
+            if not secret:
+                self._send_json_response({"error": "Missing 'secret' parameter"}, status=400)
+                return
+            threshold = int(data.get("threshold", 3))
+            total_shares = int(data.get("total_shares", 5))
+            label = data.get("label", "master-key")
+            try:
+                res = split_secret_into_shares(secret=secret, threshold=threshold, total_shares=total_shares, label=label)
+                self._send_json_response(res)
+            except Exception as e:
+                self._send_json_response({"error": str(e)}, status=400)
+            return
+
+        if path == "/api/shamir/combine":
+            from envguard_secrets_vault.shamir_quorum import combine_shares_to_secret
+            shares = data.get("shares", [])
+            if not shares:
+                self._send_json_response({"error": "Missing 'shares' list parameter"}, status=400)
+                return
+            try:
+                res = combine_shares_to_secret(shares)
+                self._send_json_response(res)
+            except Exception as e:
+                self._send_json_response({"error": str(e)}, status=400)
+            return
+
         if path == "/api/export-zip":
             raw_content = data.get("content", "PORT=8080\n")
             zip_buffer = io.BytesIO()

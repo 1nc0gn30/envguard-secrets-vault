@@ -404,6 +404,73 @@ def cmd_platform(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_shamir(args: argparse.Namespace) -> int:
+    """Handles Shamir secret splitting and combination."""
+    action = args.shamir_action
+    if action == "split":
+        from envguard_secrets_vault.shamir_quorum import split_secret_into_shares
+        secret_input = args.secret
+        if not secret_input and args.file:
+            from envguard_secrets_vault.compat import safe_read_text
+            secret_input = safe_read_text(args.file)
+        if not secret_input:
+            print(red("Error: Must provide secret text or --file."))
+            return 1
+        res = split_secret_into_shares(
+            secret=secret_input,
+            threshold=args.threshold,
+            total_shares=args.shares,
+            label=args.label,
+        )
+        if args.json:
+            print(json.dumps(res, indent=2))
+            return 0
+
+        print_banner()
+        print(bold(f"🧩 Shamir's Secret Sharing ({res['threshold']}-of-{res['total_shares']} Quorum: {cyan(res['label'])})\n"))
+        print(f"Generated {green(str(len(res['shares'])))} shares. Any {green(str(res['threshold']))} shares can reconstruct the secret.\n")
+        for idx, armor in enumerate(res["armored_shares"], start=1):
+            print(f"Share #{idx}:")
+            print(gray(armor.strip()))
+            print()
+        return 0
+
+    elif action == "combine":
+        from envguard_secrets_vault.shamir_quorum import combine_shares_to_secret
+        share_inputs = []
+        if args.share:
+            share_inputs.extend(args.share)
+        if args.files:
+            from envguard_secrets_vault.compat import safe_read_text
+            for f in args.files:
+                share_inputs.append(safe_read_text(f))
+
+        if not share_inputs:
+            print(red("Error: Must provide shares via --share or --files."))
+            return 1
+
+        try:
+            res = combine_shares_to_secret(share_inputs)
+        except Exception as e:
+            print(red(f"Quorum reconstruction failed: {e}"))
+            return 1
+
+        if args.json:
+            print(json.dumps(res, indent=2))
+            return 0
+
+        print_banner()
+        print(green(bold("✔ Secret Successfully Reconstructed from Quorum!\n")))
+        if res["is_text"]:
+            print(bold("Reconstructed Secret:"))
+            print(res["secret_text"])
+        else:
+            print(f"Binary Secret (Base64, {res['length_bytes']} bytes): {res['secret_b64']}")
+        return 0
+
+    return 0
+
+
 def cmd_serve(args: argparse.Namespace) -> int:
     """Starts Secrets Studio (design influenced by Material 3)."""
     port = getattr(args, "port", 8087)
@@ -477,6 +544,23 @@ def main(args: Optional[List[str]] = None) -> int:
     p_mcp = subparsers.add_parser("mcp", help="Run stdio MCP server or display client configs")
     p_mcp.add_argument("--config", choices=["claude", "cursor", "cline", "zed", "all"], help="Display MCP client config")
 
+    # shamir
+    p_shamir = subparsers.add_parser("shamir", help="Shamir's Secret Sharing threshold splitting and quorum reconstruction")
+    shamir_subs = p_shamir.add_subparsers(dest="shamir_action", help="Shamir action (split or combine)")
+    
+    p_s_split = shamir_subs.add_parser("split", help="Split secret into threshold shares")
+    p_s_split.add_argument("secret", nargs="?", default="", help="Secret text to split")
+    p_s_split.add_argument("--file", "-f", help="Read secret from file")
+    p_s_split.add_argument("--threshold", "-k", type=int, default=3, help="Minimum shares required (default: 3)")
+    p_s_split.add_argument("--shares", "-n", type=int, default=5, help="Total shares to generate (default: 5)")
+    p_s_split.add_argument("--label", "-l", default="master-key", help="Label for the quorum")
+    p_s_split.add_argument("--json", action="store_true", help="Output JSON shares")
+
+    p_s_comb = shamir_subs.add_parser("combine", help="Combine shares to reconstruct secret")
+    p_s_comb.add_argument("--share", "-s", action="append", help="Armored share string or JSON")
+    p_s_comb.add_argument("--files", action="append", help="Share file paths")
+    p_s_comb.add_argument("--json", action="store_true", help="Output JSON result")
+
     # platform
     subparsers.add_parser("platform", help="Display system runtime and crypto capabilities")
 
@@ -503,6 +587,8 @@ def main(args: Optional[List[str]] = None) -> int:
         return cmd_decrypt(parsed)
     elif parsed.command == "diff":
         return cmd_diff(parsed)
+    elif parsed.command == "shamir":
+        return cmd_shamir(parsed)
     elif parsed.command == "check":
         return cmd_check(parsed)
     elif parsed.command == "mcp":

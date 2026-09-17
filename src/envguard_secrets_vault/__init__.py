@@ -40,6 +40,12 @@ from envguard_secrets_vault.entropy_analyzer import (
     compile_custom_rules,
     scan_with_custom_rules,
 )
+from envguard_secrets_vault.shamir_quorum import (
+    SecretShare,
+    ShamirSecretSharing,
+    split_secret_into_shares,
+    combine_shares_to_secret,
+)
 
 __all__ = [
     "__version__",
@@ -70,4 +76,8 @@ __all__ = [
     "analyze_entropy_profile",
     "compile_custom_rules",
     "scan_with_custom_rules",
+    "SecretShare",
+    "ShamirSecretSharing",
+    "split_secret_into_shares",
+    "combine_shares_to_secret",
 ]

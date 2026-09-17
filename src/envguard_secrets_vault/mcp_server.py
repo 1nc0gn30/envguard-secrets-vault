@@ -1242,6 +1242,50 @@ MCP_TOOLS_DEFINITIONS: List[Dict[str, Any]] = [
             "properties": {},
         },
     },
+    {
+        "name": "env_shamir_split",
+        "description": "Split a master secret or .env file into n Shamir threshold shares requiring any k shares to reconstruct.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "secret": {
+                    "type": "string",
+                    "description": "Secret text, master password, or raw .env content to split.",
+                },
+                "threshold": {
+                    "type": "integer",
+                    "description": "Quorum threshold k (minimum shares needed, default: 3).",
+                    "default": 3,
+                },
+                "total_shares": {
+                    "type": "integer",
+                    "description": "Total shares n to produce (default: 5).",
+                    "default": 5,
+                },
+                "label": {
+                    "type": "string",
+                    "description": "Human-readable label for the key quorum.",
+                    "default": "master-key",
+                },
+            },
+            "required": ["secret"],
+        },
+    },
+    {
+        "name": "env_shamir_combine",
+        "description": "Reconstruct original secret from a quorum of at least k Shamir secret shares.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "shares": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Array of armored share strings or share JSON dictionaries.",
+                },
+            },
+            "required": ["shares"],
+        },
+    },
 ]
 
 
@@ -1338,6 +1382,28 @@ class MCPServer:
 
         elif tool_name == "env_get_diagnostics":
             return get_diagnostics()
+
+        elif tool_name == "env_shamir_split":
+            from envguard_secrets_vault.shamir_quorum import split_secret_into_shares
+            secret = arguments.get("secret")
+            if not secret:
+                raise ValueError("Missing required parameter 'secret'")
+            threshold = int(arguments.get("threshold", 3))
+            total_shares = int(arguments.get("total_shares", 5))
+            label = arguments.get("label", "master-key")
+            return split_secret_into_shares(
+                secret=secret,
+                threshold=threshold,
+                total_shares=total_shares,
+                label=label,
+            )
+
+        elif tool_name == "env_shamir_combine":
+            from envguard_secrets_vault.shamir_quorum import combine_shares_to_secret
+            shares = arguments.get("shares")
+            if not shares:
+                raise ValueError("Missing required parameter 'shares'")
+            return combine_shares_to_secret(shares)
 
         else:
             raise KeyError(f"Unknown MCP tool: '{tool_name}'")
