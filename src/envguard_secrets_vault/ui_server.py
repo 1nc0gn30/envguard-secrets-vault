@@ -413,7 +413,11 @@ class StudioHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def __init__(self, *args: Any, directory: Optional[str] = None, **kwargs: Any) -> None:
         if directory is None:
-            directory = str(Path.cwd() / "public")
+            repo_public = Path(__file__).resolve().parent.parent.parent / "public"
+            if repo_public.is_dir() and (repo_public / "index.html").is_file():
+                directory = str(repo_public)
+            else:
+                directory = str(Path.cwd() / "public")
         self.public_dir = Path(directory)
         super().__init__(*args, directory=directory, **kwargs)
 
