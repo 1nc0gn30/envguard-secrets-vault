@@ -27,8 +27,8 @@ It replaces fragile `.env` file handling with **military-grade envelope encrypti
 - 🛡️ **Live Secret Auditor & Scanner:** 50+ detection signatures (OpenAI, Anthropic, AWS, Stripe, GitHub, Slack, DB passwords, JWTs, Private Keys) + Shannon entropy scoring.
 - 🔐 **Zero-Exposure Encrypted Vault:** Authenticated AES-256-GCM payload with PBKDF2-HMAC-SHA256 key derivation.
 - ⚡ **Zero-Disk Process Execution (`envguard vault run`):** Decrypts secrets directly into process RAM and child environment blocks. No plaintext touches disk.
-- 🔄 **Format Transformer & Exporter:** Bidirectional conversion between `.env`, JSON, YAML, Docker Compose, and Kubernetes Secrets.
-- 🤖 **Native Model Context Protocol (MCP) Server:** 6 standardized tools (`scan_env`, `audit_secrets`, `sanitize_env`, `encrypt_vault`, `decrypt_vault`, `run_with_vault`) for AI agents.
+- 🤖 **Native Model Context Protocol (MCP) Server:** 11 standardized tools (`env_scan_secrets`, `env_mask_variables`, `env_generate_example`, `env_vault_encrypt`, `env_vault_decrypt`, `env_diff_environments`, `env_get_diagnostics`, `env_shamir_split`, `env_shamir_combine`, `env_audit_rotation`, `env_rotate_secrets`) for AI coding agents.
+- 🔄 **Secret Rotation & Ephemerality Sentinel:** Enforce `# @expires`, `# @created`, and `# @rotation_days` policies with realistic ephemeral replacement tokens across 14+ providers and unified diff generation.
 - 🌐 **EnvGuard Secrets Studio UI (`public/index.html`):** Offline-first web app (design influenced by Material 3) with Web Crypto API encryption, risk gauges, and preset inspection.
 
 ---
@@ -82,6 +82,18 @@ envguard convert .env.production --format json
 
 # Convert .env to Docker Compose format
 envguard convert .env.production --format docker
+```
+
+### 6. Secret Rotation & Ephemerality Sentinel
+```bash
+# Audit secret ages, TTLs, and rotation policy compliance
+envguard rotate .env.production --audit-only
+
+# Rotate expired/overdue credentials with ephemeral mock tokens and view unified diff
+envguard rotate .env.production --diff
+
+# Rotate specific secrets and write directly to destination
+envguard rotate .env.production --keys STRIPE_SECRET_KEY DATABASE_URL --output .env.rotated
 ```
 
 ---

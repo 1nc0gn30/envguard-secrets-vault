@@ -1286,6 +1286,59 @@ MCP_TOOLS_DEFINITIONS: List[Dict[str, Any]] = [
             "required": ["shares"],
         },
     },
+    {
+        "name": "env_audit_rotation",
+        "description": "Audit secret lifecycle metadata, expiration dates, age, and rotation compliance in .env files.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "description": "Raw .env content containing variables and optional lifecycle comments (# @expires, # @created, etc.).",
+                },
+                "target_path": {
+                    "type": "string",
+                    "description": "Optional file path to .env file to audit.",
+                },
+                "reference_date": {
+                    "type": "string",
+                    "description": "Optional ISO 8601 reference date string (default: current UTC date).",
+                },
+            },
+        },
+    },
+    {
+        "name": "env_rotate_secrets",
+        "description": "Rotate expired, expiring, or requested secrets with cryptographically secure ephemeral tokens and generate a unified diff.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "description": "Raw .env content to rotate.",
+                },
+                "target_path": {
+                    "type": "string",
+                    "description": "Optional file path to .env file to rotate.",
+                },
+                "target_keys": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Specific variable keys to rotate (default: rotates all expired or overdue secrets).",
+                },
+                "rotation_days": {
+                    "type": "integer",
+                    "description": "New rotation cycle TTL in days (default: 90).",
+                    "default": 90,
+                },
+                "write_back": {
+                    "type": "boolean",
+                    "description": "Whether to overwrite target_path directly if provided (default: false).",
+                    "default": False,
+                },
+            },
+        },
+    },
 ]
 
 
@@ -1404,6 +1457,44 @@ class MCPServer:
             if not shares:
                 raise ValueError("Missing required parameter 'shares'")
             return combine_shares_to_secret(shares)
+
+        elif tool_name == "env_audit_rotation":
+            from envguard_secrets_vault.secret_rotation_sentinel import audit_rotation
+            content = arguments.get("content")
+            target_path = arguments.get("target_path")
+            if target_path and content is None:
+                content = Path(target_path).read_text(encoding="utf-8")
+            if content is None:
+                raise ValueError("Must provide either 'content' or 'target_path'")
+            ref_date = arguments.get("reference_date")
+            reference_date = None
+            if ref_date:
+                reference_date = datetime.datetime.fromisoformat(ref_date)
+            report = audit_rotation(content, filename=target_path or ".env", reference_date=reference_date)
+            return report.to_dict()
+
+        elif tool_name == "env_rotate_secrets":
+            from envguard_secrets_vault.secret_rotation_sentinel import rotate_secrets_in_content
+            content = arguments.get("content")
+            target_path = arguments.get("target_path")
+            if target_path and content is None:
+                content = Path(target_path).read_text(encoding="utf-8")
+            if content is None:
+                raise ValueError("Must provide either 'content' or 'target_path'")
+            target_keys = arguments.get("target_keys")
+            rotation_days = int(arguments.get("rotation_days", 90))
+            write_back = bool(arguments.get("write_back", False))
+
+            result = rotate_secrets_in_content(
+                content=content,
+                target_keys=target_keys,
+                rotation_days=rotation_days,
+                filename=target_path or ".env",
+            )
+            if write_back and target_path:
+                Path(target_path).write_text(result.updated_content, encoding="utf-8")
+
+            return result.to_dict()
 
         else:
             raise KeyError(f"Unknown MCP tool: '{tool_name}'")

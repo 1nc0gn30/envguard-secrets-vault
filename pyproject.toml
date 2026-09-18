@@ -23,7 +23,11 @@ keywords = [
     "model-context-protocol",
     "ci-cd",
     "audit",
-    "zero-dependencies"
+    "zero-dependencies",
+    "secret-rotation",
+    "ephemeral-tokens",
+    "ttl-sentinel",
+    "secret-lifecycle"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",

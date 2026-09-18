@@ -480,6 +480,72 @@ def cmd_serve(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_rotate(args: argparse.Namespace) -> int:
+    """Audit secret lifetimes or rotate expired/overdue secrets with fresh ephemeral tokens."""
+    from envguard_secrets_vault.compat import safe_read_text, atomic_write_text
+    from envguard_secrets_vault.secret_rotation_sentinel import audit_secret_rotation, execute_secret_rotation
+
+    content = safe_read_text(args.target) if os.path.isfile(args.target) else args.target
+    policy_days = getattr(args, "policy_days", 90)
+
+    if args.audit_only:
+        report = audit_secret_rotation(content, default_policy_days=policy_days)
+        if args.json:
+            print(json.dumps(report.to_dict(), indent=2))
+        else:
+            print_banner()
+            print(bold("🔄 Secret Rotation & Ephemerality Audit Report\n"))
+            print(f"  Compliance Score: {bold(f'{report.compliance_score:.1f}/100')} (Grade: {green(report.grade) if report.grade in ('A+', 'A') else yellow(report.grade) if report.grade == 'B' else red(report.grade)})")
+            print(f"  Total Secrets   : {report.total_secrets}")
+            print(f"  Tracked Lifecycle: {report.tracked_secrets_count}")
+            print(f"  Active & Healthy: {green(str(report.active_count))}")
+            print(f"  Expiring Soon   : {yellow(str(report.expiring_soon_count))}")
+            print(f"  Expired Secrets : {red(str(report.expired_count))}")
+            print(f"  Overdue Rotation: {yellow(str(report.overdue_count))}\n")
+
+            print(bold("  Secret Details:"))
+            for s in report.secrets:
+                st_color = green if s.status == "active" else (red if s.status == "expired" else yellow)
+                print(f"    • {bold(s.key)} [{s.provider}]: {st_color(s.status.upper())} (TTL: {s.days_until_expiration or '—'}d, Age: {s.age_days or '—'}d)")
+
+            if report.actionable_recommendations:
+                print(bold("\n  Recommendations:"))
+                for rec in report.actionable_recommendations:
+                    print(f"    💡 {rec}")
+            print()
+        return 0 if report.expired_count == 0 else 1
+
+    # Execute rotation
+    target_keys = getattr(args, "keys", None)
+    new_env, diff_text, summary = execute_secret_rotation(content, target_keys=target_keys, rotation_days=policy_days)
+
+    if args.output:
+        atomic_write_text(args.output, new_env)
+
+    if args.json:
+        summary["diff"] = diff_text
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    print_banner()
+    print(green(bold(f"✔ Secret Rotation Completed: {summary['rotated_keys_count']} secret(s) rotated!\n")))
+    print(f"  Rotation Date   : {summary['rotation_date']}")
+    print(f"  Expiration Date : {summary['expiration_date']}")
+    print(f"  Policy Window   : {summary['rotation_policy_days']} days")
+    print(bold("\n  Rotated Keys:"))
+    for k in summary["rotated_keys"]:
+        print(f"    • {cyan(k)}")
+
+    if args.diff and diff_text:
+        print(bold("\n  Rotation Diff:"))
+        print(diff_text)
+
+    if args.output:
+        print(f"\n  {green('✔')} Rotated environment written to: {bold(args.output)}")
+    print()
+    return 0
+
+
 # ============================================================================
 # Main Entry Point & Argument Parsing
 # ============================================================================
@@ -561,6 +627,17 @@ def main(args: Optional[List[str]] = None) -> int:
     p_s_comb.add_argument("--files", action="append", help="Share file paths")
     p_s_comb.add_argument("--json", action="store_true", help="Output JSON result")
 
+    # rotate
+    p_rotate = subparsers.add_parser("rotate", help="Audit secret lifetimes, TTL expirations, and generate ephemeral replacement tokens")
+    p_rotate.add_argument("target", help="Path to .env file to audit or rotate")
+    p_rotate.add_argument("--audit-only", "--audit", dest="audit_only", action="store_true", help="Audit lifetimes without generating new secret values")
+    p_rotate.add_argument("--rotate", action="store_true", help="Explicitly trigger secret rotation")
+    p_rotate.add_argument("--keys", nargs="+", help="Specific secret key names to rotate")
+    p_rotate.add_argument("--policy-days", type=int, default=90, help="Rotation policy window in days (default: 90)")
+    p_rotate.add_argument("-o", "--output", help="Output path for rotated .env file")
+    p_rotate.add_argument("--diff", "--diff-only", dest="diff", action="store_true", help="Print unified diff of rotated secrets")
+    p_rotate.add_argument("--json", action="store_true", help="Output audit/rotation report as JSON")
+
     # platform
     subparsers.add_parser("platform", help="Display system runtime and crypto capabilities")
 
@@ -589,6 +666,8 @@ def main(args: Optional[List[str]] = None) -> int:
         return cmd_diff(parsed)
     elif parsed.command == "shamir":
         return cmd_shamir(parsed)
+    elif parsed.command == "rotate":
+        return cmd_rotate(parsed)
     elif parsed.command == "check":
         return cmd_check(parsed)
     elif parsed.command == "mcp":

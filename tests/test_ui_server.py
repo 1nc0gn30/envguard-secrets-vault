@@ -179,3 +179,35 @@ def test_static_html_fallback(test_server: str):
     html = body.decode("utf-8")
     assert "EnvGuard" in html
     assert "Secrets" in html or "Vault" in html
+
+
+def test_api_rotation_endpoints(test_server: str):
+    """Test POST /api/rotation/audit and /api/rotation/execute."""
+    sample = (
+        "# @created: 2026-01-01\n"
+        "# @expires: 2026-01-30\n"
+        "DATABASE_URL=postgres://user:pass@localhost:5432/db\n"
+    )
+    # 1. Audit
+    st, _, body = _request(
+        f"{test_server}/api/rotation/audit",
+        method="POST",
+        data={"content": sample, "reference_date": "2026-09-18T00:00:00Z"},
+    )
+    assert st == 200
+    data = json.loads(body.decode("utf-8"))
+    assert data["total_secrets"] == 1
+    assert data["expired_count"] == 1
+
+    # 2. Execute
+    st2, _, body2 = _request(
+        f"{test_server}/api/rotation/execute",
+        method="POST",
+        data={"content": sample, "rotation_days": 45},
+    )
+    assert st2 == 200
+    data2 = json.loads(body2.decode("utf-8"))
+    assert data2["rotated_count"] == 1
+    assert "DATABASE_URL" in data2["rotated_keys"]
+    assert "@rotation_days: 45" in data2["updated_content"]
+

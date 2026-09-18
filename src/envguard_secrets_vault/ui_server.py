@@ -596,6 +596,58 @@ class StudioHTTPRequestHandler(SimpleHTTPRequestHandler):
                 self._send_json_response({"error": str(e)}, status=400)
             return
 
+        if path == "/api/rotation/audit":
+            from envguard_secrets_vault.secret_rotation_sentinel import audit_rotation
+            raw_content = data.get("content", "")
+            target_path = data.get("path")
+            ref_date_str = data.get("reference_date")
+            reference_date = None
+            if ref_date_str:
+                try:
+                    reference_date = datetime.datetime.fromisoformat(ref_date_str)
+                except Exception:
+                    pass
+
+            if target_path and not raw_content:
+                try:
+                    raw_content = Path(target_path).read_text(encoding="utf-8")
+                except Exception as e:
+                    self._send_json_response({"error": str(e)}, status=400)
+                    return
+
+            report = audit_rotation(raw_content, filename=target_path or ".env", reference_date=reference_date)
+            self._send_json_response(report.to_dict())
+            return
+
+        if path == "/api/rotation/execute":
+            from envguard_secrets_vault.secret_rotation_sentinel import rotate_secrets_in_content
+            raw_content = data.get("content", "")
+            target_path = data.get("path")
+            target_keys = data.get("target_keys")
+            rotation_days = int(data.get("rotation_days", 90))
+            write_back = bool(data.get("write_back", False))
+
+            if target_path and not raw_content:
+                try:
+                    raw_content = Path(target_path).read_text(encoding="utf-8")
+                except Exception as e:
+                    self._send_json_response({"error": str(e)}, status=400)
+                    return
+
+            try:
+                result = rotate_secrets_in_content(
+                    content=raw_content,
+                    target_keys=target_keys,
+                    rotation_days=rotation_days,
+                    filename=target_path or ".env",
+                )
+                if write_back and target_path:
+                    Path(target_path).write_text(result.updated_content, encoding="utf-8")
+                self._send_json_response(result.to_dict())
+            except Exception as e:
+                self._send_json_response({"error": str(e)}, status=400)
+            return
+
         if path == "/api/export-zip":
             raw_content = data.get("content", "PORT=8080\n")
             zip_buffer = io.BytesIO()

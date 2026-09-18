@@ -46,6 +46,15 @@ from envguard_secrets_vault.shamir_quorum import (
     split_secret_into_shares,
     combine_shares_to_secret,
 )
+from envguard_secrets_vault.secret_rotation_sentinel import (
+    SecretStatus,
+    SecretLifecycleItem,
+    SecretRotationAuditReport,
+    audit_secret_rotation,
+    execute_secret_rotation,
+    generate_ephemeral_token,
+    detect_secret_provider,
+)
 
 __all__ = [
     "__version__",
@@ -80,4 +89,11 @@ __all__ = [
     "ShamirSecretSharing",
     "split_secret_into_shares",
     "combine_shares_to_secret",
+    "SecretStatus",
+    "SecretLifecycleItem",
+    "SecretRotationAuditReport",
+    "audit_secret_rotation",
+    "execute_secret_rotation",
+    "generate_ephemeral_token",
+    "detect_secret_provider",
 ]
