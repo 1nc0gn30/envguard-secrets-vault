@@ -6,9 +6,9 @@
   <title>EnvGuard Secrets Studio — Enterprise Secret Scanner, Transformer & Vault</title>
   <style>
     :root {
-      --google-blue: #1a73e8;
-      --google-blue-hover: #1765cc;
-      --google-blue-light: #e8f0fe;
+      --google-blue: #B8860B;
+      --google-blue-hover: #8A6A09;
+      --google-blue-light: #FEF9E7;
       --google-red: #d93025;
       --google-red-light: #fce8e6;
       --google-yellow: #f9ab00;
@@ -506,7 +506,7 @@
       background: #f1f3f4;
       padding: 2px 6px;
       border-radius: 4px;
-      color: #1a73e8;
+      color: #B8860B;
     }
 
     /* Entropy Mini-meter */
@@ -656,6 +656,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="atelier.css">
 </head>
 <body>
 
@@ -1042,7 +1043,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
             <textarea id="mcp-config-code" class="code-editor" style="height: 240px;" readonly></textarea>
           </div>
 
-          <div style="background: var(--google-blue-light); border-radius: var(--radius-md); padding: 1rem; font-size: 0.82rem; color: #174ea6;">
+          <div style="background: var(--google-blue-light); border-radius: var(--radius-md); padding: 1rem; font-size: 0.82rem; color: #6B5308;">
             <strong>🔒 Zero-Exposure Guarantee for AI Agents:</strong>
             When LLM agents invoke <code>run_with_vault</code>, the decrypted environment is passed directly to the ephemeral child process via pipe/IPC. The agent never sees raw credentials in chat contexts or tool call arguments.
           </div>
