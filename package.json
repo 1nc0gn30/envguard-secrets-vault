@@ -1,0 +1,32 @@
+{
+  "name": "envguard-secrets-vault",
+  "version": "2.0.0",
+  "description": "Zero-Trust Sovereign Secret Scanner, Credential Sanitizer, AES-256 Vault & Shamir Quorum — Desktop Workstation",
+  "main": "electron/main.cjs",
+  "bin": {
+    "envguard": "./bin/envguard.js",
+    "envguard-vault": "./bin/envguard.js"
+  },
+  "scripts": {
+    "start": "python3 -m envguard_secrets_vault.cli serve --port 8087 --no-browser",
+    "electron": "electron .",
+    "app": "electron .",
+    "test": "pytest tests/"
+  },
+  "keywords": [
+    "secrets",
+    "envguard",
+    "vault",
+    "aes-256",
+    "shamir",
+    "zero-egress",
+    "sovereign",
+    "electron",
+    "zoth"
+  ],
+  "author": "NullAI Tech / Zoth Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^34.5.8"
+  }
+}

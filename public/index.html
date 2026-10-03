@@ -3,12 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EnvGuard Secrets Studio — Enterprise Secret Scanner, Transformer & Vault</title>
+  <title>EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault & Scanner</title>
+  <meta name="description" content="Sovereign developer tool for scanning, sanitizing, and vaulting environment secrets. Zero-knowledge client-side encryption with Argon2id and MCP integration.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://envguard-vault.netlify.app/">
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault">
+  <meta property="og:description" content="Instant secret scanner and zero-knowledge environment variable vault for sovereign software engineers.">
+  <meta property="og:url" content="https://envguard-vault.netlify.app/">
+  <meta property="og:type" content="website">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://envguard-vault.netlify.app/#app",
+        "name": "EnvGuard Secrets Studio",
+        "url": "https://envguard-vault.netlify.app/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side Argon2id encrypted vault.",
+        "offers": {
+          "@type": "Offer",
+          "price": "29.00",
+          "priceCurrency": "USD",
+          "url": "https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does EnvGuard prevent environment secret leakage?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "EnvGuard scans client code and configuration files for exposed API keys and secrets entirely in-browser, offering zero-knowledge Argon2id client-side encryption."
+            }
+          }
+        ]
+      }
+    ]
+  </script>
+
+  <!-- DePay Web3 Solana CDN -->
+  <script src="https://integrate.depay.com/widgets/v13.js"></script>
+
   <style>
     :root {
-      --google-blue: #B8860B;
-      --google-blue-hover: #8A6A09;
-      --google-blue-light: #FEF9E7;
+      --google-blue: #1a73e8;
+      --google-blue-hover: #1765cc;
+      --google-blue-light: #e8f0fe;
       --google-red: #d93025;
       --google-red-light: #fce8e6;
       --google-yellow: #f9ab00;
@@ -506,7 +555,7 @@
       background: #f1f3f4;
       padding: 2px 6px;
       border-radius: 4px;
-      color: #B8860B;
+      color: #1a73e8;
     }
 
     /* Entropy Mini-meter */
@@ -656,11 +705,9 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="atelier.css">
 </head>
 <body>
-
-  <!-- Google-Style Header -->
+<!-- Google-Style Header -->
   <header>
     <a href="#" class="brand">
       <div class="google-dots">
@@ -684,6 +731,12 @@
         <span>Detected Secrets:</span>
         <strong id="header-secrets-count" style="color: var(--google-red);">0</strong>
       </div>
+      <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 6px 14px; background: #635BFF; color: #fff; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+        💳 Upgrade Vault ($29)
+      </a>
+      <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{alert('DePay SDK connecting...')}" style="padding: 6px 14px; background: #14F195; color: #000; border-radius: 6px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+        ⚡ Pay with SOL
+      </button>
     </div>
   </header>
 
@@ -1043,7 +1096,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
             <textarea id="mcp-config-code" class="code-editor" style="height: 240px;" readonly></textarea>
           </div>
 
-          <div style="background: var(--google-blue-light); border-radius: var(--radius-md); padding: 1rem; font-size: 0.82rem; color: #6B5308;">
+          <div style="background: var(--google-blue-light); border-radius: var(--radius-md); padding: 1rem; font-size: 0.82rem; color: #174ea6;">
             <strong>🔒 Zero-Exposure Guarantee for AI Agents:</strong>
             When LLM agents invoke <code>run_with_vault</code>, the decrypted environment is passed directly to the ephemeral child process via pipe/IPC. The agent never sees raw credentials in chat contexts or tool call arguments.
           </div>
@@ -2053,5 +2106,9 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
     runTransformation();
     renderMCPClientConfig("claude");
   </script>
+  
+  <footer style="text-align: center; padding: 2rem 1rem; font-size: 0.8rem; color: var(--text-secondary); border-top: 1px solid var(--border-divider); margin-top: 2rem; background: var(--surface-bg);">
+    <div>Engineered by Neal Frazier Tech (<a href="https://github.com/1nc0gn30/envguard-secrets-vault" target="_blank" rel="noopener" style="color: var(--primary); text-decoration: none;">@1nc0gn30</a>) &middot; <a href="https://nullai.tech" target="_blank" rel="noopener" style="color: var(--primary); text-decoration: none;">NullAI Platform</a></div>
+  </footer>
 </body>
 </html>

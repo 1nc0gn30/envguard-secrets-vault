@@ -1,0 +1,20 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=EnvGuard Secrets Vault
+GenericName=Zero-Trust Secret Scanner & Vault
+Comment=Zero-Trust Secret Scanner, Credential Sanitizer, AES-256 Vault & Shamir Quorum Studio
+Exec=/usr/local/bin/envguard desktop
+Icon=/media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/zoth-micro-repos/envguard-secrets-vault/assets/icon.png
+Terminal=false
+Categories=Security;Development;System;Utility;
+StartupNotify=true
+Actions=CLI;Web;
+
+[Desktop Action CLI]
+Name=Open EnvGuard CLI
+Exec=x-terminal-emulator -e "/usr/local/bin/envguard --help"
+
+[Desktop Action Web]
+Name=Open Web UI (Port 8087)
+Exec=/usr/local/bin/envguard web
