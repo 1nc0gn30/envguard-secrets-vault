@@ -202,3 +202,22 @@ class TestVaultFileOperations:
 
         with pytest.raises(InvalidPayloadError):
             vault.decrypt_env(tampered_armored, "my_pass")
+
+    def test_primeval_waters_subterranean_edge_cases(self):
+        """Verify vault fidelity across subterranean edge cases: nested delimiters, binary buffers, and multiline payloads."""
+        vault = EncryptedVault(iterations=5_000)
+        subterranean_payload = (
+            "SHELL_SPECIAL='\"`$();&|<>\\n\t\r\n"
+            "UNICODE_SECRET=🦀_crayfish_from_primeval_depths_🪸\n"
+            "JSON_NESTED={\"auth\": {\"token\": \"Bearer xyz\", \"tags\": [\"vault\", \"red-violet\"]}}\n"
+            "BASE64_BLOB=Y29yZS1zZWNyZXQtcGFzc3dvcmQtYnVmZmVyCg==\n"
+        )
+        password = "PrimevalPassphrase!#DepthProbe2026"
+
+        armored = vault.encrypt_env(subterranean_payload, password)
+        assert ARMOR_HEADER in armored
+        assert ARMOR_FOOTER in armored
+
+        recovered = vault.decrypt_env(armored, password)
+        assert recovered == subterranean_payload
+
