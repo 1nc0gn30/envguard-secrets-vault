@@ -22,9 +22,31 @@
   <path d="M47 70 L53 70 L50 78 Z" fill="#0f766e" stroke="#2dd4bf" stroke-width="1" />
   <circle cx="50" cy="67" r="2.5" fill="#5eead4" />
 </svg>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<svg width="76" height="76" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Inverted Pentagram of Misdirected Will in blue-violet">
+  <!-- Blue-Violet Outer Boundary & Concentric Ring -->
+  <circle cx="50" cy="50" r="46" stroke="#4f46e5" stroke-width="2" fill="#0f0c29" fill-opacity="0.95" />
+  <circle cx="50" cy="50" r="41" stroke="#8b5cf6" stroke-width="0.75" stroke-dasharray="2 2" opacity="0.75" />
 
-### *Skeleton in Dark Armor of Essential Structure*
-*Stripped of bloated flesh and redundant weight: blue-green tempered steel over unbreakable bone.*
+  <!-- Inverted Pentagram Geometry (Downward Apex) -->
+  <!-- Vertices: Bottom (50, 86), Top-Left (16, 38), Top-Right (84, 38), Bottom-Left (29, 78), Bottom-Right (71, 78) - Inverted standard points: 
+       Point 1 (Apex down): (50, 88)
+       Point 2 (Top Right): (86, 38)
+       Point 3 (Mid Left): (22, 60)
+       Point 4 (Mid Right): (78, 60)
+       Point 5 (Top Left): (14, 38)
+  -->
+  <polygon points="50,88 28,21 85,62 15,62 72,21" stroke="#a78bfa" stroke-width="2" stroke-linejoin="round" fill="#312e81" fill-opacity="0.35" />
+  <circle cx="50" cy="88" r="2.5" fill="#c084fc" />
+  <circle cx="28" cy="21" r="2.5" fill="#c084fc" />
+  <circle cx="72" cy="21" r="2.5" fill="#c084fc" />
+  <circle cx="15" cy="62" r="2.5" fill="#c084fc" />
+  <circle cx="85" cy="62" r="2.5" fill="#c084fc" />
+  <circle cx="50" cy="53" r="5" stroke="#818cf8" stroke-width="1.2" fill="#1e1b4b" />
+</svg>
+
+### *Skeleton in Dark Armor & Inverted Pentagram of Misdirected Will*
+*Essential skeletal structure in blue-green tempered steel standing vigil against the inverted pull of misdirected will in blue-violet.*
 
 **The Sovereign Offer**: [EnvGuard Enterprise Lifetime Vault](https://buy.stripe.com/dR67vY1XpcOeeC4000) — **$19 Lifetime License** (Zero telemetry, perpetual offline airgap verification).
 
@@ -68,6 +90,10 @@ This document makes explicit the implicit security assumptions, trust boundaries
 5. **Subprocess Pipe & Crash Dump Exposure**:
    - Child process panics or core dumps can write plaintext environment blocks to disk in world-readable crash directories.
    - *Mitigation*: Disable core dumps (`ulimit -c 0` / `prctl(PR_SET_DUMPABLE, 0)`) around sensitive command dispatch.
+
+6. **Misdirected Will & Implicit Ambient Trust (The Inverted Pentagram Loop)**:
+   - Assuming that simply wrapping an environment variable in encryption cures downstream misuse is a failure of intention: unverified runtime consumers, blind trust in downstream library telemetry, or implicit export to sub-shells inverts the vault's protection into false security.
+   - *Mitigation*: Enforce explicit egress assertions, strict allowlists for child process environment keys, and reject uninspected parent inheritance.
 
 ---
 
