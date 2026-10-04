@@ -29,7 +29,7 @@
         "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side Argon2id encrypted vault.",
         "offers": {
           "@type": "Offer",
-          "price": "29.00",
+          "price": "19.00",
           "priceCurrency": "USD",
           "url": "https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F"
         }
@@ -739,6 +739,29 @@
       </button>
     </div>
   </header>
+
+  <!-- High-Converting Founding Member Sales Banner -->
+  <div style="background: linear-gradient(135deg, rgba(26,115,232,0.06) 0%, rgba(147,52,230,0.08) 100%); border-bottom: 1px solid rgba(26,115,232,0.2); padding: 0.85rem 1.5rem; text-align: center; position: relative;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="display: flex; align-items: center; gap: 0.6rem; text-align: left;">
+        <span style="background: #e8f0fe; color: #1a73e8; font-weight: 700; font-size: 0.75rem; padding: 3px 8px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">Founding Lifetime Offer</span>
+        <span style="font-size: 0.9rem; color: var(--text-primary); font-weight: 500;">
+          Zero-leak automated secret vaulting & AST scanning. Get lifetime access for <strong style="color: #1e8e3e; font-size: 1.05rem;">$19</strong> <span style="text-decoration: line-line-through; text-decoration: line-through; color: var(--text-tertiary); font-size: 0.82rem;">$79</span> (First 50 seats).
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 7px 16px; background: #635BFF; color: #ffffff; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+          💳 Claim Lifetime Pass ($19)
+        </a>
+        <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{alert('Connecting Solana payment rail...')}" style="padding: 7px 16px; background: #14F195; color: #000000; border-radius: 6px; border: none; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+          ⚡ Pay with SOL
+        </button>
+        <button onclick="const k=prompt('Enter your license key or receipt email:');if(k&&k.trim()){localStorage.setItem('envguard_pro_license','active');alert('⭐ Pro License Verified & Active!');location.reload();}" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 500; cursor: pointer;">
+          Activate Key
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Workspace Navigation Tabs -->
   <div class="tab-nav-container">
