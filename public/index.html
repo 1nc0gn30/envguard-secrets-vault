@@ -740,20 +740,23 @@
     </div>
   </header>
 
-  <!-- High-Converting Founding Member Sales Banner -->
-  <div style="background: linear-gradient(135deg, rgba(26,115,232,0.06) 0%, rgba(147,52,230,0.08) 100%); border-bottom: 1px solid rgba(26,115,232,0.2); padding: 0.85rem 1.5rem; text-align: center; position: relative;">
+  <!-- High-Converting Founding Member Sales Banner (Cross Banner of the 4 Elements) -->
+  <div style="background: radial-gradient(circle at 50% 50%, rgba(217,48,37,0.12) 0%, rgba(26,115,232,0.04) 50%, rgba(15,17,23,0.02) 100%), linear-gradient(90deg, rgba(217,48,37,0.08) 0%, rgba(249,171,0,0.05) 33%, rgba(30,142,62,0.05) 66%, rgba(26,115,232,0.08) 100%); border-bottom: 1px solid rgba(217,48,37,0.35); box-shadow: 0 0 20px -5px rgba(217,48,37,0.25); padding: 0.85rem 1.5rem; text-align: center; position: relative;">
     <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-      <div style="display: flex; align-items: center; gap: 0.6rem; text-align: left;">
-        <span style="background: #e8f0fe; color: #1a73e8; font-weight: 700; font-size: 0.75rem; padding: 3px 8px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">Founding Lifetime Offer</span>
+      <div style="display: flex; align-items: center; gap: 0.65rem; text-align: left;">
+        <span style="background: rgba(217,48,37,0.15); color: #d93025; border: 1px solid rgba(217,48,37,0.4); font-weight: 700; font-size: 0.72rem; padding: 3px 9px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.08em; display: inline-flex; align-items: center; gap: 4px;">
+          <span style="display:inline-block; width:6px; height:6px; background:#d93025; border-radius:50%; box-shadow:0 0 6px #d93025;"></span>
+          Air &middot; Fire &middot; Water &middot; Earth &middot; Core Active
+        </span>
         <span style="font-size: 0.9rem; color: var(--text-primary); font-weight: 500;">
-          Zero-leak automated secret vaulting & AST scanning. Get lifetime access for <strong style="color: #1e8e3e; font-size: 1.05rem;">$19</strong> <span style="text-decoration: line-line-through; text-decoration: line-through; color: var(--text-tertiary); font-size: 0.82rem;">$79</span> (First 50 seats).
+          Zero-leak automated secret vaulting & AST scanning. Lifetime Pass <strong style="color: #d93025; font-size: 1.05rem;">$19</strong> <span style="text-decoration: line-through; color: var(--text-tertiary); font-size: 0.82rem;">$79</span> (First 50 seats).
         </span>
       </div>
       <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 7px 16px; background: #635BFF; color: #ffffff; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+        <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 7px 16px; background: #635BFF; color: #ffffff; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(99,91,255,0.3);">
           💳 Claim Lifetime Pass ($19)
         </a>
-        <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{alert('Connecting Solana payment rail...')}" style="padding: 7px 16px; background: #14F195; color: #000000; border-radius: 6px; border: none; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+        <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{alert('Connecting Solana payment rail...')}" style="padding: 7px 16px; background: #14F195; color: #000000; border-radius: 6px; border: none; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(20,241,149,0.3);">
           ⚡ Pay with SOL
         </button>
         <button onclick="const k=prompt('Enter your license key or receipt email:');if(k&&k.trim()){localStorage.setItem('envguard_pro_license','active');alert('⭐ Pro License Verified & Active!');location.reload();}" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 500; cursor: pointer;">
