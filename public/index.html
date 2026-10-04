@@ -2126,7 +2126,23 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
       }, 3000);
     }
 
+    // License State Resolution
+    function initLicenseState() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("licensed") === "true") {
+        localStorage.setItem("envguard_pro_license", "active");
+      }
+      if (localStorage.getItem("envguard_pro_license") === "active") {
+        const vaultStatus = document.getElementById("header-vault-status");
+        if (vaultStatus) {
+          vaultStatus.textContent = "⭐ PRO ACTIVE";
+          vaultStatus.style.color = "#F9AB00";
+        }
+      }
+    }
+
     // Initializations
+    initLicenseState();
     scannerInput.value = PRESETS["nextjs-leak"];
     updateAuditUI();
     runTransformation();
