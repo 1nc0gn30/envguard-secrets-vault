@@ -221,3 +221,26 @@ class TestVaultFileOperations:
         recovered = vault.decrypt_env(armored, password)
         assert recovered == subterranean_payload
 
+    def test_sun_vector_effortless_clarity_and_airgap_performance(self):
+        """Verify effortless clarity, deterministic airgap fidelity, and rapid in-memory transformation."""
+        import time
+
+        vault = EncryptedVault(iterations=5_000)
+        sun_clarity_env = (
+            "VAULT_CLARITY=pure_radiance\n"
+            "TELEMETRY_DISABLED=true\n"
+            "AIRGAP_ASSURANCE=deterministic_offline\n"
+            "EFFORTLESS_CRAFTSMANSHIP=unmistakable\n"
+        )
+        passphrase = "JoyfulChildWhiteHorseOrangeBanner2026!"
+
+        start_time = time.perf_counter()
+        armored = vault.encrypt_env(sun_clarity_env, passphrase)
+        recovered = vault.decrypt_env(armored, passphrase)
+        elapsed = time.perf_counter() - start_time
+
+        assert recovered == sun_clarity_env
+        assert "VAULT_CLARITY=pure_radiance" in recovered
+        assert elapsed < 0.2
+
+
