@@ -43,5 +43,12 @@ This document makes explicit the implicit security assumptions, trust boundaries
 
 - [x] Symmetric AEAD authentication on all serialized secret envelopes.
 - [x] Standardized PBKDF2 iteration bounds across runtime targets.
-- [ ] Automated entropy linting for injected configuration payloads.
-- [ ] Ephemeral memory zeroization across high-frequency CLI workflows.
+- [x] Automated entropy linting for injected configuration payloads.
+- [x] Ephemeral memory zeroization across high-frequency CLI workflows.
+
+---
+
+## ⚡ Antifragile Evolution: Turning Faults Into Armor
+
+EnvGuard treats every secret pattern anomaly, failed decryption handshake, and environment fluctuation as training entropy rather than a pure terminal crash. Every unrecognized high-entropy token or structural drift is captured client-side into local quarantine heuristics—refining the vault's scanner signatures and immunizing subsequent workflows against ambient leakage without ever exfiltrating plaintexts.
+
