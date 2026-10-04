@@ -140,6 +140,8 @@ class EncryptedVault:
 
         try:
             iterations = int(data["iter"])
+            if iterations < 1000 or iterations > 5_000_000:
+                raise InvalidPayloadError(f"Iteration count out of safe bounds [1000, 5000000]: {iterations}")
             salt = base64.b64decode(data["salt"])
             nonce = base64.b64decode(data["nonce"])
             received_tag = base64.b64decode(data["tag"])

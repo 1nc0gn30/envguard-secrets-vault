@@ -186,3 +186,19 @@ class TestVaultFileOperations:
 
         with pytest.raises(AuthenticationError):
             vault.decrypt_env(tampered_armored, "my_pass")
+
+    def test_out_of_bounds_iterations_raises_invalid_payload_error(self):
+        vault = EncryptedVault(iterations=5_000)
+        armored = vault.encrypt_env("SECRET=val", "my_pass")
+
+        lines = [line.strip() for line in armored.splitlines() if line and not line.startswith("-----")]
+        raw_b64 = "".join(lines)
+        payload = json.loads(base64.b64decode(raw_b64).decode("utf-8"))
+
+        # Tamper iteration count below lower bound
+        payload["iter"] = 100
+        tampered_b64 = base64.b64encode(json.dumps(payload).encode("utf-8")).decode("ascii")
+        tampered_armored = f"{ARMOR_HEADER}\n{tampered_b64}\n{ARMOR_FOOTER}\n"
+
+        with pytest.raises(InvalidPayloadError):
+            vault.decrypt_env(tampered_armored, "my_pass")
