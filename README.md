@@ -163,11 +163,12 @@ Navigate to `http://localhost:8080` for:
 
 ## 📚 Documentation
 
-- [Secret Patterns & Detector Catalog](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/docs/SECRET_PATTERNS_CATALOG.md)
-- [Model Context Protocol (MCP) Guide](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/docs/MCP_GUIDE.md)
-- [Zero-Exposure Vault Specification](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/docs/ZERO_EXPOSURE_VAULT.md)
-- [Next.js Production Audit Example](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/nextjs-env-audit/README.md)
-- [Encrypted Vault Workflow Example](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/encrypted-vault-workflow/README.md)
+- [Threat Model & Security Assumptions (Skeleton in Dark Armor)](docs/SECURITY_ASSUMPTIONS.md)
+- [Secret Patterns & Detector Catalog](docs/SECRET_PATTERNS_CATALOG.md)
+- [Model Context Protocol (MCP) Guide](docs/MCP_GUIDE.md)
+- [Zero-Exposure Vault Specification](docs/ZERO_EXPOSURE_VAULT.md)
+- [Next.js Production Audit Example](examples/nextjs-env-audit/README.md)
+- [Encrypted Vault Workflow Example](examples/encrypted-vault-workflow/README.md)
 
 ---
 
