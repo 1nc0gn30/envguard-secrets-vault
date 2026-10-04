@@ -750,18 +750,18 @@
   </header>
 
   <!-- High-Converting Founding Member Sales Banner (Cross Banner of the 4 Elements) -->
-  <div style="background: radial-gradient(circle at 50% 50%, rgba(239,68,68,0.18) 0%, rgba(217,48,37,0.08) 45%, rgba(15,17,23,0.02) 100%), linear-gradient(90deg, rgba(239,68,68,0.14) 0%, rgba(249,171,0,0.06) 33%, rgba(30,142,62,0.06) 66%, rgba(26,115,232,0.1) 100%); border-bottom: 1px solid rgba(239,68,68,0.45); box-shadow: 0 0 25px -4px rgba(239,68,68,0.35); padding: 0.85rem 1.5rem; text-align: center; position: relative;">
+  <div id="founding-offer-banner" style="background: radial-gradient(circle at 50% 50%, rgba(239,68,68,0.18) 0%, rgba(217,48,37,0.08) 45%, rgba(15,17,23,0.02) 100%), linear-gradient(90deg, rgba(239,68,68,0.14) 0%, rgba(249,171,0,0.06) 33%, rgba(30,142,62,0.06) 66%, rgba(26,115,232,0.1) 100%); border-bottom: 1px solid rgba(239,68,68,0.45); box-shadow: 0 0 25px -4px rgba(239,68,68,0.35); padding: 0.85rem 1.5rem; text-align: center; position: relative;">
     <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
       <div style="display: flex; align-items: center; gap: 0.65rem; text-align: left;">
-        <span style="background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.5); font-weight: 700; font-size: 0.72rem; padding: 3px 10px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.08em; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 0 10px rgba(239,68,68,0.25);">
+        <span id="offer-element-badge" style="background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.5); font-weight: 700; font-size: 0.72rem; padding: 3px 10px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.08em; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 0 10px rgba(239,68,68,0.25);">
           <span style="display:inline-block; width:6px; height:6px; background:#ef4444; border-radius:50%; box-shadow:0 0 8px #ef4444;"></span>
           Air &middot; Fire &middot; Water &middot; Earth &middot; Core Active
         </span>
-        <span style="font-size: 0.9rem; color: var(--text-primary); font-weight: 500;">
+        <span id="offer-promo-text" style="font-size: 0.9rem; color: var(--text-primary); font-weight: 500;">
           Zero-leak automated secret vaulting & AST scanning. Lifetime Pass <strong style="color: #ef4444; font-size: 1.05rem; text-shadow: 0 0 8px rgba(239,68,68,0.3);">$19</strong> <span style="text-decoration: line-through; color: var(--text-tertiary); font-size: 0.82rem;">$79</span> (First 50 seats).
         </span>
       </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div id="offer-action-buttons" style="display: flex; align-items: center; gap: 0.5rem;">
         <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 7px 16px; background: #635BFF; color: #ffffff; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(99,91,255,0.3);">
           💳 Claim Lifetime Pass ($19)
         </a>
@@ -2146,6 +2146,21 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         if (vaultStatus) {
           vaultStatus.textContent = "⭐ PRO ACTIVE";
           vaultStatus.style.color = "#F9AB00";
+        }
+        const badge = document.getElementById("offer-element-badge");
+        if (badge) {
+          badge.textContent = "⭐ PRO UNLOCKED";
+          badge.style.color = "#10b981";
+          badge.style.borderColor = "rgba(16, 185, 129, 0.4)";
+          badge.style.background = "rgba(16, 185, 129, 0.15)";
+        }
+        const promo = document.getElementById("offer-promo-text");
+        if (promo) {
+          promo.innerHTML = "Lifetime Pass Active &middot; Full Zero-Exposure Vault &amp; AST Engine Enabled.";
+        }
+        const actionBtns = document.getElementById("offer-action-buttons");
+        if (actionBtns) {
+          actionBtns.innerHTML = '<span style="color: #10b981; font-weight: 600; font-size: 0.82rem; padding: 6px 12px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;">✓ Lifetime License Verified</span>';
         }
       }
     }
