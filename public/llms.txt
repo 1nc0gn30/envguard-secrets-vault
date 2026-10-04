@@ -1,0 +1,8 @@
+# EnvGuard Secrets Vault — Context & Model Discovery (llms.txt)
+> Sovereign in-browser developer utility engineered by Neal Frazier Tech.
+- [Application]: https://envguard-secrets-vault.netlify.app/
+- [Terms of Service]: https://envguard-secrets-vault.netlify.app/terms.html
+- [Privacy Policy]: https://envguard-secrets-vault.netlify.app/privacy.html
+- [Support & FAQ]: https://envguard-secrets-vault.netlify.app/support.html
+- [Netlify AX API]: https://envguard-secrets-vault.netlify.app/api/netlify-ax.json
+- [Netlify MCP API]: https://envguard-secrets-vault.netlify.app/api/netlify-ax-mcp.json

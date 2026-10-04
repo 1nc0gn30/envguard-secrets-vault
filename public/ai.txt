@@ -1,0 +1,11 @@
+# Autonomous AI Agent Discovery & Crawling Policy (ai.txt)
+software-name: EnvGuard Secrets Vault
+publisher: Neal Frazier Tech (@1nc0gn30)
+platform: NullAI Platform
+ai-crawling: allowed
+ai-grounding: allowed
+ai-search-index: allowed
+sitemap: https://envguard-secrets-vault.netlify.app/sitemap.xml
+robots-txt: https://envguard-secrets-vault.netlify.app/robots.txt
+netlify-ax-api: https://envguard-secrets-vault.netlify.app/api/netlify-ax.json
+netlify-mcp-api: https://envguard-secrets-vault.netlify.app/api/netlify-ax-mcp.json
