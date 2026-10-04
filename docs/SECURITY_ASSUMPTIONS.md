@@ -29,13 +29,6 @@
   <circle cx="50" cy="50" r="41" stroke="#8b5cf6" stroke-width="0.75" stroke-dasharray="2 2" opacity="0.75" />
 
   <!-- Inverted Pentagram Geometry (Downward Apex) -->
-  <!-- Vertices: Bottom (50, 86), Top-Left (16, 38), Top-Right (84, 38), Bottom-Left (29, 78), Bottom-Right (71, 78) - Inverted standard points: 
-       Point 1 (Apex down): (50, 88)
-       Point 2 (Top Right): (86, 38)
-       Point 3 (Mid Left): (22, 60)
-       Point 4 (Mid Right): (78, 60)
-       Point 5 (Top Left): (14, 38)
-  -->
   <polygon points="50,88 28,21 85,62 15,62 72,21" stroke="#a78bfa" stroke-width="2" stroke-linejoin="round" fill="#312e81" fill-opacity="0.35" />
   <circle cx="50" cy="88" r="2.5" fill="#c084fc" />
   <circle cx="28" cy="21" r="2.5" fill="#c084fc" />
@@ -44,9 +37,30 @@
   <circle cx="85" cy="62" r="2.5" fill="#c084fc" />
   <circle cx="50" cy="53" r="5" stroke="#818cf8" stroke-width="1.2" fill="#1e1b4b" />
 </svg>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<svg width="76" height="76" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Tower of False Security perched on Rocky Crag in scarlet">
+  <!-- Scarlet Outer Boundary & Crucible Ring -->
+  <circle cx="50" cy="50" r="46" stroke="#dc2626" stroke-width="2" fill="#2a0808" fill-opacity="0.95" />
+  <circle cx="50" cy="50" r="41" stroke="#ef4444" stroke-width="0.75" stroke-dasharray="3 3" opacity="0.75" />
 
-### *Skeleton in Dark Armor & Inverted Pentagram of Misdirected Will*
-*Essential skeletal structure in blue-green tempered steel standing vigil against the inverted pull of misdirected will in blue-violet.*
+  <!-- Jagged Rocky Crag Base -->
+  <path d="M18 84 L32 68 L44 74 L54 64 L68 76 L82 84 Z" fill="#450a0a" stroke="#f87171" stroke-width="1.6" stroke-linejoin="round" />
+  <line x1="32" y1="68" x2="38" y2="82" stroke="#ef4444" stroke-width="1" opacity="0.6" />
+  <line x1="54" y1="64" x2="58" y2="78" stroke="#ef4444" stroke-width="1" opacity="0.6" />
+
+  <!-- The Fractured Perched Tower -->
+  <path d="M38 66 L41 26 L59 26 L62 66 Z" fill="#180404" stroke="#f87171" stroke-width="1.8" />
+  <!-- Battlement Crenellations -->
+  <path d="M39 26 L39 20 L44 20 L44 23 L47 23 L47 20 L53 20 L53 23 L56 23 L56 20 L61 20 L61 26 Z" fill="#991b1b" stroke="#f87171" stroke-width="1.2" />
+
+  <!-- Fracturing Lightning & Structural Rupture -->
+  <path d="M52 28 L47 38 L54 44 L46 58" stroke="#fca5a5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <circle cx="50" cy="36" r="1.5" fill="#fecaca" />
+  <circle cx="48" cy="48" r="1.2" fill="#fecaca" />
+</svg>
+
+### *Skeleton in Dark Armor, Inverted Pentagram, & Tower of False Security*
+*Essential skeletal structure in blue-green standing vigil against the inverted pull of misdirected will in blue-violet, while the Tower of False Security perched on rocky crag in scarlet marks the collapse of fragile perimeter assumptions.*
 
 **The Sovereign Offer**: [EnvGuard Enterprise Lifetime Vault](https://buy.stripe.com/dR67vY1XpcOeeC4000) — **$19 Lifetime License** (Zero telemetry, perpetual offline airgap verification).
 
@@ -94,6 +108,13 @@ This document makes explicit the implicit security assumptions, trust boundaries
 6. **Misdirected Will & Implicit Ambient Trust (The Inverted Pentagram Loop)**:
    - Assuming that simply wrapping an environment variable in encryption cures downstream misuse is a failure of intention: unverified runtime consumers, blind trust in downstream library telemetry, or implicit export to sub-shells inverts the vault's protection into false security.
    - *Mitigation*: Enforce explicit egress assertions, strict allowlists for child process environment keys, and reject uninspected parent inheritance.
+
+7. **The Tower of False Security (Catastrophic Collapse of Ambient Infrastructure)**:
+   - Systems that rely on always-on external key management services (KMS), third-party APIs, steady hardware state, or persistent network reachability stand on a rocky crag doomed to tumble when external connections snap or credentials revoke abruptly.
+   - *Mitigation & Self-Healing*:
+     - **Deterministic Offline Autonomy**: Zero outbound network egress required during secret derivation, inspection, or child environment injection; the vault operates in complete airgap isolation.
+     - **Atomic Vault State Fallbacks**: When hardware or file systems suffer ungraceful termination during serialization, transactional write buffers (`.tmp` write-and-rename) prevent corrupted or half-written secret states.
+     - **Graceful Failure Dampening**: If third-party APIs or external credential brokers collapse, the vault degrades cleanly to immutable cached envelopes and explicit local fallback environments rather than deadlocking the target process.
 
 ---
 
