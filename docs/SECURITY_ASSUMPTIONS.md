@@ -58,9 +58,35 @@
   <circle cx="50" cy="36" r="1.5" fill="#fecaca" />
   <circle cx="48" cy="48" r="1.2" fill="#fecaca" />
 </svg>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<svg width="76" height="76" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Crayfish crawling from Primeval Waters in red-violet">
+  <!-- Red-Violet Primeval Waters Boundary -->
+  <circle cx="50" cy="50" r="46" stroke="#c026d3" stroke-width="2" fill="#1e0524" fill-opacity="0.95" />
+  <circle cx="50" cy="50" r="41" stroke="#d946ef" stroke-width="0.75" stroke-dasharray="3 3" opacity="0.75" />
 
-### *Skeleton in Dark Armor, Inverted Pentagram, & Tower of False Security*
-*Essential skeletal structure in blue-green standing vigil against the inverted pull of misdirected will in blue-violet, while the Tower of False Security perched on rocky crag in scarlet marks the collapse of fragile perimeter assumptions.*
+  <!-- Primeval Depths / Murky Waters Waves -->
+  <path d="M16 68 Q30 62 44 68 T72 68 T84 72" stroke="#86198f" stroke-width="1.6" fill="none" />
+  <path d="M18 78 Q34 72 50 78 T82 80" stroke="#701a75" stroke-width="1.4" fill="none" opacity="0.7" />
+
+  <!-- Crayfish Carapace & Segmented Tail Emerging -->
+  <ellipse cx="50" cy="46" rx="9" ry="14" fill="#4a044e" stroke="#e879f9" stroke-width="1.8" />
+  <path d="M46 59 L43 67 L47 73 L50 71 L53 73 L57 67 L54 59 Z" fill="#3b0764" stroke="#c026d3" stroke-width="1.4" />
+  <line x1="45" y1="63" x2="55" y2="63" stroke="#e879f9" stroke-width="1" />
+  <line x1="44" y1="68" x2="56" y2="68" stroke="#e879f9" stroke-width="1" />
+
+  <!-- Chelae / Claws Reaching Upward -->
+  <path d="M42 40 Q32 34 26 25 Q22 28 27 36 Q34 44 42 45" fill="#701a75" stroke="#f0abfc" stroke-width="1.5" />
+  <path d="M58 40 Q68 34 74 25 Q78 28 73 36 Q66 44 58 45" fill="#701a75" stroke="#f0abfc" stroke-width="1.5" />
+
+  <!-- Antennae Sensing the Edge in the Dark -->
+  <path d="M47 33 Q40 20 33 14" stroke="#f5d0fe" stroke-width="1.2" stroke-linecap="round" fill="none" />
+  <path d="M53 33 Q60 20 67 14" stroke="#f5d0fe" stroke-width="1.2" stroke-linecap="round" fill="none" />
+  <circle cx="46" cy="34" r="1.3" fill="#fae8ff" />
+  <circle cx="54" cy="34" r="1.3" fill="#fae8ff" />
+</svg>
+
+### *Skeleton in Dark Armor, Inverted Pentagram, Tower of False Security, & Crayfish from Primeval Waters*
+*Essential skeletal structure in blue-green standing vigil against the inverted pull of misdirected will in blue-violet, the Tower of False Security in scarlet marking perimeter collapse, and the Crayfish crawling from Primeval Waters in red-violet probing subtle edge cases lurking in the subterranean dark.*
 
 **The Sovereign Offer**: [EnvGuard Enterprise Lifetime Vault](https://buy.stripe.com/dR67vY1XpcOeeC4000) — **$19 Lifetime License** (Zero telemetry, perpetual offline airgap verification).
 
@@ -115,6 +141,13 @@ This document makes explicit the implicit security assumptions, trust boundaries
      - **Deterministic Offline Autonomy**: Zero outbound network egress required during secret derivation, inspection, or child environment injection; the vault operates in complete airgap isolation.
      - **Atomic Vault State Fallbacks**: When hardware or file systems suffer ungraceful termination during serialization, transactional write buffers (`.tmp` write-and-rename) prevent corrupted or half-written secret states.
      - **Graceful Failure Dampening**: If third-party APIs or external credential brokers collapse, the vault degrades cleanly to immutable cached envelopes and explicit local fallback environments rather than deadlocking the target process.
+
+8. **Primeval Waters & Latent Hallucinations (Subterranean Edge Cases in the Dark)**:
+   - Deeply buried edge conditions—such as Unicode null-byte injection (`\0`), whitespace normalization discrepancies across shell dialects (`bash` vs `zsh` vs `sh`), truncated pipe buffers, and deceptive secret formatting assumptions—can silently corrupt or bypass runtime boundary checks.
+   - *Mitigation & Antennae Probing*:
+     - **Strict Byte-Level Normalization**: Input secret payloads and environment names are validated byte-for-byte against POSIX identifier grammar (`[a-zA-Z_][a-zA-Z0-9_]*`) and sanitized against embedded null bytes prior to memory allocation.
+     - **Defensive Boundary Assertion**: Zero-trust parsing of shell-quoted multiline values and strict unmasking bounds prevent latent truncation from masquerading as valid configurations.
+     - **Subterranean Fuzzing**: Continuous boundary assertions verify round-trip fidelity under extreme edge cases (deeply nested JSON-encoded envs, high-entropy binary payloads, and adversarial shell characters).
 
 ---
 
