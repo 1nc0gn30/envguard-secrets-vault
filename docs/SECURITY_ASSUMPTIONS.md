@@ -1,42 +1,30 @@
 <div align="center">
 
-<svg width="76" height="76" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Golden Scales of Exact Equilibrium in emerald">
-  <!-- Emerald Aura & Halo -->
-  <circle cx="50" cy="50" r="46" stroke="#10b981" stroke-width="2" fill="#042f2e" fill-opacity="0.92" />
-  <circle cx="50" cy="50" r="41" stroke="#34d399" stroke-width="0.75" stroke-dasharray="3 3" opacity="0.6" />
+<svg width="76" height="76" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Skeleton in Dark Armor of Essential Structure in blue-green">
+  <!-- Deep Blue-Green Abyss & Plate Aura -->
+  <circle cx="50" cy="50" r="46" stroke="#0d9488" stroke-width="2" fill="#042f2e" fill-opacity="0.95" />
+  <circle cx="50" cy="50" r="41" stroke="#14b8a6" stroke-width="0.75" stroke-dasharray="3 3" opacity="0.65" />
 
-  <!-- Fulcrum Pillar & Base (Gold & Emerald Accents) -->
-  <path d="M40 76 L60 76 L56 70 L44 70 Z" fill="#d97706" stroke="#fbbf24" stroke-width="1.2" />
-  <line x1="50" y1="70" x2="50" y2="28" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" />
-  <circle cx="50" cy="27" r="4" fill="#fbbf24" stroke="#d97706" stroke-width="1.2" />
-  <circle cx="50" cy="27" r="1.5" fill="#10b981" />
+  <!-- Dark Armored Cuirass & Rib Structure -->
+  <path d="M50 18 L62 26 L58 56 L50 64 L42 56 L38 26 Z" fill="#0f172a" stroke="#2dd4bf" stroke-width="1.8" />
+  <line x1="50" y1="24" x2="50" y2="58" stroke="#0d9488" stroke-width="1.5" stroke-linecap="round" />
+  <path d="M43 32 Q50 36 57 32" stroke="#2dd4bf" stroke-width="1.4" stroke-linecap="round" fill="none" />
+  <path d="M41 40 Q50 44 59 40" stroke="#2dd4bf" stroke-width="1.4" stroke-linecap="round" fill="none" />
+  <path d="M43 48 Q50 52 57 48" stroke="#14b8a6" stroke-width="1.4" stroke-linecap="round" fill="none" />
 
-  <!-- Horizontal Beam (Exact Equilibrium) -->
-  <line x1="22" y1="33" x2="78" y2="33" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
-  <circle cx="22" cy="33" r="2" fill="#f59e0b" />
-  <circle cx="78" cy="33" r="2" fill="#f59e0b" />
+  <!-- Bone & Steel Pauldrons -->
+  <path d="M38 26 L26 34 L32 44 L40 36 Z" fill="#022c22" stroke="#14b8a6" stroke-width="1.4" />
+  <path d="M62 26 L74 34 L68 44 L60 36 Z" fill="#022c22" stroke="#14b8a6" stroke-width="1.4" />
 
-  <!-- Left Scale (Zero Exposure Security) -->
-  <line x1="22" y1="33" x2="14" y2="52" stroke="#d97706" stroke-width="1" />
-  <line x1="22" y1="33" x2="30" y2="52" stroke="#d97706" stroke-width="1" />
-  <path d="M11 52 Q22 60 33 52 Z" fill="#b45309" stroke="#fbbf24" stroke-width="1.2" />
-  <circle cx="22" cy="53" r="1.8" fill="#34d399" />
-
-  <!-- Right Scale (Flawless Velocity & Usability) -->
-  <line x1="78" y1="33" x2="70" y2="52" stroke="#d97706" stroke-width="1" />
-  <line x1="78" y1="33" x2="86" y2="52" stroke="#d97706" stroke-width="1" />
-  <path d="M67 52 Q78 60 89 52 Z" fill="#b45309" stroke="#fbbf24" stroke-width="1.2" />
-  <circle cx="78" cy="53" r="1.8" fill="#34d399" />
-
-  <!-- Emerald Rays of Equilibrium -->
-  <circle cx="50" cy="18" r="1.5" fill="#34d399" />
-  <line x1="50" y1="13" x2="50" y2="10" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" />
-  <line x1="44" y1="15" x2="42" y2="13" stroke="#10b981" stroke-width="1" stroke-linecap="round" />
-  <line x1="56" y1="15" x2="58" y2="13" stroke="#10b981" stroke-width="1" stroke-linecap="round" />
+  <!-- Skeletal Visor & Spinal Keystone -->
+  <circle cx="46" cy="23" r="1.5" fill="#5eead4" />
+  <circle cx="54" cy="23" r="1.5" fill="#5eead4" />
+  <path d="M47 70 L53 70 L50 78 Z" fill="#0f766e" stroke="#2dd4bf" stroke-width="1" />
+  <circle cx="50" cy="67" r="2.5" fill="#5eead4" />
 </svg>
 
-### *Golden Scales of Exact Equilibrium*
-*Weighed in emerald balance: zero exposure, unbroken secrecy, flawless audit.*
+### *Skeleton in Dark Armor of Essential Structure*
+*Stripped of bloated flesh and redundant weight: blue-green tempered steel over unbreakable bone.*
 
 **The Sovereign Offer**: [EnvGuard Enterprise Lifetime Vault](https://buy.stripe.com/dR67vY1XpcOeeC4000) — **$19 Lifetime License** (Zero telemetry, perpetual offline airgap verification).
 
