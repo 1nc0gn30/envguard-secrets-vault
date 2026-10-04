@@ -157,6 +157,7 @@ This document makes explicit the implicit security assumptions, trust boundaries
 - [x] Standardized PBKDF2 iteration bounds across runtime targets.
 - [x] Automated entropy linting for injected configuration payloads.
 - [x] Ephemeral memory zeroization across high-frequency CLI workflows.
+- [x] Subterranean edge-probing test assertions under the Primeval Waters vector cemented.
 
 ---
 
