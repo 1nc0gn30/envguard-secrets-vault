@@ -13,6 +13,13 @@
   <meta property="og:description" content="Instant secret scanner and zero-knowledge environment variable vault for sovereign software engineers.">
   <meta property="og:url" content="https://envguard-vault.netlify.app/">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://envguard-vault.netlify.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@1nc0gn30">
+  <meta name="twitter:creator" content="@1nc0gn30">
+  <meta name="twitter:title" content="EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault">
+  <meta name="twitter:description" content="Instant secret scanner and zero-knowledge environment variable vault for sovereign software engineers.">
+  <meta name="twitter:image" content="https://envguard-vault.netlify.app/og-image.png">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -27,6 +34,16 @@
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
         "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side Argon2id encrypted vault.",
+        "creator": {
+          "@type": "Person",
+          "name": "Neal Frazier",
+          "url": "https://nealfrazier.tech"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Neal Frazier Tech",
+          "url": "https://nullai.tech"
+        },
         "offers": {
           "@type": "Offer",
           "price": "19.00",
@@ -44,10 +61,27 @@
               "@type": "Answer",
               "text": "EnvGuard scans client code and configuration files for exposed API keys and secrets entirely in-browser, offering zero-knowledge Argon2id client-side encryption."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "Does my sensitive data or API keys leave my local browser?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. All scanning, regex parsing, and cryptographic operations run 100% client-side inside your browser sandbox. No secrets are ever uploaded or transmitted to any external server."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What payment methods are supported for lifetime access?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "EnvGuard supports instant checkout via Stripe (credit card, Apple Pay, Google Pay) as well as direct Web3 cryptocurrency payments via Solana (SOL) powered by DePay."
+            }
           }
         ]
       }
     ]
+  }
   </script>
 
   <!-- DePay Web3 Solana CDN -->
@@ -247,14 +281,14 @@
     /* Cards & Layout */
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
       gap: 1.5rem;
       align-items: start;
     }
 
     .full-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 1.5rem;
     }
 
@@ -689,7 +723,12 @@
       text-decoration: underline;
     }
 
-    /* Responsive */
+    /* Responsive & Overflow Guard */
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+
     @media (max-width: 992px) {
       .dashboard-grid, .full-grid {
         grid-template-columns: 1fr;
@@ -699,9 +738,69 @@
       }
       header {
         padding: 0.75rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .header-metrics {
+        flex-wrap: wrap;
+        gap: 0.5rem;
       }
       main {
         padding: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-metric-pill {
+        display: none;
+      }
+      .badge-enterprise {
+        display: none;
+      }
+      header {
+        justify-content: center;
+        gap: 0.65rem;
+      }
+      .header-metrics {
+        justify-content: center;
+        width: 100%;
+      }
+      #founding-offer-banner {
+        padding: 0.75rem 1rem;
+      }
+      #founding-offer-banner > div {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #offer-action-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .tab-nav {
+        gap: 0.75rem;
+      }
+      .tab-btn {
+        padding: 0.75rem 0.35rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-title {
+        font-size: 1.05rem;
+      }
+      header {
+        padding: 0.6rem 0.75rem;
+      }
+      main {
+        padding: 0.75rem 0.5rem;
+      }
+      .card {
+        padding: 1rem;
+      }
+      .summary-pills {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -775,20 +874,20 @@
     </div>
   </div>
 
-  <!-- Workspace Navigation Tabs -->
+  <!-- Workspace Navigation Tabs (Table of Tools: Sword, Wand, Cup, Pentacle) -->
   <div class="tab-nav-container">
     <nav class="tab-nav">
       <button class="tab-btn active" data-tab="scanner-tab">
-        <span>🛡️</span> Live Secret Auditor & Scanner
+        <span title="Sword — Air & Discriminative Analysis">🗡️</span> Sword: Live Secret Auditor & Scanner
       </button>
       <button class="tab-btn" data-tab="transformer-tab">
-        <span>🔄</span> Format Transformer & Exporter
+        <span title="Wand — Fire & Dynamic Transformation">🪄</span> Wand: Format Transformer & Exporter
       </button>
       <button class="tab-btn" data-tab="vault-tab">
-        <span>🔐</span> Zero-Exposure Encrypted Vault
+        <span title="Cup — Water & Receptive Containment">🏺</span> Cup: Zero-Exposure Encrypted Vault
       </button>
       <button class="tab-btn" data-tab="mcp-tab">
-        <span>🤖</span> AI Agent & MCP Hub
+        <span title="Pentacle — Earth & Concrete Manifestation">🪙</span> Pentacle: AI Agent & MCP Hub
       </button>
     </nav>
   </div>
@@ -993,7 +1092,21 @@ JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
                 <button id="btn-download-transform" class="btn btn-primary btn-sm">📥 Download</button>
               </div>
             </div>
-            <textarea id="transformer-output" class="code-editor" readonly></textarea>
+            <div style="position: relative; flex: 1; display: flex; flex-direction: column;">
+              <textarea id="transformer-output" class="code-editor" readonly></textarea>
+              <div id="transformerPaywallOverlay" style="display: flex; position: absolute; inset: 0; background: rgba(10,12,18,0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 8px; align-items: center; justify-content: center; z-index: 10;">
+                <div style="text-align: center; max-width: 380px; padding: 1.5rem; background: #0c0d14; border: 1px solid rgba(239,68,68,0.4); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+                  <div style="font-size: 2rem; margin-bottom: 8px;">🔒</div>
+                  <div style="font-weight: 700; color: #fff; font-size: 1.05rem; margin-bottom: 6px;">Format Exporter Locked</div>
+                  <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 1rem; line-height: 1.4;">Unlock unlimited YAML, TOML, JSON, and Kubernetes secret exports with zero cloud telemetry.</p>
+                  <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" class="btn btn-sm" style="background: #635BFF; color: #FFF; text-decoration: none; font-weight: 700;">💳 Buy ($19)</a>
+                    <button onclick="openDePayCheckout()" class="btn btn-sm" style="background: #14F195; color: #000; font-weight: 700; border: none; cursor: pointer;">⚡ Pay SOL</button>
+                    <button onclick="openLicenseActivationModal()" class="btn btn-sm btn-secondary" style="cursor: pointer;">🔑 Enter Key</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1237,7 +1350,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
         <span>EnvGuard Secrets Studio &mdash; Zero-Exposure Architecture</span>
       </div>
       <div>
-        <span>Built for Autonomous AI Agents &amp; Cloud Engineers &bull; 100% Client-Side Cryptography</span>
+        <span>Engineered by Neal Frazier Tech (<a href="https://github.com/1nc0gn30/envguard-secrets-vault" target="_blank" rel="noopener">@1nc0gn30</a>) &bull; <a href="https://nullai.tech" target="_blank" rel="noopener">NullAI Platform</a></span>
       </div>
     </div>
   </footer>
@@ -1588,8 +1701,16 @@ OPENAI_API_KEY=sk-proj-placeholder-key-here`
       });
     });
 
+    function isPro() {
+      return localStorage.getItem("envguard_pro_license") === "active";
+    }
+
     // 1-Click Download Sanitized .env.example
     document.getElementById("btn-download-sanitized").addEventListener("click", () => {
+      if (!isPro()) {
+        openPaywallModal();
+        return;
+      }
       const content = scannerInput.value;
       if (!content.trim()) {
         showToast("⚠️ Please provide environment variables first", true);
@@ -1621,6 +1742,10 @@ OPENAI_API_KEY=sk-proj-placeholder-key-here`
 
     // Export Markdown Report
     document.getElementById("btn-export-report").addEventListener("click", () => {
+      if (!isPro()) {
+        openPaywallModal();
+        return;
+      }
       if (currentFindings.length === 0) {
         showToast("⚠️ No findings to report", true);
         return;
@@ -1745,12 +1870,20 @@ JWT_SECRET=super-secret-jwt-token-value-2026`;
     });
 
     document.getElementById("btn-copy-transform").addEventListener("click", () => {
+      if (!isPro()) {
+        openPaywallModal();
+        return;
+      }
       navigator.clipboard.writeText(transformerOutput.value).then(() => {
         showToast("📋 Transformed output copied to clipboard!");
       });
     });
 
     document.getElementById("btn-download-transform").addEventListener("click", () => {
+      if (!isPro()) {
+        openPaywallModal();
+        return;
+      }
       const extMap = { json: "json", yaml: "yaml", docker: "yml", k8s: "yaml", dotenv: "env" };
       const target = transformTargetType.value;
       const blob = new Blob([transformerOutput.value], { type: "text/plain" });
@@ -2162,6 +2295,40 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         if (actionBtns) {
           actionBtns.innerHTML = '<span style="color: #10b981; font-weight: 600; font-size: 0.82rem; padding: 6px 12px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;">✓ Lifetime License Verified</span>';
         }
+        const overlay = document.getElementById("transformerPaywallOverlay");
+        if (overlay) overlay.style.display = "none";
+      }
+    }
+
+    function openPaywallModal() {
+      const m = document.getElementById("proPaywallModal");
+      if (m) m.style.display = "flex";
+    }
+
+    function closePaywallModal() {
+      const m = document.getElementById("proPaywallModal");
+      if (m) m.style.display = "none";
+    }
+
+    function openLicenseActivationModal() {
+      closePaywallModal();
+      const m = document.getElementById("licenseModal");
+      if (m) m.style.display = "flex";
+    }
+
+    function closeLicenseModal() {
+      const m = document.getElementById("licenseModal");
+      if (m) m.style.display = "none";
+    }
+
+    function activateLicenseSubmit() {
+      const val = document.getElementById("licenseKeyInput").value.trim();
+      if (val) {
+        localStorage.setItem("envguard_pro_license", "active");
+        initLicenseState();
+        closeLicenseModal();
+        closePaywallModal();
+        showToast("✓ Pro License Activated!");
       }
     }
 
@@ -2172,9 +2339,64 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
     runTransformation();
     renderMCPClientConfig("claude");
   </script>
-  
-  <footer style="text-align: center; padding: 2rem 1rem; font-size: 0.8rem; color: var(--text-secondary); border-top: 1px solid var(--border-divider); margin-top: 2rem; background: var(--surface-bg);">
-    <div>Engineered by Neal Frazier Tech (<a href="https://github.com/1nc0gn30/envguard-secrets-vault" target="_blank" rel="noopener" style="color: var(--primary); text-decoration: none;">@1nc0gn30</a>) &middot; <a href="https://nullai.tech" target="_blank" rel="noopener" style="color: var(--primary); text-decoration: none;">NullAI Platform</a></div>
-  </footer>
+
+  <!-- Pro Paywall Modal -->
+  <div id="proPaywallModal" style="display: none; position: fixed; inset: 0; background: rgba(5,7,12,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 1200; align-items: center; justify-content: center; padding: 1rem;">
+    <div style="max-width: 520px; width: 100%; border: 1px solid rgba(239,68,68,0.4); background: #0c0d14; border-radius: 16px; padding: 1.75rem; box-shadow: 0 20px 50px rgba(0,0,0,0.8); position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.5rem;">🛡️</span>
+          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #f4f4f5;">Unlock EnvGuard Pro</h3>
+        </div>
+        <button onclick="closePaywallModal()" style="background: none; border: none; color: #a1a1aa; font-size: 1.25rem; cursor: pointer; padding: 4px;">✕</button>
+      </div>
+      <p style="font-size: 0.88rem; color: #a1a1aa; margin-bottom: 1.25rem; line-height: 1.5;">
+        Air-gapped secret scrubbing, unlimited AST token entropy analysis, and multi-format configuration export for enterprise and cloud deployments.
+      </p>
+      
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 16px; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #ef4444; margin-bottom: 8px;">What's Included:</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: #e4e4e7;">
+          <li>✔ Unlimited Sanitized .env.example downloads with smart defaults</li>
+          <li>✔ Markdown Security Audit Report generator for SOC2 / ISO compliance</li>
+          <li>✔ Multi-format export engine (JSON, YAML, Docker Compose, Kubernetes)</li>
+          <li>✔ Zero-Knowledge local Argon2id WASM key derivation & zero cloud leakage</li>
+          <li>✔ One-click MCP server integration for Cursor, Claude Code, and Windsurf</li>
+        </ul>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #635BFF; color: #fff; font-weight: 700; font-size: 0.95rem; border-radius: 8px; text-decoration: none; box-sizing: border-box;">
+          💳 Buy Pro Lifetime — $19 (Card / Apple Pay)
+        </a>
+        <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{window.open('https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F','_blank')}" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #14F195; color: #000; font-weight: 700; font-size: 0.95rem; border-radius: 8px; border: none; cursor: pointer; box-sizing: border-box;">
+          ⚡ Pay with Crypto (SOL / USDC)
+        </button>
+      </div>
+
+      <div style="margin-top: 14px; text-align: center;">
+        <button onclick="openLicenseActivationModal()" style="background: none; border: none; color: #94a3b8; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">
+          Already have a receipt or license key? Activate here
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- License Activation Modal -->
+  <div id="licenseModal" style="display: none; position: fixed; inset: 0; background: rgba(5,7,12,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 1250; align-items: center; justify-content: center; padding: 1rem;">
+    <div style="max-width: 420px; width: 100%; border: 1px solid rgba(255,255,255,0.15); background: #0c0d14; border-radius: 16px; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">Activate Pro License</h4>
+        <button onclick="closeLicenseModal()" style="background: none; border: none; color: #a1a1aa; font-size: 1.25rem; cursor: pointer;">✕</button>
+      </div>
+      <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 1rem;">
+        Enter your Stripe customer email, checkout session ID, or Solana tx signature to unlock:
+      </p>
+      <input type="text" id="licenseKeyInput" placeholder="e.g. cs_live_... or your@email.com" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; margin-bottom: 1rem; box-sizing: border-box;">
+      <button onclick="activateLicenseSubmit()" style="width: 100%; padding: 10px; background: #635BFF; color: #fff; font-weight: 700; border-radius: 8px; border: none; cursor: pointer;">
+        Activate License
+      </button>
+    </div>
+  </div>
 </body>
 </html>
