@@ -12,9 +12,11 @@
   <meta property="og:description" content="100% Client-Side Local Execution Guarantee. Zero telemetry, zero server-side logging, zero selling of user data.">
   <meta property="og:url" content="https://envguard-secrets-vault.netlify.app/privacy.html">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://envguard-secrets-vault.netlify.app/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@1nc0gn30">
   <meta name="twitter:creator" content="@1nc0gn30">
+  <meta name="twitter:image" content="https://envguard-secrets-vault.netlify.app/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,6 +163,26 @@
           "name": "Neal Frazier Tech",
           "url": "https://nealfrazier.tech"
         }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does EnvGuard upload my .env files or secrets?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. All scanning and encryption run locally in your browser. Nothing you paste is sent to a server." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is any telemetry or tracking collected?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No telemetry is collected. A license flag is stored only in your own browser's localStorage." }
+          },
+          {
+            "@type": "Question",
+            "name": "How are payments handled?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Payments go through Stripe (cards, Apple Pay, Google Pay) or the DePay Solana widget. EnvGuard never sees your card details." }
+          }
+        ]
       }
     ]
   }

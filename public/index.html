@@ -6,20 +6,20 @@
   <title>EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault & Scanner</title>
   <meta name="description" content="Sovereign developer tool for scanning, sanitizing, and vaulting environment secrets. Zero-knowledge client-side encryption with Argon2id and MCP integration.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <link rel="canonical" href="https://envguard-vault.netlify.app/">
+  <link rel="canonical" href="https://envguard-secrets-vault.netlify.app/">
 
   <!-- OpenGraph -->
   <meta property="og:title" content="EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault">
   <meta property="og:description" content="Instant secret scanner and zero-knowledge environment variable vault for sovereign software engineers.">
-  <meta property="og:url" content="https://envguard-vault.netlify.app/">
+  <meta property="og:url" content="https://envguard-secrets-vault.netlify.app/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://envguard-vault.netlify.app/og-image.png">
+  <meta property="og:image" content="https://envguard-secrets-vault.netlify.app/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@1nc0gn30">
   <meta name="twitter:creator" content="@1nc0gn30">
   <meta name="twitter:title" content="EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault">
   <meta name="twitter:description" content="Instant secret scanner and zero-knowledge environment variable vault for sovereign software engineers.">
-  <meta name="twitter:image" content="https://envguard-vault.netlify.app/og-image.png">
+  <meta name="twitter:image" content="https://envguard-secrets-vault.netlify.app/og-image.png">
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -28,9 +28,9 @@
     "@graph": [
       {
         "@type": "WebApplication",
-        "@id": "https://envguard-vault.netlify.app/#app",
+        "@id": "https://envguard-secrets-vault.netlify.app/#app",
         "name": "EnvGuard Secrets Studio",
-        "url": "https://envguard-vault.netlify.app/",
+        "url": "https://envguard-secrets-vault.netlify.app/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
         "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side Argon2id encrypted vault.",
@@ -725,13 +725,33 @@
 
     /* Responsive & Overflow Guard */
     html, body {
-      max-width: 100vw;
+      max-width: 100%;
+      width: 100%;
       overflow-x: hidden;
+    }
+
+    .dashboard-grid > div,
+    .full-grid > div,
+    .card,
+    .editor-wrapper,
+    .table-container {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-nav-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     @media (max-width: 992px) {
       .dashboard-grid, .full-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
       .tab-nav {
         overflow-x: auto;
@@ -1349,7 +1369,12 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
         <span class="dot dot-blue" style="width: 8px; height: 8px;"></span>
         <span>EnvGuard Secrets Studio &mdash; Zero-Exposure Architecture</span>
       </div>
-      <div>
+      <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
+        <a href="/terms.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Terms</a>
+        <a href="/privacy.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Privacy</a>
+        <a href="/support.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Support &amp; FAQ</a>
+        <a href="/cities/norfolk-va/agencies/" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Norfolk, VA</a>
+        <span style="color: var(--border-color);">|</span>
         <span>Engineered by Neal Frazier Tech (<a href="https://github.com/1nc0gn30/envguard-secrets-vault" target="_blank" rel="noopener">@1nc0gn30</a>) &bull; <a href="https://nullai.tech" target="_blank" rel="noopener">NullAI Platform</a></span>
       </div>
     </div>
@@ -2273,8 +2298,9 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("licensed") === "true") {
         localStorage.setItem("envguard_pro_license", "active");
+        localStorage.setItem("envguard-secrets-vault_pro_licensed", "true");
       }
-      if (localStorage.getItem("envguard_pro_license") === "active") {
+      if (localStorage.getItem("envguard_pro_license") === "active" || localStorage.getItem("envguard-secrets-vault_pro_licensed") === "true") {
         const vaultStatus = document.getElementById("header-vault-status");
         if (vaultStatus) {
           vaultStatus.textContent = "⭐ PRO ACTIVE";
@@ -2325,6 +2351,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
       const val = document.getElementById("licenseKeyInput").value.trim();
       if (val) {
         localStorage.setItem("envguard_pro_license", "active");
+        localStorage.setItem("envguard-secrets-vault_pro_licensed", "true");
         initLicenseState();
         closeLicenseModal();
         closePaywallModal();

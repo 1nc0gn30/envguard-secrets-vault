@@ -19,4 +19,4 @@ Allow: /
 User-agent: Applebot
 Allow: /
 
-Sitemap: https://envguard-vault.netlify.app/sitemap.xml
+Sitemap: https://envguard-secrets-vault.netlify.app/sitemap.xml

@@ -32,9 +32,15 @@
   status = 200
 
 [[redirects]]
-  from = "/api/netlify-ax"
-  to = "/api/netlify-ax.json"
+  from = "/cities/norfolk-va/agencies"
+  to = "/cities/norfolk-va/agencies/index.html"
   status = 200
+
+[[redirects]]
+  from = "/cities/norfolk-va/agencies/"
+  to = "/cities/norfolk-va/agencies/index.html"
+  status = 200
+
 
 
 
