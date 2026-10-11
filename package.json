@@ -1,17 +1,24 @@
 {
   "name": "envguard-secrets-vault",
-  "version": "2.0.0",
-  "description": "Zero-Trust Sovereign Secret Scanner, Credential Sanitizer, AES-256 Vault & Shamir Quorum — Desktop Workstation",
+  "version": "2.5.0",
+  "description": "Zero-Trust Sovereign Secret Scanner, Credential Sanitizer, AES-256 Vault & Shamir Quorum — Desktop & Web Workstation",
   "main": "electron/main.cjs",
+  "homepage": "https://envguard-secrets-vault.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NullAITech/envguard-secrets-vault.git"
+  },
   "bin": {
     "envguard": "./bin/envguard.js",
     "envguard-vault": "./bin/envguard.js"
   },
   "scripts": {
-    "start": "python3 -m envguard_secrets_vault.cli serve --port 8087 --no-browser",
+    "start": "python3 -m http.server 8088 --directory public",
+    "serve:public": "python3 -m http.server 8088 --directory public",
     "electron": "electron .",
     "app": "electron .",
-    "test": "pytest tests/"
+    "test": "pytest tests/",
+    "test:ui": "python3 scripts/verify_ui.py"
   },
   "keywords": [
     "secrets",
@@ -22,9 +29,9 @@
     "zero-egress",
     "sovereign",
     "electron",
-    "zoth"
+    "nullai"
   ],
-  "author": "NullAI Tech / Zoth Team",
+  "author": "Neal Frazier Tech (@1nc0gn30) • NullAI Platform",
   "license": "MIT",
   "devDependencies": {
     "electron": "^34.5.8"

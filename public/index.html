@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault & Scanner</title>
-  <meta name="description" content="Sovereign developer tool for scanning, sanitizing, and vaulting environment secrets. Zero-knowledge client-side encryption with Argon2id and MCP integration.">
+  <meta name="description" content="Sovereign developer tool for scanning, sanitizing, and vaulting environment secrets. Zero-knowledge client-side encryption with PBKDF2, AES-256-GCM, and MCP integration.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://envguard-secrets-vault.netlify.app/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+  <link rel="apple-touch-icon" href="/icon.png">
 
   <!-- OpenGraph -->
   <meta property="og:title" content="EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault">
@@ -33,7 +36,7 @@
         "url": "https://envguard-secrets-vault.netlify.app/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
-        "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side Argon2id encrypted vault.",
+        "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side PBKDF2 and AES-256-GCM encrypted vault.",
         "creator": {
           "@type": "Person",
           "name": "Neal Frazier",
@@ -59,7 +62,7 @@
             "name": "How does EnvGuard prevent environment secret leakage?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "EnvGuard scans client code and configuration files for exposed API keys and secrets entirely in-browser, offering zero-knowledge Argon2id client-side encryption."
+              "text": "EnvGuard scans client code and configuration files for exposed API keys and secrets entirely in-browser, offering zero-knowledge PBKDF2 and AES-256-GCM client-side encryption."
             }
           },
           {
@@ -110,8 +113,8 @@
       --text-primary: #202124;
       --text-secondary: #5f6368;
       --text-tertiary: #80868b;
-      --font-family: -apple-system, BlinkMacSystemFont, "Google Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-mono: "SF Mono", "Fira Code", "Roboto Mono", Consolas, Menlo, monospace;
+      --font-family: -apple-system, BlinkMacSystemFont, "Google Sans", "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+      --font-mono: "SF Mono", "Fira Code", "Roboto Mono", Consolas, Menlo, "Apple Color Emoji", "Segoe UI Emoji", monospace;
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 16px;
@@ -220,20 +223,29 @@
     .tab-nav-container {
       background: var(--surface-card);
       border-bottom: 1px solid var(--border-color);
-      padding: 0 2rem;
+      padding: 0 1rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tab-nav-container::-webkit-scrollbar {
+      display: none;
     }
 
     .tab-nav {
       display: flex;
-      gap: 1.5rem;
+      gap: 1.25rem;
       max-width: 1400px;
       margin: 0 auto;
+      width: max-content;
+      min-width: 100%;
     }
 
     .tab-btn {
       background: none;
       border: none;
-      padding: 1rem 0.5rem;
+      padding: 0.875rem 0.5rem;
+      min-height: 44px;
       font-family: inherit;
       font-size: 0.92rem;
       font-weight: 500;
@@ -243,7 +255,9 @@
       align-items: center;
       gap: 0.5rem;
       border-bottom: 3px solid transparent;
-      transition: all 0.18s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.18s ease, border-color 0.18s ease;
     }
 
     .tab-btn:hover {
@@ -757,13 +771,16 @@
         overflow-x: auto;
       }
       header {
-        padding: 0.75rem 1rem;
-        flex-wrap: wrap;
+        padding: 0.75rem 1.25rem;
+        flex-wrap: nowrap;
         gap: 0.75rem;
       }
       .header-metrics {
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        flex-wrap: nowrap;
+        gap: 0.6rem;
+      }
+      .header-metric-pill {
+        display: none;
       }
       main {
         padding: 1rem;
@@ -778,12 +795,16 @@
         display: none;
       }
       header {
-        justify-content: center;
+        padding: 0.65rem 0.85rem;
+        flex-wrap: wrap;
+        justify-content: space-between;
         gap: 0.65rem;
       }
       .header-metrics {
-        justify-content: center;
-        width: 100%;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+        width: auto;
+        gap: 0.5rem;
       }
       #founding-offer-banner {
         padding: 0.75rem 1rem;
@@ -797,11 +818,11 @@
         flex-wrap: wrap;
       }
       .tab-nav {
-        gap: 0.75rem;
+        gap: 1rem;
       }
       .tab-btn {
-        padding: 0.75rem 0.35rem;
-        font-size: 0.82rem;
+        padding: 0.75rem 0.65rem;
+        font-size: 0.85rem;
         white-space: nowrap;
       }
     }
@@ -812,6 +833,31 @@
       }
       header {
         padding: 0.6rem 0.75rem;
+      }
+      #founding-offer-banner {
+        padding: 0.6rem 0.75rem;
+      }
+      #founding-offer-banner > div > div:first-child {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+      }
+      #offer-promo-text {
+        font-size: 0.82rem;
+        line-height: 1.4;
+      }
+      #offer-action-buttons {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+      }
+      #offer-action-buttons a,
+      #offer-action-buttons button {
+        width: 100%;
+        justify-content: center;
+        min-height: 40px;
+        box-sizing: border-box;
       }
       main {
         padding: 0.75rem 0.5rem;
@@ -845,12 +891,13 @@
           <path d="M20 12c2-1.8 1-4-1-3.5-1.6.4-2.2 2-3 3.5.8 1.5 1.4 3.1 3 3.5 2 .5 3-1.7 1-3.5z" stroke="#ef4444" stroke-width="1.2" fill="none"/>
           <circle cx="12" cy="12" r="2.2" fill="#ef4444"/>
         </svg>
-        EnvGuard <span style="font-weight: 400; color: var(--text-secondary);">Secrets Studio</span>
+        <span style="white-space: nowrap;">EnvGuard <span style="font-weight: 400; color: var(--text-secondary);">Secrets Studio</span></span>
         <span class="badge-enterprise">v1.0.0 Enterprise</span>
       </div>
     </a>
 
     <div class="header-metrics">
+      <span id="licenseBadge" class="license-badge-free" style="color: var(--text-tertiary); font-weight: 700; font-size: 11px; border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 9999px; background: rgba(255, 255, 255, 0.04);">⚡ FREE TIER</span>
       <div class="header-metric-pill">
         <span>Vault Security:</span>
         <strong id="header-vault-status" style="color: var(--google-green);">Zero-Exposure Active</strong>
@@ -859,17 +906,19 @@
         <span>Detected Secrets:</span>
         <strong id="header-secrets-count" style="color: var(--google-red);">0</strong>
       </div>
-      <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 6px 14px; background: #635BFF; color: #fff; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
-        💳 Upgrade Vault ($19)
+      <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 6px 14px; background: #635BFF; color: #fff; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>Upgrade Vault ($19)</span>
       </a>
-      <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{alert('DePay SDK connecting...')}" style="padding: 6px 14px; background: #14F195; color: #000; border-radius: 6px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
-        ⚡ Pay with SOL
+      <button onclick="openDePayCheckout()" style="padding: 6px 14px; background: #14F195; color: #000; border-radius: 6px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <span>Pay with SOL</span>
       </button>
     </div>
   </header>
 
   <!-- High-Converting Founding Member Sales Banner (Cross Banner of the 4 Elements) -->
-  <div id="founding-offer-banner" style="background: radial-gradient(circle at 50% 50%, rgba(239,68,68,0.18) 0%, rgba(217,48,37,0.08) 45%, rgba(15,17,23,0.02) 100%), linear-gradient(90deg, rgba(239,68,68,0.14) 0%, rgba(249,171,0,0.06) 33%, rgba(30,142,62,0.06) 66%, rgba(26,115,232,0.1) 100%); border-bottom: 1px solid rgba(239,68,68,0.45); box-shadow: 0 0 25px -4px rgba(239,68,68,0.35); padding: 0.85rem 1.5rem; text-align: center; position: relative;">
+  <aside id="salesBanner" data-alias="founding-offer-banner" style="background: radial-gradient(circle at 50% 50%, rgba(239,68,68,0.18) 0%, rgba(217,48,37,0.08) 45%, rgba(15,17,23,0.02) 100%), linear-gradient(90deg, rgba(239,68,68,0.14) 0%, rgba(249,171,0,0.06) 33%, rgba(30,142,62,0.06) 66%, rgba(26,115,232,0.1) 100%); border-bottom: 1px solid rgba(239,68,68,0.45); box-shadow: 0 0 25px -4px rgba(239,68,68,0.35); padding: 0.85rem 1.5rem; text-align: center; position: relative;">
     <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
       <div style="display: flex; align-items: center; gap: 0.65rem; text-align: left;">
         <span id="offer-element-badge" style="background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.5); font-weight: 700; font-size: 0.72rem; padding: 3px 10px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.08em; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 0 10px rgba(239,68,68,0.25);">
@@ -882,32 +931,51 @@
       </div>
       <div id="offer-action-buttons" style="display: flex; align-items: center; gap: 0.5rem;">
         <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="padding: 7px 16px; background: #635BFF; color: #ffffff; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(99,91,255,0.3);">
-          💳 Claim Lifetime Pass ($19)
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          <span>Claim Lifetime Pass ($19)</span>
         </a>
-        <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{alert('Connecting Solana payment rail...')}" style="padding: 7px 16px; background: #14F195; color: #000000; border-radius: 6px; border: none; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(20,241,149,0.3);">
-          ⚡ Pay with SOL
+        <button onclick="openDePayCheckout()" style="padding: 7px 16px; background: #14F195; color: #000000; border-radius: 6px; border: none; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(20,241,149,0.3);">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Pay with SOL</span>
         </button>
-        <button onclick="const k=prompt('Enter your license key or receipt email:');if(k&&k.trim()){localStorage.setItem('envguard_pro_license','active');alert('⭐ Pro License Verified & Active!');location.reload();}" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 500; cursor: pointer;">
+        <button id="btn-paywall-key" onclick="openLicenseActivationModal()" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 500; cursor: pointer;">
           Activate Key
         </button>
       </div>
     </div>
-  </div>
+  </aside>
 
   <!-- Workspace Navigation Tabs (Table of Tools: Sword, Wand, Cup, Pentacle) -->
   <div class="tab-nav-container">
     <nav class="tab-nav">
       <button class="tab-btn active" data-tab="scanner-tab">
-        <span title="Sword — Air & Discriminative Analysis">🗡️</span> Sword: Live Secret Auditor & Scanner
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: middle;">
+          <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline>
+          <line x1="13" y1="19" x2="19" y2="13"></line>
+          <line x1="16" y1="16" x2="20" y2="20"></line>
+          <line x1="19" y1="21" x2="21" y2="19"></line>
+        </svg>
+        <span>Sword: Live Secret Auditor & Scanner</span>
       </button>
       <button class="tab-btn" data-tab="transformer-tab">
-        <span title="Wand — Fire & Dynamic Transformation">🪄</span> Wand: Format Transformer & Exporter
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: middle;">
+          <path d="M15 4V2m0 20v-2m7-9h-2M4 11H2m15.5 5.5l-1.5-1.5M7 7l-1.5-1.5m11 0l-1.5 1.5M7 16.5l-1.5 1.5M16 11a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"></path>
+        </svg>
+        <span>Wand: Format Transformer & Exporter</span>
       </button>
       <button class="tab-btn" data-tab="vault-tab">
-        <span title="Cup — Water & Receptive Containment">🏺</span> Cup: Zero-Exposure Encrypted Vault
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: middle;">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>Cup: Zero-Exposure Encrypted Vault</span>
       </button>
       <button class="tab-btn" data-tab="mcp-tab">
-        <span title="Pentacle — Earth & Concrete Manifestation">🪙</span> Pentacle: AI Agent & MCP Hub
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: middle;">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 3v18M3 12h18"></path>
+        </svg>
+        <span>Pentacle: AI Agent & MCP Hub</span>
       </button>
     </nav>
   </div>
@@ -928,7 +996,8 @@
             <div class="card-subtitle">Real-time entropy & pattern vulnerability index</div>
 
             <div class="gauge-wrapper">
-              <svg class="gauge-svg" viewBox="0 0 180 180">
+              <svg class="gauge-svg" viewBox="0 0 180 180" role="img" aria-label="Security Posture Score Gauge">
+                <title>Security Posture Score Gauge</title>
                 <circle class="gauge-bg" cx="90" cy="90" r="75"></circle>
                 <circle id="gauge-circle" class="gauge-progress" cx="90" cy="90" r="75"></circle>
               </svg>
@@ -958,11 +1027,22 @@
             </div>
 
             <div style="margin-top: 1.25rem; width: 100%;">
-              <button id="btn-download-sanitized" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                <span>📥</span> Download Sanitized .env.example
+              <button id="btn-download-sanitized" class="btn btn-primary" style="width: 100%; justify-content: center; position: relative;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download Sanitized .env.example</span>
+                <span id="sanitized-lock-badge" class="badge" style="background: rgba(0,0,0,0.25); color: #fff; font-size: 0.68rem; margin-left: 6px;">PRO</span>
               </button>
-              <button id="btn-export-report" class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
-                <span>📋</span> Copy Security Audit Report (Markdown)
+              <button id="btn-export-report" class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 0.5rem; position: relative;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span>Copy Security Audit Report (Markdown)</span>
+                <span id="report-lock-badge" class="badge" style="background: var(--surface-bg); border: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.68rem; margin-left: 6px;">PRO</span>
               </button>
             </div>
           </div>
@@ -978,8 +1058,11 @@
               </div>
               <div class="btn-group">
                 <label class="btn btn-secondary btn-sm" style="cursor: pointer;">
-                  <span>📂</span> Upload .env
-                  <input type="file" id="file-input-scanner" accept=".env,.env.*,text/plain" style="display: none;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Upload .env</span>
+                  <input type="file" id="file-input-scanner" accept=".env,.env.*,text/plain" style="display: none;" aria-label="Upload .env file">
                 </label>
                 <button id="btn-clear-scanner" class="btn btn-secondary btn-sm">Clear</button>
               </div>
@@ -998,12 +1081,12 @@
                 <span id="scanner-line-count">Lines: 0 | Parsed Keys: 0</span>
                 <div class="editor-actions">
                   <label style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 0.78rem;">
-                    <input type="checkbox" id="toggle-mask-editor" checked>
+                    <input type="checkbox" id="toggle-mask-editor" checked aria-label="Mask sensitive values in table">
                     <span>Mask Sensitive Values in Table</span>
                   </label>
                 </div>
               </div>
-              <textarea id="scanner-input" class="code-editor" placeholder="# Paste your .env contents here...
+              <textarea id="scanner-input" class="code-editor" aria-label="Environment variables input editor" placeholder="# Paste your .env contents here...
 OPENAI_API_KEY=sk-proj-1234567890abcdef...
 DATABASE_URL=postgresql://user:secret@localhost:5432/prod
 NEXT_PUBLIC_STRIPE_SECRET=sk_live_51Oz..."></textarea>
@@ -1054,7 +1137,7 @@ NEXT_PUBLIC_STRIPE_SECRET=sk_live_51Oz..."></textarea>
               <div class="card-subtitle">Supports .env key-value syntax or raw JSON</div>
             </div>
             <div class="btn-group">
-              <select id="transform-source-type" class="form-control" style="font-size: 0.8rem;">
+              <select id="transform-source-type" class="form-control" style="font-size: 0.8rem;" aria-label="Source configuration format">
                 <option value="dotenv">Source: Dotenv (.env)</option>
                 <option value="json">Source: JSON</option>
               </select>
@@ -1066,7 +1149,7 @@ NEXT_PUBLIC_STRIPE_SECRET=sk_live_51Oz..."></textarea>
               <span>Source Input</span>
               <button id="btn-sample-transformer" class="btn btn-secondary btn-sm">Load Sample</button>
             </div>
-            <textarea id="transformer-input" class="code-editor" placeholder="PORT=3000
+            <textarea id="transformer-input" class="code-editor" aria-label="Source configuration text to transform" placeholder="PORT=3000
 NODE_ENV=production
 DATABASE_URL=postgresql://postgres:pass@localhost:5432/db
 REDIS_URL=redis://localhost:6379
@@ -1075,13 +1158,13 @@ JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
 
           <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
             <label style="display: flex; align-items: center; gap: 6px; font-size: 0.83rem; cursor: pointer;">
-              <input type="checkbox" id="chk-sort-keys" checked> Sort keys alphabetically
+              <input type="checkbox" id="chk-sort-keys" checked aria-label="Sort keys alphabetically"> Sort keys alphabetically
             </label>
             <label style="display: flex; align-items: center; gap: 6px; font-size: 0.83rem; cursor: pointer;">
-              <input type="checkbox" id="chk-strip-comments" checked> Strip comments
+              <input type="checkbox" id="chk-strip-comments" checked aria-label="Strip comments"> Strip comments
             </label>
             <label style="display: flex; align-items: center; gap: 6px; font-size: 0.83rem; cursor: pointer;">
-              <input type="checkbox" id="chk-mask-export"> Mask values in output
+              <input type="checkbox" id="chk-mask-export" aria-label="Mask values in output"> Mask values in output
             </label>
           </div>
         </div>
@@ -1094,7 +1177,7 @@ JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
               <div class="card-subtitle">Instant multi-format export</div>
             </div>
             <div class="btn-group">
-              <select id="transform-target-type" class="form-control" style="font-size: 0.8rem;">
+              <select id="transform-target-type" class="form-control" style="font-size: 0.8rem;" aria-label="Target export format">
                 <option value="json">Target: JSON</option>
                 <option value="yaml">Target: YAML</option>
                 <option value="docker">Target: Docker Compose</option>
@@ -1113,7 +1196,7 @@ JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
               </div>
             </div>
             <div style="position: relative; flex: 1; display: flex; flex-direction: column;">
-              <textarea id="transformer-output" class="code-editor" readonly></textarea>
+              <textarea id="transformer-output" class="code-editor" style="filter: blur(6px);" readonly aria-label="Transformed output format"></textarea>
               <div id="transformerPaywallOverlay" style="display: flex; position: absolute; inset: 0; background: rgba(10,12,18,0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 8px; align-items: center; justify-content: center; z-index: 10;">
                 <div style="text-align: center; max-width: 380px; padding: 1.5rem; background: #0c0d14; border: 1px solid rgba(239,68,68,0.4); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
                   <div style="font-size: 2rem; margin-bottom: 8px;">🔒</div>
@@ -1154,14 +1237,14 @@ JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
               <span>Plaintext .env to Encrypt</span>
               <button id="btn-load-vault-sample" class="btn btn-secondary btn-sm">Load Sample Secrets</button>
             </div>
-            <textarea id="vault-encrypt-plain" class="code-editor" style="height: 180px;" placeholder="DATABASE_URL=postgresql://user:pass@db.internal:5432/main
+            <textarea id="vault-encrypt-plain" class="code-editor" style="height: 180px;" aria-label="Plaintext environment variables to encrypt" placeholder="DATABASE_URL=postgresql://user:pass@db.internal:5432/main
 STRIPE_SECRET_KEY=sk_live_51Oz...
 OPENAI_API_KEY=sk-proj-..."></textarea>
           </div>
 
           <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Master Encryption Password</label>
-            <input type="password" id="vault-encrypt-password" class="form-control" style="width: 100%;" placeholder="Enter strong master password (min 12 chars recommended)...">
+            <label for="vault-encrypt-password" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Master Encryption Password</label>
+            <input type="password" id="vault-encrypt-password" class="form-control" style="width: 100%;" aria-label="Master encryption password" placeholder="Enter strong master password (min 12 chars recommended)...">
             <div id="pwd-strength-bar" style="height: 4px; background: var(--border-subtle); border-radius: 2px; margin-top: 6px; overflow: hidden;">
               <div id="pwd-strength-fill" style="width: 0%; height: 100%; transition: width 0.3s, background 0.3s;"></div>
             </div>
@@ -1178,7 +1261,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
                 <span style="color: var(--google-green); font-weight: 600;">✓ Encrypted Vault JSON (AES-256-GCM)</span>
                 <button id="btn-download-vault-file" class="btn btn-secondary btn-sm">📥 Download .vault File</button>
               </div>
-              <textarea id="vault-encrypt-output" class="code-editor" style="height: 140px;" readonly></textarea>
+              <textarea id="vault-encrypt-output" class="code-editor" style="height: 140px;" readonly aria-label="Encrypted vault JSON output"></textarea>
             </div>
           </div>
         </div>
@@ -1197,15 +1280,15 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
               <span>Encrypted Vault Payload (.vault / JSON)</span>
               <label class="btn btn-secondary btn-sm" style="cursor: pointer;">
                 <span>📂</span> Load .vault File
-                <input type="file" id="file-input-vault" accept=".vault,.json,text/plain" style="display: none;">
+                <input type="file" id="file-input-vault" accept=".vault,.json,text/plain" style="display: none;" aria-label="Load encrypted vault file">
               </label>
             </div>
-            <textarea id="vault-decrypt-input" class="code-editor" style="height: 180px;" placeholder='{"version": 1, "format": "envguard-vault-v1", "cipher": "AES-256-GCM", "salt": "...", "iv": "...", "ciphertext": "...", "tag": "..."}'></textarea>
+            <textarea id="vault-decrypt-input" class="code-editor" style="height: 180px;" aria-label="Encrypted vault payload to decrypt" placeholder='{"version": 1, "format": "envguard-vault-v1", "cipher": "AES-256-GCM", "salt": "...", "iv": "...", "ciphertext": "...", "tag": "..."}'></textarea>
           </div>
 
           <div style="margin-bottom: 1rem;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Master Decryption Password</label>
-            <input type="password" id="vault-decrypt-password" class="form-control" style="width: 100%;" placeholder="Enter the master password used to encrypt this vault...">
+            <label for="vault-decrypt-password" style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Master Decryption Password</label>
+            <input type="password" id="vault-decrypt-password" class="form-control" style="width: 100%;" aria-label="Master decryption password" placeholder="Enter the master password used to encrypt this vault...">
           </div>
 
           <button id="btn-decrypt-vault" class="btn btn-primary" style="width: 100%; justify-content: center;">
@@ -1221,7 +1304,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
                   <button id="btn-download-decrypted" class="btn btn-secondary btn-sm">📥 Download .env</button>
                 </div>
               </div>
-              <textarea id="vault-decrypt-output" class="code-editor" style="height: 140px;" readonly></textarea>
+              <textarea id="vault-decrypt-output" class="code-editor" style="height: 140px;" readonly aria-label="Decrypted in-memory plaintext output"></textarea>
             </div>
           </div>
 
@@ -1373,7 +1456,6 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
         <a href="/terms.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Terms</a>
         <a href="/privacy.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Privacy</a>
         <a href="/support.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Support &amp; FAQ</a>
-        <a href="/cities/norfolk-va/agencies/" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Norfolk, VA</a>
         <span style="color: var(--border-color);">|</span>
         <span>Engineered by Neal Frazier Tech (<a href="https://github.com/1nc0gn30/envguard-secrets-vault" target="_blank" rel="noopener">@1nc0gn30</a>) &bull; <a href="https://nullai.tech" target="_blank" rel="noopener">NullAI Platform</a></span>
       </div>
@@ -1727,7 +1809,9 @@ OPENAI_API_KEY=sk-proj-placeholder-key-here`
     });
 
     function isPro() {
-      return localStorage.getItem("envguard_pro_license") === "active";
+      return localStorage.getItem("envguard_pro_license") === "active" ||
+             localStorage.getItem("envguard-secrets-vault_pro_licensed") === "true" ||
+             localStorage.getItem("pro_licensed") === "true";
     }
 
     // 1-Click Download Sanitized .env.example
@@ -2296,16 +2380,36 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
     // License State Resolution
     function initLicenseState() {
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get("licensed") === "true") {
+      const isParam = (urlParams.get("licensed") === "true" || urlParams.get("session_id") !== null);
+      if (isParam) {
         localStorage.setItem("envguard_pro_license", "active");
         localStorage.setItem("envguard-secrets-vault_pro_licensed", "true");
+        localStorage.setItem("pro_licensed", "true");
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+          showToast("🎉 Pro License Activated via Checkout!");
+        }
       }
-      if (localStorage.getItem("envguard_pro_license") === "active" || localStorage.getItem("envguard-secrets-vault_pro_licensed") === "true") {
+      if (localStorage.getItem("envguard_pro_license") === "active" || 
+          localStorage.getItem("envguard-secrets-vault_pro_licensed") === "true" || 
+          localStorage.getItem("pro_licensed") === "true") {
         const vaultStatus = document.getElementById("header-vault-status");
         if (vaultStatus) {
           vaultStatus.textContent = "⭐ PRO ACTIVE";
-          vaultStatus.style.color = "#F9AB00";
+          vaultStatus.style.color = "#10b981";
         }
+        const licenseBadge = document.getElementById("licenseBadge");
+        if (licenseBadge) {
+          licenseBadge.textContent = "⭐ PRO ACTIVE";
+          licenseBadge.className = "license-badge-pro";
+          licenseBadge.style.color = "#10b981";
+          licenseBadge.style.borderColor = "rgba(16, 185, 129, 0.4)";
+          licenseBadge.style.background = "rgba(16, 185, 129, 0.15)";
+          licenseBadge.style.boxShadow = "0 0 10px rgba(16, 185, 129, 0.25)";
+        }
+        const banner = document.getElementById("salesBanner") || document.getElementById("founding-offer-banner");
+        if (banner) banner.style.display = "none";
+
         const badge = document.getElementById("offer-element-badge");
         if (badge) {
           badge.textContent = "⭐ PRO UNLOCKED";
@@ -2323,11 +2427,25 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         }
         const overlay = document.getElementById("transformerPaywallOverlay");
         if (overlay) overlay.style.display = "none";
+        const tfOut = document.getElementById("transformer-output");
+        if (tfOut) tfOut.style.filter = "none";
+        const sanBadge = document.getElementById("sanitized-lock-badge");
+        if (sanBadge) sanBadge.style.display = "none";
+        const repBadge = document.getElementById("report-lock-badge");
+        if (repBadge) repBadge.style.display = "none";
+      }
+    }
+
+    function openDePayCheckout() {
+      if (window.DePayWidgets) {
+        DePayWidgets.Payment({ integration: '428790dd-7ad1-407c-8ecf-c048c77a4cb8' });
+      } else {
+        window.open('https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F', '_blank');
       }
     }
 
     function openPaywallModal() {
-      const m = document.getElementById("proPaywallModal");
+      const m = document.getElementById("proPaywallModal") || document.getElementById("licenseModal");
       if (m) m.style.display = "flex";
     }
 
@@ -2347,17 +2465,25 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
       if (m) m.style.display = "none";
     }
 
-    function activateLicenseSubmit() {
-      const val = document.getElementById("licenseKeyInput").value.trim();
-      if (val) {
+    function activateLicenseSubmit(customKey) {
+      const input = document.getElementById("license-input") || document.getElementById("licenseKeyInput");
+      const val = (customKey || (input ? input.value : "")).trim();
+      if (val.length >= 3) {
         localStorage.setItem("envguard_pro_license", "active");
         localStorage.setItem("envguard-secrets-vault_pro_licensed", "true");
+        localStorage.setItem("pro_licensed", "true");
+        localStorage.setItem("envguard_license_key", val);
         initLicenseState();
         closeLicenseModal();
         closePaywallModal();
-        showToast("✓ Pro License Activated!");
+        showToast("🎉 Pro License Activated! Lifetime access unlocked.");
+        return true;
+      } else {
+        showToast("⚠️ Please enter your license key or email address.", true);
+        return false;
       }
     }
+    window.activateLicenseKey = activateLicenseSubmit;
 
     // Initializations
     initLicenseState();
@@ -2368,14 +2494,14 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
   </script>
 
   <!-- Pro Paywall Modal -->
-  <div id="proPaywallModal" style="display: none; position: fixed; inset: 0; background: rgba(5,7,12,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 1200; align-items: center; justify-content: center; padding: 1rem;">
+  <div id="proPaywallModal" data-alias="paywall-modal" style="display: none; position: fixed; inset: 0; background: rgba(5,7,12,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 1200; align-items: center; justify-content: center; padding: 1rem;">
     <div style="max-width: 520px; width: 100%; border: 1px solid rgba(239,68,68,0.4); background: #0c0d14; border-radius: 16px; padding: 1.75rem; box-shadow: 0 20px 50px rgba(0,0,0,0.8); position: relative;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="font-size: 1.5rem;">🛡️</span>
           <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #f4f4f5;">Unlock EnvGuard Pro</h3>
         </div>
-        <button onclick="closePaywallModal()" style="background: none; border: none; color: #a1a1aa; font-size: 1.25rem; cursor: pointer; padding: 4px;">✕</button>
+        <button onclick="closePaywallModal()" aria-label="Close Pro unlock modal" style="background: none; border: none; color: #a1a1aa; font-size: 1.25rem; cursor: pointer; padding: 8px 12px; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;">✕</button>
       </div>
       <p style="font-size: 0.88rem; color: #a1a1aa; margin-bottom: 1.25rem; line-height: 1.5;">
         Air-gapped secret scrubbing, unlimited AST token entropy analysis, and multi-format configuration export for enterprise and cloud deployments.
@@ -2387,7 +2513,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
           <li>✔ Unlimited Sanitized .env.example downloads with smart defaults</li>
           <li>✔ Markdown Security Audit Report generator for SOC2 / ISO compliance</li>
           <li>✔ Multi-format export engine (JSON, YAML, Docker Compose, Kubernetes)</li>
-          <li>✔ Zero-Knowledge local Argon2id WASM key derivation & zero cloud leakage</li>
+          <li>✔ Zero-Knowledge local PBKDF2 key derivation, AES-256-GCM encryption & zero cloud leakage</li>
           <li>✔ One-click MCP server integration for Cursor, Claude Code, and Windsurf</li>
         </ul>
       </div>
@@ -2396,7 +2522,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         <a href="https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #635BFF; color: #fff; font-weight: 700; font-size: 0.95rem; border-radius: 8px; text-decoration: none; box-sizing: border-box;">
           💳 Buy Pro Lifetime — $19 (Card / Apple Pay)
         </a>
-        <button onclick="if(window.DePayWidgets){DePayWidgets.Payment({integration:'428790dd-7ad1-407c-8ecf-c048c77a4cb8'})}else{window.open('https://buy.stripe.com/4gMeVc5k15dS0uYcgEfw40F','_blank')}" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #14F195; color: #000; font-weight: 700; font-size: 0.95rem; border-radius: 8px; border: none; cursor: pointer; box-sizing: border-box;">
+        <button onclick="openDePayCheckout()" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #14F195; color: #000; font-weight: 700; font-size: 0.95rem; border-radius: 8px; border: none; cursor: pointer; box-sizing: border-box;">
           ⚡ Pay with Crypto (SOL / USDC)
         </button>
       </div>
@@ -2410,17 +2536,17 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
   </div>
 
   <!-- License Activation Modal -->
-  <div id="licenseModal" style="display: none; position: fixed; inset: 0; background: rgba(5,7,12,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 1250; align-items: center; justify-content: center; padding: 1rem;">
+  <div id="licenseModal" data-alias="paywall-modal" style="display: none; position: fixed; inset: 0; background: rgba(5,7,12,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 1250; align-items: center; justify-content: center; padding: 1rem;">
     <div style="max-width: 420px; width: 100%; border: 1px solid rgba(255,255,255,0.15); background: #0c0d14; border-radius: 16px; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">Activate Pro License</h4>
-        <button onclick="closeLicenseModal()" style="background: none; border: none; color: #a1a1aa; font-size: 1.25rem; cursor: pointer;">✕</button>
+        <button onclick="closeLicenseModal()" aria-label="Close license activation modal" style="background: none; border: none; color: #a1a1aa; font-size: 1.25rem; cursor: pointer; padding: 8px 12px; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;">✕</button>
       </div>
       <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 1rem;">
-        Enter your Stripe customer email, checkout session ID, or Solana tx signature to unlock:
+        Enter your Stripe customer email, checkout session ID, or license key:
       </p>
-      <input type="text" id="licenseKeyInput" placeholder="e.g. cs_live_... or your@email.com" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; margin-bottom: 1rem; box-sizing: border-box;">
-      <button onclick="activateLicenseSubmit()" style="width: 100%; padding: 10px; background: #635BFF; color: #fff; font-weight: 700; border-radius: 8px; border: none; cursor: pointer;">
+      <input type="text" id="license-input" name="licenseKeyInput" placeholder="e.g. ENVGUARD-PRO-2026 or your@email.com" style="width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-size: 0.9rem; margin-bottom: 1rem; box-sizing: border-box;" onkeydown="if(event.key==='Enter') activateLicenseSubmit()">
+      <button id="btnActivateKey" onclick="activateLicenseSubmit()" style="width: 100%; padding: 10px; background: #635BFF; color: #fff; font-weight: 700; border-radius: 8px; border: none; cursor: pointer;">
         Activate License
       </button>
     </div>

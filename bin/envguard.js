@@ -17,7 +17,7 @@ const isAppRequest = !isWeb && (args.length === 0 || args.includes('--gui') || a
 
 if (isWeb) {
   console.log('⚡ Launching EnvGuard Secrets Studio Web UI on http://127.0.0.1:8087 ...');
-  const pyChild = spawn('python3', ['-m', 'envguard_secrets_vault.cli', 'serve', '--port', '8087'], {
+  const pyChild = spawn('python3', ['-c', 'from envguard_secrets_vault.cli import main; import sys; sys.exit(main())', 'serve', '--port', '8087'], {
     cwd: rootDir,
     stdio: 'inherit',
     env: {
@@ -61,7 +61,7 @@ if (isWeb) {
 
   child.on('error', (err) => {
     console.warn(`[EnvGuard] Electron notice: ${err.message}. Starting web UI on port 8087...`);
-    const pyChild = spawn('python3', ['-m', 'envguard_secrets_vault.cli', 'serve', '--port', '8087'], {
+    const pyChild = spawn('python3', ['-c', 'from envguard_secrets_vault.cli import main; import sys; sys.exit(main())', 'serve', '--port', '8087'], {
       cwd: rootDir,
       stdio: 'inherit',
       env: {
@@ -75,7 +75,7 @@ if (isWeb) {
   });
 } else {
   // Delegate to Python CLI / MCP engine
-  const child = spawn('python3', ['-m', 'envguard_secrets_vault.cli', ...args], {
+  const child = spawn('python3', ['-c', 'from envguard_secrets_vault.cli import main; import sys; sys.exit(main())', ...args], {
     cwd: rootDir,
     stdio: 'inherit',
     env: {
