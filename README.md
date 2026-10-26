@@ -1,3 +1,9 @@
+<div align="center">
+  <img src="assets/hero-banner.svg" alt="EnvGuard Secrets Vault — Sovereign Architecture Banner" width="100%" />
+</div>
+
+<br />
+
 # 🛡️ EnvGuard Secrets Vault
 
 <p align="center">
