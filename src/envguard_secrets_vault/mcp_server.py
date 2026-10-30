@@ -441,7 +441,7 @@ def scan_secrets(content: str, source: str = "<input>", min_score: int = 80) -> 
                 ent = calculate_shannon_entropy(val)
                 sec015 = next(d for d in SECRET_DETECTORS if d["id"] == "SEC015")
                 m_generic = re.search(sec015["regex"], line)
-                if m_generic or ent >= 3.8:
+                if ent >= 3.8:
                     sig = f"GENERIC:{line_idx}:{key}"
                     if sig not in seen_signatures:
                         seen_signatures.add(sig)
@@ -457,6 +457,24 @@ def scan_secrets(content: str, source: str = "<input>", min_score: int = 80) -> 
                             "line": line_idx,
                             "matched_sample": masked,
                             "description": f"Variable '{key}' has high Shannon entropy ({ent:.2f} bits/symbol).",
+                            "remediation": "Encrypt this variable with EnvGuard Vault before committing.",
+                        })
+                elif m_generic:
+                    sig = f"GENERIC:{line_idx}:{key}"
+                    if sig not in seen_signatures:
+                        seen_signatures.add(sig)
+                        deduct = 15
+                        total_deduction += deduct
+                        masked = val[:3] + "*" * (len(val) - 6) + val[-3:] if len(val) > 6 else "*" * len(val)
+                        findings.append({
+                            "id": "SEC015",
+                            "name": f"Suspicious Sensitive Credential ({key})",
+                            "category": "Credentials",
+                            "severity": "HIGH",
+                            "deduction": deduct,
+                            "line": line_idx,
+                            "matched_sample": masked,
+                            "description": f"Variable '{key}' matches sensitive credential assignment pattern (entropy: {ent:.2f} bits/symbol).",
                             "remediation": "Encrypt this variable with EnvGuard Vault before committing.",
                         })
 
