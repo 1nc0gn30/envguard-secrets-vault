@@ -11,7 +11,8 @@ EnvGuard is built exclusively with NIST-approved, industry-standard cryptographi
 | Component | Standard Primitive | Specification / Parameters |
 | :--- | :--- | :--- |
 | **Symmetric Cipher** | `AES-256-CTR-HMAC-SHA256` | NIST FIPS-197 AES-256-CTR, 128-bit (16-byte) random counter IV, 256-bit (32-byte) HMAC-SHA256 authentication tag |
-| **Key Derivation (KDF)** | `PBKDF2-HMAC-SHA256` | 100,000+ iterations (Web Crypto), 600,000 iterations (CLI), 128-bit salt (512-bit key material split into 256-bit AES key + 256-bit MAC key) |
+| **Auxiliary Stdlib Stream Cipher** | `HMAC-SHA256-CTR` (`vault.py`) | Pure-stdlib HMAC-SHA256 counter-mode keystream (`EncryptedVault`, `-----BEGIN ENVGUARD VAULT v1-----`) with 16-byte salt/nonce and 32-byte EtM tag |
+| **Key Derivation (KDF)** | `PBKDF2-HMAC-SHA256` | 100,000+ iterations (Web Crypto & `vault.py`), 600,000 iterations (CLI `mcp_server.py`), 128-bit salt (512-bit key material split into 256-bit encryption key + 256-bit MAC key) |
 | **Random Number Generation** | CSPRNG | `os.urandom` (Python) / `crypto.getRandomValues` (Web Crypto) |
 | **Payload Envelope** | JSON & ASCII Armor | Self-describing, deterministic base64 / armored fields |
 

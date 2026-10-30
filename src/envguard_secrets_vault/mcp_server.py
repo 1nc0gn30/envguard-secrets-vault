@@ -850,25 +850,7 @@ def vault_decrypt(vault_armor: str, password: str) -> Dict[str, Any]:
                         "plaintext_bytes": len(plaintext_bytes),
                         "ciphertext_bytes": len(ct_bytes),
                     }
-
-                try:
-                    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-                    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-                    from cryptography.hazmat.primitives import hashes
-                    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=iterations)
-                    key = kdf.derive(password.encode("utf-8") if isinstance(password, str) else password)
-                    aesgcm = AESGCM(key)
-                    decrypted_bytes = aesgcm.decrypt(iv, ct_bytes + tag_bytes, None)
-                    return {
-                        "decrypted_content": decrypted_bytes.decode("utf-8"),
-                        "cipher": cipher_type,
-                        "plaintext_bytes": len(decrypted_bytes),
-                        "ciphertext_bytes": len(ct_bytes),
-                    }
-                except ImportError:
-                    pass
-                except Exception:
-                    raise ValueError("Authentication failed: Invalid master password or tampered vault data.")
+                raise ValueError(f"Unsupported or invalid vault cipher parameters: {cipher_type} (tag={len(tag_bytes)}B)")
         except json.JSONDecodeError:
             pass
 
