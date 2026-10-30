@@ -12,11 +12,18 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Security_Grade-A%2B_Certified-1e8e3e?style=for-the-badge&logoColor=white" alt="Security Grade A+">
+  <img src="https://img.shields.io/badge/Access-100%25%20Free%20%26%20Open-10b981?style=for-the-badge" alt="100% Free & Open">
   <img src="https://img.shields.io/badge/Cipher-AES--256--CTR--HMAC--SHA256-1a73e8?style=for-the-badge&logo=lock&logoColor=white" alt="AES-256-CTR-HMAC-SHA256">
   <img src="https://img.shields.io/badge/MCP-Protocol_Ready-9334e6?style=for-the-badge&logo=anthropic&logoColor=white" alt="MCP Ready">
   <img src="https://img.shields.io/badge/Python-3.9_--_3.13-f9ab00?style=for-the-badge&logo=python&logoColor=white" alt="Python Support">
   <img src="https://img.shields.io/badge/License-Apache_2.0-202124?style=for-the-badge" alt="License">
 </p>
+
+*100% Free & Open Access with zero paywalls or license keys.*
+
+☕ **Support Development**:
+- **Stripe Buy Us a Coffee**: [https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)
+- **Solana Tip Address**: `GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK`
 
 ---
 
@@ -51,7 +58,18 @@ uv pip install envguard-secrets-vault
 
 ---
 
-## ⚡ Quick Start (CLI)
+## ⚡ Quick Start (ZothOS CLI `envguard-secrets-vault` / `envguard`)
+
+```bash
+# Check version and JSON telemetry
+envguard-secrets-vault --version
+envguard-secrets-vault --json
+
+# Start the standalone Web Workstation on port 8088
+python3 server.py
+# or
+envguard-secrets-vault serve --port 8088
+```
 
 ### 1. Audit Environment Files for Secret Leaks
 ```bash

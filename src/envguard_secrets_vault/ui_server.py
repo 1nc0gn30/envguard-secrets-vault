@@ -443,11 +443,12 @@ class StudioHTTPRequestHandler(SimpleHTTPRequestHandler):
         parsed_url = urllib.parse.urlparse(self.path)
         path = parsed_url.path
 
-        if path == "/api/health":
+        if path in ("/health", "/api/health"):
             self._send_json_response({
-                "status": "ok",
-                "app": SERVER_NAME,
+                "status": "healthy",
+                "service": "envguard-secrets-vault",
                 "version": SERVER_VERSION,
+                "sovereign": True,
                 "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             })
             return
