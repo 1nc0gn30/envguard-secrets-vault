@@ -12,7 +12,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Security_Grade-A%2B_Certified-1e8e3e?style=for-the-badge&logoColor=white" alt="Security Grade A+">
-  <img src="https://img.shields.io/badge/Cipher-AES--256--GCM-1a73e8?style=for-the-badge&logo=lock&logoColor=white" alt="AES-256-CTR-HMAC-SHA256">
+  <img src="https://img.shields.io/badge/Cipher-AES--256--CTR--HMAC--SHA256-1a73e8?style=for-the-badge&logo=lock&logoColor=white" alt="AES-256-CTR-HMAC-SHA256">
   <img src="https://img.shields.io/badge/MCP-Protocol_Ready-9334e6?style=for-the-badge&logo=anthropic&logoColor=white" alt="MCP Ready">
   <img src="https://img.shields.io/badge/Python-3.9_--_3.13-f9ab00?style=for-the-badge&logo=python&logoColor=white" alt="Python Support">
   <img src="https://img.shields.io/badge/License-Apache_2.0-202124?style=for-the-badge" alt="License">

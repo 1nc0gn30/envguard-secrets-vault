@@ -2029,16 +2029,16 @@ JWT_SECRET=super-secret-jwt-token-value-2026`;
       return bytes.buffer;
     }
 
-    async function deriveKey(password, salt) {
+    async function deriveKeys(password, salt) {
       const enc = new TextEncoder();
       const keyMaterial = await window.crypto.subtle.importKey(
         "raw",
         enc.encode(password),
         "PBKDF2",
         false,
-        ["deriveKey"]
+        ["deriveBits"]
       );
-      return window.crypto.subtle.deriveKey(
+      const derivedBits = await window.crypto.subtle.deriveBits(
         {
           name: "PBKDF2",
           salt: salt,
@@ -2046,10 +2046,25 @@ JWT_SECRET=super-secret-jwt-token-value-2026`;
           hash: "SHA-256"
         },
         keyMaterial,
-        { name: "AES-GCM", length: 256 },
+        512
+      );
+      const encKeyRaw = derivedBits.slice(0, 32);
+      const macKeyRaw = derivedBits.slice(32, 64);
+      const encKey = await window.crypto.subtle.importKey(
+        "raw",
+        encKeyRaw,
+        { name: "AES-CTR" },
         false,
         ["encrypt", "decrypt"]
       );
+      const macKey = await window.crypto.subtle.importKey(
+        "raw",
+        macKeyRaw,
+        { name: "HMAC", hash: "SHA-256" },
+        false,
+        ["sign", "verify"]
+      );
+      return { encKey, macKey };
     }
 
     // Password strength meter
@@ -2100,19 +2115,25 @@ JWT_SECRET=super-secret-jwt-token-value-2026`;
 
       try {
         const salt = window.crypto.getRandomValues(new Uint8Array(16));
-        const iv = window.crypto.getRandomValues(new Uint8Array(12));
-        const key = await deriveKey(pwd, salt);
+        const iv = window.crypto.getRandomValues(new Uint8Array(16));
+        const { encKey, macKey } = await deriveKeys(pwd, salt);
 
         const enc = new TextEncoder();
-        const ciphertextWithTag = await window.crypto.subtle.encrypt(
-          { name: "AES-GCM", iv: iv },
-          key,
+        const ciphertextBuffer = await window.crypto.subtle.encrypt(
+          { name: "AES-CTR", counter: iv, length: 64 },
+          encKey,
           enc.encode(plain)
         );
+        const ctBytes = new Uint8Array(ciphertextBuffer);
 
-        // Web Crypto AES-GCM appends 16-byte tag to ciphertext
-        const ctBytes = new Uint8Array(ciphertextWithTag.slice(0, ciphertextWithTag.byteLength - 16));
-        const tagBytes = new Uint8Array(ciphertextWithTag.slice(ciphertextWithTag.byteLength - 16));
+        // Encrypt-then-MAC: HMAC-SHA256 over (salt + iv + ciphertext)
+        const macData = new Uint8Array(salt.byteLength + iv.byteLength + ctBytes.byteLength);
+        macData.set(salt, 0);
+        macData.set(iv, salt.byteLength);
+        macData.set(ctBytes, salt.byteLength + iv.byteLength);
+
+        const tagBuffer = await window.crypto.subtle.sign("HMAC", macKey, macData);
+        const tagBytes = new Uint8Array(tagBuffer);
 
         const entries = parseDotenv(plain);
 
@@ -2188,16 +2209,23 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         const ct = new Uint8Array(base64ToArrayBuffer(vault.ciphertext));
         const tag = new Uint8Array(base64ToArrayBuffer(vault.tag));
 
-        // Combine ciphertext and tag for Web Crypto
-        const combined = new Uint8Array(ct.byteLength + tag.byteLength);
-        combined.set(ct, 0);
-        combined.set(tag, ct.byteLength);
+        const { encKey, macKey } = await deriveKeys(pwd, salt);
 
-        const key = await deriveKey(pwd, salt);
+        // Verify HMAC-SHA256 tag over (salt + iv + ciphertext)
+        const macData = new Uint8Array(salt.byteLength + iv.byteLength + ct.byteLength);
+        macData.set(salt, 0);
+        macData.set(iv, salt.byteLength);
+        macData.set(ct, salt.byteLength + iv.byteLength);
+
+        const validMac = await window.crypto.subtle.verify("HMAC", macKey, tag, macData);
+        if (!validMac) {
+          throw new Error("Authentication failed: Invalid master password or tampered vault data.");
+        }
+
         const decryptedBuffer = await window.crypto.subtle.decrypt(
-          { name: "AES-GCM", iv: iv },
-          key,
-          combined
+          { name: "AES-CTR", counter: iv, length: 64 },
+          encKey,
+          ct
         );
 
         const dec = new TextDecoder();
@@ -2208,7 +2236,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         showToast("✓ In-memory vault decrypted successfully!");
       } catch (err) {
         console.error(err);
-        showToast("❌ Decryption failed. Incorrect password or corrupted vault.", true);
+        showToast("❌ Decryption failed: " + err.message, true);
       }
     });
 

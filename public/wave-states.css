@@ -1,0 +1,275 @@
+/* ==========================================================================
+   EnvGuard Secrets Studio — Interaction States & Feedback (wave-states.css)
+   :focus-visible outlines, scanner & vault hover controls, empty & error
+   presentations, and prefers-reduced-motion compliance.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Accessible & Visible Focus System (:focus-visible)
+   -------------------------------------------------------------------------- */
+
+/* Buttons, inputs, and controls: precise focus rings with 2px offset */
+.btn:focus-visible,
+button.btn:focus-visible,
+a.btn:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+}
+
+/* Clearer focus ring on secondary and small buttons */
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+  border-color: var(--google-blue);
+}
+
+/* File input upload button focus via label wrapper */
+label.btn:has(input[type="file"]:focus-visible),
+label.btn:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+  border-color: var(--google-blue);
+}
+
+/* Textarea code editors in Scanner & Vault */
+#scanner-input:focus-visible,
+#transformer-input:focus-visible,
+#vault-encrypt-plain:focus-visible,
+#vault-decrypt-input:focus-visible {
+  outline: none;
+}
+
+/* Focus ring for text inputs (passwords, dropdowns) */
+#vault-encrypt-password:focus-visible,
+#vault-decrypt-password:focus-visible,
+.form-control:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 1px;
+  border-color: var(--google-blue);
+}
+
+/* Checkbox focus-visible */
+#toggle-mask-editor:focus-visible,
+#chk-sort-keys:focus-visible,
+#chk-strip-comments:focus-visible,
+#chk-mask-export:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+}
+
+/* Preset chips focus */
+.preset-chip:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+  border-color: var(--google-blue);
+}
+
+/* Modal activation inputs and buttons */
+#license-input:focus-visible {
+  outline: 2px solid #635bff;
+  outline-offset: 1px;
+  border-color: #635bff;
+}
+
+#btnActivateKey:focus-visible,
+#btn-paywall-key:focus-visible {
+  outline: 2px solid #635bff;
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Scanner & Vault Controls Hover & Active Feedback
+   -------------------------------------------------------------------------- */
+
+/* Scanner Action Controls */
+#btn-clear-scanner {
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 120ms ease;
+}
+
+#btn-clear-scanner:hover {
+  background-color: var(--google-red-light);
+  border-color: #f5c2c7;
+  color: var(--google-red);
+}
+
+#btn-clear-scanner:active {
+  transform: translateY(1px);
+}
+
+/* File upload buttons hover */
+label.btn.btn-secondary:hover {
+  background-color: #f1f3f4;
+  border-color: var(--text-secondary);
+}
+
+label.btn.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+/* Download sanitized .env.example CTA */
+#btn-download-sanitized {
+  transition: background-color 150ms ease, transform 140ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease;
+}
+
+#btn-download-sanitized:hover {
+  background-color: var(--google-blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(26, 115, 232, 0.28);
+}
+
+#btn-download-sanitized:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(26, 115, 232, 0.2);
+}
+
+/* Export audit report button */
+#btn-export-report {
+  transition: background-color 150ms ease, border-color 150ms ease, transform 140ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease;
+}
+
+#btn-export-report:hover {
+  background-color: #f1f3f4;
+  border-color: #bdc1c6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(60, 64, 67, 0.1);
+}
+
+#btn-export-report:active {
+  transform: translateY(1px);
+}
+
+/* Preset chips hover refinement */
+.preset-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(26, 115, 232, 0.12);
+}
+
+/* Vault Primary Action Buttons */
+#btn-encrypt-vault,
+#btn-decrypt-vault {
+  transition: background-color 150ms ease, transform 140ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease;
+}
+
+#btn-encrypt-vault:hover,
+#btn-decrypt-vault:hover {
+  background-color: var(--google-blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.28);
+}
+
+#btn-encrypt-vault:active,
+#btn-decrypt-vault:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(26, 115, 232, 0.2);
+}
+
+/* Vault Secondary Control Buttons */
+#btn-load-vault-sample:hover,
+#btn-download-vault-file:hover,
+#btn-copy-decrypted:hover,
+#btn-download-decrypted:hover {
+  background-color: #f1f3f4;
+  border-color: #bdc1c6;
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+#btn-load-vault-sample:active,
+#btn-download-vault-file:active,
+#btn-copy-decrypted:active,
+#btn-download-decrypted:active {
+  transform: translateY(1px);
+}
+
+/* Interactive Details summary hover */
+details.tool-card summary {
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+details.tool-card summary:hover {
+  background-color: #f1f3f4;
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   3. Empty & Error Presentation
+   -------------------------------------------------------------------------- */
+
+/* Findings Table Empty State (using existing #findings-table-body td[colspan="6"]) */
+#findings-table-body td[colspan="6"] {
+  border: 1px dashed var(--border-color);
+  background: rgba(248, 249, 250, 0.85);
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+/* Placeholder styling when editors are empty */
+.code-editor::placeholder {
+  color: #9aa0a6;
+  opacity: 0.85;
+}
+
+/* Critical & High Severity Finding Presentation */
+.sev-critical {
+  border: 1px solid rgba(217, 48, 37, 0.25);
+  box-shadow: 0 0 6px rgba(217, 48, 37, 0.12);
+}
+
+.sev-high {
+  border: 1px solid rgba(234, 134, 0, 0.25);
+}
+
+.sev-safe {
+  border: 1px solid rgba(30, 142, 62, 0.2);
+}
+
+.sev-medium {
+  border: 1px solid rgba(26, 115, 232, 0.2);
+}
+
+/* Table row severity accent lines */
+#findings-table-body tr:has(.sev-critical) td:first-child {
+  border-left: 3px solid var(--google-red);
+}
+
+#findings-table-body tr:has(.sev-high) td:first-child {
+  border-left: 3px solid var(--google-yellow-dark);
+}
+
+/* Toast Error Presentation */
+#toast[style*="background: rgb(217, 48, 37)"],
+#toast[style*="#d93025"] {
+  box-shadow: 0 8px 24px rgba(217, 48, 37, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Form inputs error boundary */
+.form-control:invalid {
+  border-color: var(--google-red);
+  box-shadow: 0 0 0 2px var(--google-red-light);
+}
+
+/* --------------------------------------------------------------------------
+   4. Prefers-Reduced-Motion Compliance
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  #btn-clear-scanner,
+  #btn-download-sanitized,
+  #btn-export-report,
+  #btn-encrypt-vault,
+  #btn-decrypt-vault,
+  #btn-load-vault-sample,
+  #btn-download-vault-file,
+  #btn-copy-decrypted,
+  #btn-download-decrypted,
+  .btn,
+  .preset-chip,
+  label.btn,
+  details.tool-card summary {
+    transition: none !important;
+    transform: none !important;
+  }
+}

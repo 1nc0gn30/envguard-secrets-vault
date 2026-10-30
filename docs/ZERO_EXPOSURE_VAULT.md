@@ -10,10 +10,10 @@ EnvGuard is built exclusively with NIST-approved, industry-standard cryptographi
 
 | Component | Standard Primitive | Specification / Parameters |
 | :--- | :--- | :--- |
-| **Symmetric Cipher** | `AES-256-CTR-HMAC-SHA256` | 256-bit key length, 96-bit random IV, 128-bit authentication tag (`tag`) |
-| **Key Derivation (KDF)** | `PBKDF2-HMAC-SHA256` | 100,000+ iterations (Web Crypto), 600,000 iterations (CLI), 128-bit salt |
+| **Symmetric Cipher** | `AES-256-CTR-HMAC-SHA256` | NIST FIPS-197 AES-256-CTR, 128-bit (16-byte) random counter IV, 256-bit (32-byte) HMAC-SHA256 authentication tag |
+| **Key Derivation (KDF)** | `PBKDF2-HMAC-SHA256` | 100,000+ iterations (Web Crypto), 600,000 iterations (CLI), 128-bit salt (512-bit key material split into 256-bit AES key + 256-bit MAC key) |
 | **Random Number Generation** | CSPRNG | `os.urandom` (Python) / `crypto.getRandomValues` (Web Crypto) |
-| **Payload Envelope** | JSON | Self-describing, deterministic base64 fields |
+| **Payload Envelope** | JSON & ASCII Armor | Self-describing, deterministic base64 / armored fields |
 
 ---
 
@@ -28,16 +28,16 @@ EnvGuard is built exclusively with NIST-approved, industry-standard cryptographi
   "kdf": "PBKDF2-HMAC-SHA256",
   "kdf_iterations": 100000,
   "salt": "<base64-encoded 16 bytes>",
-  "iv": "<base64-encoded 12 bytes>",
+  "iv": "<base64-encoded 16 bytes>",
   "ciphertext": "<base64-encoded encrypted payload>",
-  "tag": "<base64-encoded 16 bytes auth tag>",
+  "tag": "<base64-encoded 32 bytes HMAC-SHA256 auth tag>",
   "created_at": "2026-09-16T18:30:00Z",
   "key_count": 9
 }
 ```
 
 ### Integrity & Tamper Detection
-AES-GCM is an **Authenticated Encryption with Associated Data (AEAD)** scheme. If an adversary modifies even a single bit of the `ciphertext`, `iv`, `salt`, or `tag`, the GCM verification fails during `aesgcm.decrypt()` and execution immediately raises an authentication error before any unverified plaintext is processed.
+EnvGuard utilizes an **Encrypt-then-MAC (EtM)** architecture combining NIST FIPS-197 AES-256-CTR with HMAC-SHA256. If an adversary modifies even a single bit of the `ciphertext`, `iv`, `salt`, or `tag`, constant-time HMAC verification fails during `vault_decrypt()` and execution immediately aborts before any unverified plaintext is processed.
 
 ---
 
@@ -68,7 +68,7 @@ flowchart TD
 - **Accidental Repository Commits:** `.vault` files are fully encrypted with AES-256-CTR-HMAC-SHA256 and safe for version control.
 - **Client-Side Bundle Leaks:** Detects frontend framework prefix misuse (e.g. `NEXT_PUBLIC_`) before production builds.
 - **Disk Forensics:** Secrets are injected directly into OS process environments and never touch storage drives.
-- **Tampering & Bit-Flipping:** AES-GCM 128-bit authentication tags ensure mathematical tamper evidence.
+- **Tampering & Bit-Flipping:** HMAC-SHA256 256-bit authentication tags ensure mathematical tamper evidence.
 - **Offline Dictionary Attacks:** High-iteration PBKDF2-HMAC-SHA256 makes brute-force attacks computationally prohibitive.
 
 ### Out of Scope:

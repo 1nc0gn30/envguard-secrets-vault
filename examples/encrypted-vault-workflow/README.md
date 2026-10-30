@@ -7,31 +7,29 @@ This example demonstrates the end-to-end workflow for managing production secret
 ## 🛡️ Architecture & Security Model
 
 EnvGuard uses **envelope encryption** with industry-standard primitives:
-- **Key Derivation:** `PBKDF2-HMAC-SHA256` with 100,000+ iterations and a 16-byte cryptographically secure random salt.
-- **Authenticated Encryption:** `AES-256-CTR-HMAC-SHA256` (Galois/Counter Mode) with a 12-byte random initialization vector (IV) and a 16-byte authentication tag (`tag`).
-- **Tamper Evident:** Any modification to the ciphertext, IV, salt, or tag causes decryption to immediately abort before any plaintext is parsed.
+- **Key Derivation:** `PBKDF2-HMAC-SHA256` with 100,000+ iterations and a 16-byte cryptographically secure random salt (deriving 512 bits: 256-bit encryption key + 256-bit MAC key).
+- **Authenticated Encryption:** `AES-256-CTR-HMAC-SHA256` (Counter Mode with Encrypt-then-MAC) with a 16-byte random counter vector (`iv`) and a 32-byte HMAC-SHA256 authentication tag (`hmac` / `tag`).
+- **Tamper Evident:** Any modification to the ciphertext, IV, salt, or HMAC tag causes decryption to immediately abort before any plaintext is parsed.
 - **Zero Disk Exposure:** Decrypted secrets remain in ephemeral process memory or are piped directly into child process environment blocks (`envguard vault run`).
 
 ---
 
 ## 📂 Vault File Structure (`sample.vault`)
 
-An EnvGuard `.vault` file is a deterministic, self-describing JSON document that is safe to store in version control:
+An EnvGuard `.vault` artifact is a deterministic, self-describing ASCII armored envelope (or JSON payload) that is safe to store in version control:
 
-```json
-{
-  "version": 1,
-  "format": "envguard-vault-v1",
-  "cipher": "AES-256-CTR-HMAC-SHA256",
-  "kdf": "PBKDF2-HMAC-SHA256",
-  "kdf_iterations": 100000,
-  "salt": "RW52R3VhcmRTYWx0MjAyNg==",
-  "iv": "VmF1bHRJVjIwMjYh",
-  "ciphertext": "...",
-  "tag": "1aqQqmS4RYNb5fxaunFpYQ==",
-  "created_at": "2026-09-16T18:30:00Z",
-  "key_count": 9
-}
+```
+-----BEGIN ENVGUARD ENCRYPTED VAULT-----
+version: 1
+cipher: AES-256-CTR-HMAC-SHA256
+kdf: PBKDF2-HMAC-SHA256
+iterations: 100000
+salt: ff4003763f047def841c54cd3b2f8b4c
+iv: 09ba9bf696065f864a5ee842e84b2f72
+hmac: 93265507ad063cf99083a354bcb10e59a7fb7726e9e49398fc2a02563389932f
+payload:
+...
+-----END ENVGUARD ENCRYPTED VAULT-----
 ```
 
 > **Demo Vault Credentials:**
@@ -99,35 +97,56 @@ envguard vault decrypt sample.vault --output .env.local --password "envguard-dem
 
 ## 🐍 Python Decryption Verification
 
-You can verify and decrypt `sample.vault` using standard Python `cryptography` in 10 lines:
+You can verify and decrypt `sample.vault` using `envguard_secrets_vault` or pure Python with `cryptography`:
 
 ```python
-import json, base64
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import hashlib, hmac, base64
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-# 1. Load vault JSON
+# 1. Parse ASCII armored vault envelope
 with open("examples/encrypted-vault-workflow/sample.vault") as f:
-    vault = json.load(f)
+    text = f.read()
 
-# 2. Derive 256-bit key from password
+headers, payload_b64 = {}, []
+in_payload = False
+for line in text.strip().splitlines():
+    if line == "payload:":
+        in_payload = True
+        continue
+    if in_payload and not line.startswith("-----"):
+        payload_b64.append(line.strip())
+    elif ":" in line and not line.startswith("-----"):
+        k, v = line.split(":", 1)
+        headers[k.strip()] = v.strip()
+
+salt = bytes.fromhex(headers["salt"])
+iv = bytes.fromhex(headers["iv"])
+expected_mac = bytes.fromhex(headers["hmac"])
+ciphertext = base64.b64decode("".join(payload_b64))
+
+# 2. Derive 512-bit key material (256-bit encryption key + 256-bit MAC key)
 password = b"envguard-demo-password-2026!"
-kdf = PBKDF2HMAC(
-    algorithm=hashes.SHA256(),
-    length=32,
-    salt=base64.b64decode(vault["salt"]),
-    iterations=vault["kdf_iterations"],
-)
-key = kdf.derive(password)
+key_material = hashlib.pbkdf2_hmac("sha256", password, salt, int(headers.get("iterations", 100000)), dklen=64)
+enc_key, mac_key = key_material[:32], key_material[32:64]
 
-# 3. Decrypt with AES-256-CTR-HMAC-SHA256
-aesgcm = AESGCM(key)
-iv = base64.b64decode(vault["iv"])
-ciphertext = base64.b64decode(vault["ciphertext"]) + base64.b64decode(vault["tag"])
-plaintext = aesgcm.decrypt(iv, ciphertext, None).decode("utf-8")
+# 3. Authenticate-then-Decrypt (EtM verification)
+computed_mac = hmac.new(mac_key, salt + iv + ciphertext, hashlib.sha256).digest()
+if not hmac.compare_digest(computed_mac, expected_mac):
+    raise ValueError("MAC verification failed - vault artifact corrupted or tampered")
 
+decryptor = Cipher(algorithms.AES(enc_key), modes.CTR(iv)).decryptor()
+plaintext = (decryptor.update(ciphertext) + decryptor.finalize()).decode("utf-8")
 print(plaintext)
+```
+
+Or using the EnvGuard Python API directly:
+```python
+from envguard_secrets_vault.mcp_server import vault_decrypt
+
+with open("examples/encrypted-vault-workflow/sample.vault") as f:
+    result = vault_decrypt(f.read(), "envguard-demo-password-2026!")
+
+print(result["decrypted_content"])
 ```
 
 ---

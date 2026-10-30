@@ -836,6 +836,21 @@ def vault_decrypt(vault_armor: str, password: str) -> Dict[str, Any]:
                 ct_bytes = base64.b64decode(vault_json.get("ciphertext", ""))
                 tag_bytes = base64.b64decode(vault_json.get("tag", "")) if "tag" in vault_json else b""
 
+                if cipher_type == "AES-256-CTR-HMAC-SHA256" or len(tag_bytes) == 32:
+                    kdf_derived = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, iterations, dklen=64)
+                    enc_key = kdf_derived[:32]
+                    mac_key = kdf_derived[32:64]
+                    actual_hmac = hmac.new(mac_key, salt + iv + ct_bytes, hashlib.sha256).digest()
+                    if not hmac.compare_digest(actual_hmac, tag_bytes):
+                        raise ValueError("Authentication failed: Invalid master password or tampered vault data.")
+                    plaintext_bytes = aes256_ctr_crypt(ct_bytes, enc_key, iv)
+                    return {
+                        "decrypted_content": plaintext_bytes.decode("utf-8"),
+                        "cipher": "AES-256-CTR-HMAC-SHA256",
+                        "plaintext_bytes": len(plaintext_bytes),
+                        "ciphertext_bytes": len(ct_bytes),
+                    }
+
                 try:
                     from cryptography.hazmat.primitives.ciphers.aead import AESGCM
                     from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC

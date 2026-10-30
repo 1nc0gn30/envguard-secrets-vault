@@ -1,0 +1,236 @@
+/* ==========================================================================
+   EnvGuard Secrets Studio — Precision Workbench Surface (wave.css)
+   Enhanced Hierarchy, Accessible Focus Indicators & Scan Result Choreography
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Work Surface Hierarchy & Framing (Scanner & Vault)
+   -------------------------------------------------------------------------- */
+
+/* Elevate the active workspace cards with refined border definition */
+#scanner-tab .card,
+#vault-tab .card {
+  position: relative;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Clearer hierarchy between section headers and action areas */
+.card-header {
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.15rem;
+}
+
+.card-title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.card-subtitle {
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Editor container surface elevation */
+.editor-wrapper {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  background-color: var(--surface-card);
+}
+
+.editor-toolbar {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-secondary);
+  background: #f8fafc;
+}
+
+#scanner-line-count {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+/* Presets bar enhancement */
+.presets-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.presets-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  color: var(--text-tertiary);
+}
+
+.preset-chip {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.preset-chip:active {
+  transform: translateY(1px);
+}
+
+/* Summary Pills Hierarchy */
+.summary-pill {
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.summary-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(60, 64, 67, 0.1);
+}
+
+.summary-pill-label {
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+}
+
+.summary-pill-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+/* Findings Table Hierarchy & Sticky Header */
+.table-container {
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08);
+}
+
+.table-container th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: #f1f3f5;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.table-container td {
+  font-size: 0.82rem;
+}
+
+.table-container tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Vault Master Password & Work Surface Structure */
+#vault-tab .form-control {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Visible Focus System (Accessible & Tactile)
+   -------------------------------------------------------------------------- */
+
+/* Editor wrapper lights up when internal textarea receives focus */
+.editor-wrapper:focus-within {
+  border-color: var(--google-blue);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+}
+
+/* Textarea focus styling */
+textarea.code-editor:focus {
+  background: #fafbfc;
+  outline: none;
+}
+
+/* Form controls visible focus */
+.form-control:focus {
+  border-color: var(--google-blue);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+  outline: none;
+}
+
+/* Button & Interactive Element Visible Focus */
+.btn:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+}
+
+.preset-chip:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+  border-color: var(--google-blue);
+}
+
+.tab-btn:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: -2px;
+}
+
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--google-blue);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Scan & Vault Result Entrance Motion (Transform & Opacity Only)
+   -------------------------------------------------------------------------- */
+
+@keyframes scanRowAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#findings-table-body tr {
+  animation: scanRowAppear 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stagger for initial scan result items */
+#findings-table-body tr:nth-child(1) { animation-delay: 0ms; }
+#findings-table-body tr:nth-child(2) { animation-delay: 25ms; }
+#findings-table-body tr:nth-child(3) { animation-delay: 50ms; }
+#findings-table-body tr:nth-child(4) { animation-delay: 75ms; }
+#findings-table-body tr:nth-child(5) { animation-delay: 100ms; }
+#findings-table-body tr:nth-child(6) { animation-delay: 125ms; }
+#findings-table-body tr:nth-child(7) { animation-delay: 150ms; }
+#findings-table-body tr:nth-child(8) { animation-delay: 175ms; }
+
+/* Vault results entrance motion */
+#encrypt-result-area,
+#decrypt-result-area {
+  animation: scanRowAppear 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* --------------------------------------------------------------------------
+   4. Prefers-Reduced-Motion Compliance
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  #findings-table-body tr,
+  #encrypt-result-area,
+  #decrypt-result-area {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .preset-chip,
+  .summary-pill,
+  .editor-wrapper,
+  .btn {
+    transition: none !important;
+    transform: none !important;
+  }
+}
