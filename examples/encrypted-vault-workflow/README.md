@@ -8,7 +8,7 @@ This example demonstrates the end-to-end workflow for managing production secret
 
 EnvGuard uses **envelope encryption** with industry-standard primitives:
 - **Key Derivation:** `PBKDF2-HMAC-SHA256` with 100,000+ iterations and a 16-byte cryptographically secure random salt.
-- **Authenticated Encryption:** `AES-256-GCM` (Galois/Counter Mode) with a 12-byte random initialization vector (IV) and a 16-byte authentication tag (`tag`).
+- **Authenticated Encryption:** `AES-256-CTR-HMAC-SHA256` (Galois/Counter Mode) with a 12-byte random initialization vector (IV) and a 16-byte authentication tag (`tag`).
 - **Tamper Evident:** Any modification to the ciphertext, IV, salt, or tag causes decryption to immediately abort before any plaintext is parsed.
 - **Zero Disk Exposure:** Decrypted secrets remain in ephemeral process memory or are piped directly into child process environment blocks (`envguard vault run`).
 
@@ -22,7 +22,7 @@ An EnvGuard `.vault` file is a deterministic, self-describing JSON document that
 {
   "version": 1,
   "format": "envguard-vault-v1",
-  "cipher": "AES-256-GCM",
+  "cipher": "AES-256-CTR-HMAC-SHA256",
   "kdf": "PBKDF2-HMAC-SHA256",
   "kdf_iterations": 100000,
   "salt": "RW52R3VhcmRTYWx0MjAyNg==",
@@ -121,7 +121,7 @@ kdf = PBKDF2HMAC(
 )
 key = kdf.derive(password)
 
-# 3. Decrypt with AES-256-GCM
+# 3. Decrypt with AES-256-CTR-HMAC-SHA256
 aesgcm = AESGCM(key)
 iv = base64.b64decode(vault["iv"])
 ciphertext = base64.b64decode(vault["ciphertext"]) + base64.b64decode(vault["tag"])

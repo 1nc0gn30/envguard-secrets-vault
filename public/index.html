@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EnvGuard Secrets Studio — Zero-Exposure Environment Secrets Vault & Scanner</title>
-  <meta name="description" content="Sovereign developer tool for scanning, sanitizing, and vaulting environment secrets. Zero-knowledge client-side encryption with PBKDF2, AES-256-GCM, and MCP integration.">
+  <meta name="description" content="Sovereign developer tool for scanning, sanitizing, and vaulting environment secrets. Zero-knowledge client-side encryption with PBKDF2, AES-256-CTR-HMAC-SHA256, and MCP integration.">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://envguard-secrets-vault.netlify.app/">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -36,7 +36,7 @@
         "url": "https://envguard-secrets-vault.netlify.app/",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
-        "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side PBKDF2 and AES-256-GCM encrypted vault.",
+        "description": "Zero-exposure environment secrets scanner, AST leak sanitizer, and client-side PBKDF2 and AES-256-CTR-HMAC-SHA256 encrypted vault.",
         "creator": {
           "@type": "Person",
           "name": "Neal Frazier",
@@ -62,7 +62,7 @@
             "name": "How does EnvGuard prevent environment secret leakage?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "EnvGuard scans client code and configuration files for exposed API keys and secrets entirely in-browser, offering zero-knowledge PBKDF2 and AES-256-GCM client-side encryption."
+              "text": "EnvGuard scans client code and configuration files for exposed API keys and secrets entirely in-browser, offering zero-knowledge PBKDF2 and AES-256-CTR-HMAC-SHA256 client-side encryption."
             }
           },
           {
@@ -923,7 +923,7 @@
       <div style="display: flex; align-items: center; gap: 0.65rem; text-align: left;">
         <span id="offer-element-badge" style="background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.5); font-weight: 700; font-size: 0.72rem; padding: 3px 10px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.08em; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 0 10px rgba(239,68,68,0.25);">
           <span style="display:inline-block; width:6px; height:6px; background:#ef4444; border-radius:50%; box-shadow:0 0 8px #ef4444;"></span>
-          AES-256-GCM Vault &middot; Zero-Telemetry AST Active
+          AES-256-CTR-HMAC-SHA256 Vault &middot; Zero-Telemetry AST Active
         </span>
         <span id="offer-promo-text" style="font-size: 0.9rem; color: var(--text-primary); font-weight: 500;">
           Zero-leak automated secret vaulting & AST scanning. Lifetime Pass <strong style="color: #ef4444; font-size: 1.05rem; text-shadow: 0 0 8px rgba(239,68,68,0.3);">$19</strong> <span style="text-decoration: line-through; color: var(--text-tertiary); font-size: 0.82rem;">$79</span> (First 50 seats).
@@ -1226,7 +1226,7 @@ JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
         <!-- Encrypt Box -->
         <div class="card">
           <div class="card-title" style="margin-bottom: 0.5rem;">
-            <span>★</span> Encrypt Secrets to .vault (PBKDF2 + AES-256-GCM)
+            <span>★</span> Encrypt Secrets to .vault (PBKDF2 + AES-256-CTR-HMAC-SHA256)
           </div>
           <div class="card-subtitle" style="margin-bottom: 1.25rem;">
             All encryption is performed locally in your browser with Web Crypto API. Zero plaintext ever leaves this machine.
@@ -1258,7 +1258,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
           <div id="encrypt-result-area" style="margin-top: 1rem; display: none;">
             <div class="editor-wrapper">
               <div class="editor-toolbar">
-                <span style="color: var(--google-green); font-weight: 600;">✓ Encrypted Vault JSON (AES-256-GCM)</span>
+                <span style="color: var(--google-green); font-weight: 600;">✓ Encrypted Vault JSON (AES-256-CTR-HMAC-SHA256)</span>
                 <button id="btn-download-vault-file" class="btn btn-secondary btn-sm">↓ Download .vault File</button>
               </div>
               <textarea id="vault-encrypt-output" class="code-editor" style="height: 140px;" readonly aria-label="Encrypted vault JSON output"></textarea>
@@ -1283,7 +1283,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
                 <input type="file" id="file-input-vault" accept=".vault,.json,text/plain" style="display: none;" aria-label="Load encrypted vault file">
               </label>
             </div>
-            <textarea id="vault-decrypt-input" class="code-editor" style="height: 180px;" aria-label="Encrypted vault payload to decrypt" placeholder='{"version": 1, "format": "envguard-vault-v1", "cipher": "AES-256-GCM", "salt": "...", "iv": "...", "ciphertext": "...", "tag": "..."}'></textarea>
+            <textarea id="vault-decrypt-input" class="code-editor" style="height: 180px;" aria-label="Encrypted vault payload to decrypt" placeholder='{"version": 1, "format": "envguard-vault-v1", "cipher": "AES-256-CTR-HMAC-SHA256", "salt": "...", "iv": "...", "ciphertext": "...", "tag": "..."}'></textarea>
           </div>
 
           <div style="margin-bottom: 1rem;">
@@ -1399,7 +1399,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
           <!-- Tool 4 -->
           <details class="tool-card">
             <summary>
-              <span><code>encrypt_vault</code> — Create AES-256-GCM encrypted vault</span>
+              <span><code>encrypt_vault</code> — Create AES-256-CTR-HMAC-SHA256 encrypted vault</span>
               <span class="badge sev-high">Security</span>
             </summary>
             <div class="tool-body">
@@ -2119,7 +2119,7 @@ JWT_SECRET=super-secret-jwt-token-value-2026`;
         const vaultPayload = {
           version: 1,
           format: "envguard-vault-v1",
-          cipher: "AES-256-GCM",
+          cipher: "AES-256-CTR-HMAC-SHA256",
           kdf: "PBKDF2-HMAC-SHA256",
           kdf_iterations: 100000,
           salt: arrayBufferToBase64(salt),
@@ -2133,7 +2133,7 @@ JWT_SECRET=super-secret-jwt-token-value-2026`;
         const jsonStr = JSON.stringify(vaultPayload, null, 2);
         document.getElementById("vault-encrypt-output").value = jsonStr;
         document.getElementById("encrypt-result-area").style.display = "block";
-        showToast("★ Vault created successfully with AES-256-GCM!");
+        showToast("★ Vault created successfully with AES-256-CTR-HMAC-SHA256!");
       } catch (err) {
         console.error(err);
         showToast("❌ Encryption failed: " + err.message, true);
@@ -2513,7 +2513,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
           <li>✔ Unlimited Sanitized .env.example downloads with smart defaults</li>
           <li>✔ Markdown Security Audit Report generator for SOC2 / ISO compliance</li>
           <li>✔ Multi-format export engine (JSON, YAML, Docker Compose, Kubernetes)</li>
-          <li>✔ Zero-Knowledge local PBKDF2 key derivation, AES-256-GCM encryption & zero cloud leakage</li>
+          <li>✔ Zero-Knowledge local PBKDF2 key derivation, AES-256-CTR-HMAC-SHA256 encryption & zero cloud leakage</li>
           <li>✔ One-click MCP server integration for Cursor, Claude Code, and Windsurf</li>
         </ul>
       </div>

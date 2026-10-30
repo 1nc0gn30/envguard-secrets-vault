@@ -132,7 +132,7 @@ This document makes explicit the implicit security assumptions, trust boundaries
 
 | Invariant | Implementation Mechanism | Potential Failure Mode / Brittle Boundary | Verification Status |
 | :--- | :--- | :--- | :--- |
-| **Tamper-Evident Storage** | AES-256-GCM AEAD Tag (128-bit) | Modifying metadata or ciphertext invalidates tag; envelope version mismatch can trigger parsing divergence. | Verified |
+| **Tamper-Evident Storage** | AES-256-CTR-HMAC-SHA256 AEAD Tag (128-bit) | Modifying metadata or ciphertext invalidates tag; envelope version mismatch can trigger parsing divergence. | Verified |
 | **Key Derivation Work Factor** | PBKDF2-HMAC-SHA256 (CLI: 600,000 iter; Web: 100,000 iter) | Low iteration counts vulnerable to offline GPU dictionary search if weak passphrases are used. | Enforced |
 | **Zero-Disk Ingestion** | Child process environment table injection (`execve`/`subprocess.Popen(env=...)`) | Process memory inspection (`/proc/$PID/environ`) by same UID or elevated root; child processes leaking via crash dumps. | Documented & Bound |
 | **Browser Secret Insulation** | Ephemeral RAM state, Web Crypto Subtle API | Uncontrolled clipboard access or malicious browser extensions reading input DOM fields prior to encryption. | Guarded |

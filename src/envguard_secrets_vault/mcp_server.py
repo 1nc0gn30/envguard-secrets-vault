@@ -829,7 +829,7 @@ def vault_decrypt(vault_armor: str, password: str) -> Dict[str, Any]:
         try:
             vault_json = json.loads(trimmed)
             if "ciphertext" in vault_json and ("tag" in vault_json or "iv" in vault_json):
-                cipher_type = vault_json.get("cipher", "AES-256-GCM")
+                cipher_type = vault_json.get("cipher", "AES-256-CTR-HMAC-SHA256")
                 salt = base64.b64decode(vault_json.get("salt", ""))
                 iterations = int(vault_json.get("kdf_iterations", 100000))
                 iv = base64.b64decode(vault_json.get("iv", ""))

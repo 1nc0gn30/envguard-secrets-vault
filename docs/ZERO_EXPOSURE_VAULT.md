@@ -10,7 +10,7 @@ EnvGuard is built exclusively with NIST-approved, industry-standard cryptographi
 
 | Component | Standard Primitive | Specification / Parameters |
 | :--- | :--- | :--- |
-| **Symmetric Cipher** | `AES-256-GCM` | 256-bit key length, 96-bit random IV, 128-bit authentication tag (`tag`) |
+| **Symmetric Cipher** | `AES-256-CTR-HMAC-SHA256` | 256-bit key length, 96-bit random IV, 128-bit authentication tag (`tag`) |
 | **Key Derivation (KDF)** | `PBKDF2-HMAC-SHA256` | 100,000+ iterations (Web Crypto), 600,000 iterations (CLI), 128-bit salt |
 | **Random Number Generation** | CSPRNG | `os.urandom` (Python) / `crypto.getRandomValues` (Web Crypto) |
 | **Payload Envelope** | JSON | Self-describing, deterministic base64 fields |
@@ -24,7 +24,7 @@ EnvGuard is built exclusively with NIST-approved, industry-standard cryptographi
   "$schema": "https://envguard.dev/schemas/vault-v1.json",
   "version": 1,
   "format": "envguard-vault-v1",
-  "cipher": "AES-256-GCM",
+  "cipher": "AES-256-CTR-HMAC-SHA256",
   "kdf": "PBKDF2-HMAC-SHA256",
   "kdf_iterations": 100000,
   "salt": "<base64-encoded 16 bytes>",
@@ -65,7 +65,7 @@ flowchart TD
 ## 🛡️ Threat Model & Security Properties
 
 ### Protected Against:
-- **Accidental Repository Commits:** `.vault` files are fully encrypted with AES-256-GCM and safe for version control.
+- **Accidental Repository Commits:** `.vault` files are fully encrypted with AES-256-CTR-HMAC-SHA256 and safe for version control.
 - **Client-Side Bundle Leaks:** Detects frontend framework prefix misuse (e.g. `NEXT_PUBLIC_`) before production builds.
 - **Disk Forensics:** Secrets are injected directly into OS process environments and never touch storage drives.
 - **Tampering & Bit-Flipping:** AES-GCM 128-bit authentication tags ensure mathematical tamper evidence.

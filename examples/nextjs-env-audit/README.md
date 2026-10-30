@@ -54,7 +54,7 @@ CRITICAL FINDINGS:
 RECOMMENDATION:
   1. Revoke and rotate all detected production secrets immediately.
   2. Strip 'NEXT_PUBLIC_' prefix from backend-only secrets.
-  3. Encrypt .env.production into an AES-256-GCM vault: `envguard vault create .env.production`
+  3. Encrypt .env.production into an AES-256-CTR-HMAC-SHA256 vault: `envguard vault create .env.production`
   4. Generate safe template: `envguard sanitize .env.production --output .env.example`
 ```
 
@@ -70,7 +70,7 @@ envguard sanitize examples/nextjs-env-audit/.env.production --output examples/ne
 ---
 
 ### 3. Encrypt Production Secrets into a Portable Vault
-Convert `.env.production` into an encrypted `secrets.vault` file using PBKDF2-HMAC-SHA256 and AES-256-GCM:
+Convert `.env.production` into an encrypted `secrets.vault` file using PBKDF2-HMAC-SHA256 and AES-256-CTR-HMAC-SHA256:
 
 ```bash
 envguard vault create examples/nextjs-env-audit/.env.production \

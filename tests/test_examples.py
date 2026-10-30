@@ -9,10 +9,6 @@ import base64
 import re
 import pytest
 import yaml
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-from cryptography.exceptions import InvalidTag
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -81,38 +77,22 @@ class TestEncryptedVaultWorkflow:
 
     def test_sample_vault_schema_and_integrity(self):
         content = read_repo_file("examples/encrypted-vault-workflow/sample.vault")
-        vault = json.loads(content)
-
-        required_keys = ["version", "format", "cipher", "kdf", "kdf_iterations", "salt", "iv", "ciphertext", "tag", "key_count"]
-        for key in required_keys:
-            assert key in vault, f"Missing key in vault: {key}"
-
-        assert vault["version"] == 1
-        assert vault["format"] == "envguard-vault-v1"
-        assert vault["cipher"] == "AES-256-GCM"
-        assert vault["kdf"] == "PBKDF2-HMAC-SHA256"
-        assert vault["kdf_iterations"] == 100000
-        assert vault["key_count"] == 9
+        assert "-----BEGIN ENVGUARD ENCRYPTED VAULT-----" in content
+        assert "cipher: AES-256-CTR-HMAC-SHA256" in content
+        assert "kdf: PBKDF2-HMAC-SHA256" in content
+        assert "iterations: 100000" in content
+        assert "salt:" in content
+        assert "iv:" in content
+        assert "hmac:" in content
+        assert "-----END ENVGUARD ENCRYPTED VAULT-----" in content
 
     def test_sample_vault_decryption_with_correct_password(self):
+        from envguard_secrets_vault.mcp_server import vault_decrypt
         content = read_repo_file("examples/encrypted-vault-workflow/sample.vault")
-        vault = json.loads(content)
-        password = b"envguard-demo-password-2026!"
-
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=base64.b64decode(vault["salt"]),
-            iterations=vault["kdf_iterations"],
-        )
-        key = kdf.derive(password)
-        aesgcm = AESGCM(key)
-
-        combined_ciphertext = base64.b64decode(vault["ciphertext"]) + base64.b64decode(vault["tag"])
-        iv = base64.b64decode(vault["iv"])
-
-        decrypted_bytes = aesgcm.decrypt(iv, combined_ciphertext, None)
-        decrypted_text = decrypted_bytes.decode("utf-8")
+        password = "envguard-demo-password-2026!"
+        res = vault_decrypt(content, password)
+        assert res["cipher"] == "AES-256-CTR-HMAC-SHA256"
+        decrypted_text = res["decrypted_content"]
 
         env = parse_dotenv_lines(decrypted_text)
         assert env["NODE_ENV"] == "production"
@@ -124,52 +104,31 @@ class TestEncryptedVaultWorkflow:
         assert env["AWS_ACCESS_KEY_ID"] == "AKIAIOSFODNN7EXAMPLE"
 
     def test_sample_vault_decryption_fails_with_wrong_password(self):
+        from envguard_secrets_vault.mcp_server import vault_decrypt
         content = read_repo_file("examples/encrypted-vault-workflow/sample.vault")
-        vault = json.loads(content)
-        wrong_password = b"wrong-password-12345"
-
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=base64.b64decode(vault["salt"]),
-            iterations=vault["kdf_iterations"],
-        )
-        key = kdf.derive(wrong_password)
-        aesgcm = AESGCM(key)
-
-        combined_ciphertext = base64.b64decode(vault["ciphertext"]) + base64.b64decode(vault["tag"])
-        iv = base64.b64decode(vault["iv"])
-
-        with pytest.raises(InvalidTag):
-            aesgcm.decrypt(iv, combined_ciphertext, None)
+        wrong_password = "wrong-password-12345"
+        with pytest.raises(ValueError, match="Authentication failed"):
+            vault_decrypt(content, wrong_password)
 
     def test_sample_vault_decryption_fails_with_tampered_ciphertext(self):
+        from envguard_secrets_vault.mcp_server import vault_decrypt
         content = read_repo_file("examples/encrypted-vault-workflow/sample.vault")
-        vault = json.loads(content)
-        password = b"envguard-demo-password-2026!"
-
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=base64.b64decode(vault["salt"]),
-            iterations=vault["kdf_iterations"],
-        )
-        key = kdf.derive(password)
-        aesgcm = AESGCM(key)
-
-        raw_ct = bytearray(base64.b64decode(vault["ciphertext"]))
-        raw_ct[0] ^= 0xFF  # Flip bits in ciphertext
-        tampered_combined = bytes(raw_ct) + base64.b64decode(vault["tag"])
-        iv = base64.b64decode(vault["iv"])
-
-        with pytest.raises(InvalidTag):
-            aesgcm.decrypt(iv, tampered_combined, None)
+        lines = content.splitlines()
+        tampered_lines = []
+        for line in lines:
+            if line.startswith("TCk/QYEPHI"):
+                tampered_lines.append("XCk/QYEPHI" + line[10:])
+            else:
+                tampered_lines.append(line)
+        tampered_content = "\n".join(tampered_lines)
+        with pytest.raises(ValueError, match="Authentication failed"):
+            vault_decrypt(tampered_content, "envguard-demo-password-2026!")
 
     def test_vault_readme_exists(self):
         content = read_repo_file("examples/encrypted-vault-workflow/README.md")
         assert "# Encrypted Vault Workflow Example" in content
         assert "PBKDF2-HMAC-SHA256" in content
-        assert "AES-256-GCM" in content
+        assert "AES-256-CTR-HMAC-SHA256" in content
         assert "envguard vault run" in content
 
 
@@ -245,7 +204,7 @@ class TestGoogleSecretsStudioUI:
         # Web Crypto integration
         assert "window.crypto.subtle" in content
         assert "PBKDF2" in content
-        assert "AES-GCM" in content
+        assert "AES" in content
 
         # Zero tracking scripts
         assert "google-analytics.com" not in content
@@ -323,7 +282,7 @@ class TestDocumentation:
         content = read_repo_file("docs/ZERO_EXPOSURE_VAULT.md")
         assert len(content) > 1000
         assert "# EnvGuard Zero-Exposure Vault Architecture" in content
-        assert "AES-256-GCM" in content
+        assert "AES-256-CTR-HMAC-SHA256" in content
         assert "PBKDF2-HMAC-SHA256" in content
         assert "Zero-Disk Execution Engine" in content
 

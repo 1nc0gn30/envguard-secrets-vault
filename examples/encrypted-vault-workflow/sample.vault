@@ -1,13 +1,23 @@
-{
-  "version": 1,
-  "format": "envguard-vault-v1",
-  "cipher": "AES-256-GCM",
-  "kdf": "PBKDF2-HMAC-SHA256",
-  "kdf_iterations": 100000,
-  "salt": "RW52R3VhcmRTYWx0MjAyNg==",
-  "iv": "VmF1bHRJVjIwMjYh",
-  "ciphertext": "NKEcG+KjhwdJIpdgo/mk6w0ER4+y4nzXvzoEdcPSKmNNISrLEp/aPmgLEdZe6iVWJzE6pvzF04JdVWKDpRS10+4oZpJKj+36XxG5w76uICqHTi/DGWfEtmkjrBpZQiXweHPBxjC7Urq9JD1ID7kwBi35FOH16xymykPYhvH9LI3K5vWQbBjXwy3oMjl+TT98WACLhD7k0idM3VPGphsX2sbWxUZ/ldaPBzqjTcy4AMI7pthZR+oZkDerOlSDT7x3Pq9/Q0vGVuIV/yWvs6Xjsar2stSBpd36+wHzsAEbrXqF7jqe1z0cs20ChSLDEffE1GBHACHUtgUbU2XaYgdrZbDFi/MTKOabboh8mElNpGneFxJoqwqiR7xoSPkBqkVno38BeFHE6Yja67p8oythOo7bfrB3WEbQ+urHfhWZZjQyDqxIuMD8i4XUVdi4yfUpfD9PZl3iJtO0JbidFFGc8ukWQkwd8npik0T1+Rsg6gkxsXtUi5kA5hEO2zHZC1RileGo/4unvsiiRfc7l9yUi0Bdid3nhEYhMeHNEGtHi4PMuPgYSFg87lbolDuUA3t6Aw23qYns3Mxpc/rA3YeZO5oRACR43e2Zwpc7sffrDLCgyr+fcIlIgriplmaTa2xmk9SJkz4mZnNNvMd9BELMzRv1qJwbBq+yQ3HmO7bNJKD2NCDM5qBfgOm10jzYw8azpgNmKfVxtX9j36sQBKNwyprI4oQZE/R45iphoIGK1vhRkuEqnjnrorD+KKryfNx1iJifOA==",
-  "tag": "1aqQqmS4RYNb5fxaunFpYQ==",
-  "created_at": "2026-09-16T18:30:00Z",
-  "key_count": 9
-}
+-----BEGIN ENVGUARD ENCRYPTED VAULT-----
+version: 1
+cipher: AES-256-CTR-HMAC-SHA256
+kdf: PBKDF2-HMAC-SHA256
+iterations: 100000
+salt: ff4003763f047def841c54cd3b2f8b4c
+iv: 09ba9bf696065f864a5ee842e84b2f72
+hmac: 93265507ad063cf99083a354bcb10e59a7fb7726e9e49398fc2a02563389932f
+payload:
+TCk/QYEPHIsonT/nxG6alZK9FlX0dus37Zi0o3nFek8EOVdQV/zZTqyiZYg4rPzR
+vQ68MyCXOnlVZ79YsBqoE+M4NP5JvyRZ1URdVZT/LpTMpkTroGePvTZN5oWzexCT
+/1sysnqlQM1WKl9ssqboUt1i0QXBnOGuaL6H+UM4k1gPUkQGjBXjZdmauBzJBxub
+gKzX3GwpUvs/Wla0Fhu1HBmwV9wkwm6zNExvh4tVuLwUotYhcBVVDXxNd+AclGYx
+79uYyi+N4EES7mlEp73+9kDeRKXz5HPnBTg6Y0LtVRvlr7wfUAap1t5r3Q9AGXcA
+ilWMNcN4zbaUIUpSxn2xlHnC0FGUA2IxQZd5j3PqUPTIv8RWV9TNDxgUXrTQEsoZ
+J0gv+wKf0y+orr5yX7eyCBUW9nQDGVQnoCsLWI2ufWH3ize9qG7/UEpgAkHgik3K
+Z/GixY5p82g5ket2QFEBFp946S8du+Zxj2gYPGq55QAJ6OAbBHvGwKmg07njj316
+hHK9d/cT6A5AydeZ3fXa+FSOBTgSWcqAjmk2SYJ770IRmHmiTyxeS+zf6tdOZntW
+JXpS9z1Umf5aBWvbQo9LZDS5pDhLSxJ+kXe85OxgBDGWYf7y/0WCvgZSKXgEHFVe
+QT56RjQrd1QvlBRj7woFjs1kpTloV8UGmooxUXUT5Eg0UFHMhWPBzGQBpCmwvGtd
+okwS9VzpBRhDbaUXnp/lLF3apnF5Fw/iChYaFsy3gehZD7AMnYtAkXBe7OF6dral
+HkSyVG4=
+-----END ENVGUARD ENCRYPTED VAULT-----

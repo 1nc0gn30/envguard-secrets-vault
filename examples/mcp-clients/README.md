@@ -37,7 +37,7 @@ When registered, the EnvGuard MCP server provides AI agents with 6 security-scop
 ### 4. `encrypt_vault` (Security / Write)
 - **Description:** Encrypts an environment file into a portable `.vault` payload.
 - **Parameters:** `{"env_file": string, "vault_file": string, "password"?: string}`
-- **Response:** Metadata confirmation (`salt`, `iv`, `cipher: AES-256-GCM`).
+- **Response:** Metadata confirmation (`salt`, `iv`, `cipher: AES-256-CTR-HMAC-SHA256`).
 
 ### 5. `decrypt_vault` (Security / Read)
 - **Description:** Validates authentication tag and decrypts vault keys into memory.

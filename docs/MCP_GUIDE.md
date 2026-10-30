@@ -17,7 +17,7 @@ sequenceDiagram
     participant Proc as Ephemeral Child Process
 
     Agent->>MCP: Call tool: run_with_vault {"vault_file": "secrets.vault", "command": ["npm", "test"]}
-    MCP->>Vault: Read & Decrypt AES-256-GCM in memory
+    MCP->>Vault: Read & Decrypt AES-256-CTR-HMAC-SHA256 in memory
     Vault-->>MCP: Plaintext Environment Map (In-Memory Only)
     MCP->>Proc: Spawn child process with injected env block (Zero-Disk)
     Proc-->>MCP: Process Exit Code & Streamed Output
@@ -124,7 +124,7 @@ Parses a production environment file and produces a sanitized `.env.example` tem
 ---
 
 ### 4. `encrypt_vault`
-Encrypts an environment file into a portable tamper-evident `.vault` file using AES-256-GCM and PBKDF2-HMAC-SHA256.
+Encrypts an environment file into a portable tamper-evident `.vault` file using AES-256-CTR-HMAC-SHA256 and PBKDF2-HMAC-SHA256.
 
 #### Input Schema
 ```json

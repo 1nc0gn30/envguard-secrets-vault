@@ -9,7 +9,7 @@ This directory contains production-ready examples, architectural patterns, confi
 | Directory / Example | Description | Key Deliverables |
 | :--- | :--- | :--- |
 | [`nextjs-env-audit/`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/nextjs-env-audit/README.md) | Next.js production audit, client bundle leak remediation (`NEXT_PUBLIC_`), and safe `.env.example` generation. | [`.env.production`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/nextjs-env-audit/.env.production), [`.env.example`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/nextjs-env-audit/.env.example) |
-| [`encrypted-vault-workflow/`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/encrypted-vault-workflow/README.md) | End-to-end PBKDF2/AES-256-GCM vault encryption, verification, and zero-disk runtime injection (`envguard vault run`). | [`sample.vault`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/encrypted-vault-workflow/sample.vault) |
+| [`encrypted-vault-workflow/`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/encrypted-vault-workflow/README.md) | End-to-end PBKDF2/AES-256-CTR-HMAC-SHA256 vault encryption, verification, and zero-disk runtime injection (`envguard vault run`). | [`sample.vault`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/encrypted-vault-workflow/sample.vault) |
 | [`mcp-clients/`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/mcp-clients/README.md) | Ready-to-copy Model Context Protocol (MCP) configs for Claude Desktop, Cursor, Cline, Zed, and Windsurf. | JSON configs for all major editors |
 
 ---
@@ -24,7 +24,7 @@ envguard audit ./src
 # 2. Sanitize an existing environment file into a safe template
 envguard sanitize .env.production --output .env.example
 
-# 3. Create an AES-256-GCM encrypted vault
+# 3. Create an AES-256-CTR-HMAC-SHA256 encrypted vault
 envguard vault create .env.production --output production.vault
 
 # 4. View or inspect vault contents in memory

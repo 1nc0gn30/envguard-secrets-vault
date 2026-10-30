@@ -7,12 +7,12 @@
 # 🛡️ EnvGuard Secrets Vault
 
 <p align="center">
-  <strong>Zero-Exposure Environment Security, AES-256-GCM Secrets Vault, Multi-Format Transformer & AI Agent MCP Server</strong>
+  <strong>Zero-Exposure Environment Security, AES-256-CTR-HMAC-SHA256 Secrets Vault, Multi-Format Transformer & AI Agent MCP Server</strong>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Security_Grade-A%2B_Certified-1e8e3e?style=for-the-badge&logoColor=white" alt="Security Grade A+">
-  <img src="https://img.shields.io/badge/Cipher-AES--256--GCM-1a73e8?style=for-the-badge&logo=lock&logoColor=white" alt="AES-256-GCM">
+  <img src="https://img.shields.io/badge/Cipher-AES--256--GCM-1a73e8?style=for-the-badge&logo=lock&logoColor=white" alt="AES-256-CTR-HMAC-SHA256">
   <img src="https://img.shields.io/badge/MCP-Protocol_Ready-9334e6?style=for-the-badge&logo=anthropic&logoColor=white" alt="MCP Ready">
   <img src="https://img.shields.io/badge/Python-3.9_--_3.13-f9ab00?style=for-the-badge&logo=python&logoColor=white" alt="Python Support">
   <img src="https://img.shields.io/badge/License-Apache_2.0-202124?style=for-the-badge" alt="License">
@@ -24,14 +24,14 @@
 
 **EnvGuard Secrets Vault** is a next-generation secrets security platform and developer toolkit designed for modern cloud architectures, CI/CD pipelines, and autonomous AI coding agents.
 
-It replaces fragile `.env` file handling with **military-grade envelope encryption (AES-256-GCM + PBKDF2)**, scans 50+ provider token patterns, calculates Shannon entropy, identifies dangerous framework prefix leaks (e.g., Next.js `NEXT_PUBLIC_`), injects secrets into runtime processes with **zero disk writes**, and exposes a standardized **Model Context Protocol (MCP)** server for AI assistants (Claude Desktop, Cursor, Cline, Zed).
+It replaces fragile `.env` file handling with **military-grade envelope encryption (AES-256-CTR-HMAC-SHA256 + PBKDF2)**, scans 50+ provider token patterns, calculates Shannon entropy, identifies dangerous framework prefix leaks (e.g., Next.js `NEXT_PUBLIC_`), injects secrets into runtime processes with **zero disk writes**, and exposes a standardized **Model Context Protocol (MCP)** server for AI assistants (Claude Desktop, Cursor, Cline, Zed).
 
 ---
 
 ## 🚀 Key Highlights
 
 - 🛡️ **Live Secret Auditor & Scanner:** 50+ detection signatures (OpenAI, Anthropic, AWS, Stripe, GitHub, Slack, DB passwords, JWTs, Private Keys) + Shannon entropy scoring.
-- 🔐 **Zero-Exposure Encrypted Vault:** Authenticated AES-256-GCM payload with PBKDF2-HMAC-SHA256 key derivation.
+- 🔐 **Zero-Exposure Encrypted Vault:** Authenticated AES-256-CTR-HMAC-SHA256 payload with PBKDF2-HMAC-SHA256 key derivation.
 - ⚡ **Zero-Disk Process Execution (`envguard vault run`):** Decrypts secrets directly into process RAM and child environment blocks. No plaintext touches disk.
 - 🤖 **Native Model Context Protocol (MCP) Server:** 11 standardized tools (`env_scan_secrets`, `env_mask_variables`, `env_generate_example`, `env_vault_encrypt`, `env_vault_decrypt`, `env_diff_environments`, `env_get_diagnostics`, `env_shamir_split`, `env_shamir_combine`, `env_audit_rotation`, `env_rotate_secrets`) for AI coding agents.
 - 🔄 **Secret Rotation & Ephemerality Sentinel:** Enforce `# @expires`, `# @created`, and `# @rotation_days` policies with realistic ephemeral replacement tokens across 14+ providers and unified diff generation.
@@ -162,7 +162,7 @@ python3 -m http.server 8080 --directory public
 Navigate to `http://localhost:8080` for:
 - 🛡️ Interactive Secret Auditor with 0-100 Grade Gauge.
 - 🔄 Format Transformer (Dotenv, JSON, YAML, Docker Compose, Kubernetes Secret).
-- 🔐 In-Browser Web Crypto AES-256-GCM Encrypted Vault.
+- 🔐 In-Browser Web Crypto AES-256-CTR-HMAC-SHA256 Encrypted Vault.
 - 🤖 AI Agent MCP Config Generator.
 
 ---
