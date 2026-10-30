@@ -7,7 +7,7 @@
 # 🛡️ EnvGuard Secrets Vault
 
 <p align="center">
-  <strong>Zero-Exposure Environment Security, AES-256-GCM Secrets Vault, Multi-Format Transformer &amp; AI Agent MCP Server</strong>
+  <strong>Zero-Exposure Environment Security, AES-256-GCM Secrets Vault, Multi-Format Transformer & AI Agent MCP Server</strong>
 </p>
 
 <p align="center">
@@ -170,7 +170,7 @@ Navigate to `http://localhost:8080` for:
 ## 📚 Documentation
 
 - [Threat Model & Security Assumptions (Skeleton in Dark Armor, Inverted Pentagram & Tower of False Security)](docs/SECURITY_ASSUMPTIONS.md)
-- [EnvGuard Enterprise Lifetime Vault ($19 Offline Airgap Offer)](https://buy.stripe.com/dR67vY1XpcOeeC4000)
+- [EnvGuard Enterprise Lifetime Vault ($19 Offline Airgap Offer)](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)
 - [Secret Patterns & Detector Catalog](docs/SECRET_PATTERNS_CATALOG.md)
 - [Model Context Protocol (MCP) Guide](docs/MCP_GUIDE.md)
 - [Zero-Exposure Vault Specification](docs/ZERO_EXPOSURE_VAULT.md)

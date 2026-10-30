@@ -806,6 +806,39 @@ def vault_decrypt(vault_armor: str, password: str) -> Dict[str, Any]:
     if not password:
         raise ValueError("Decryption password cannot be empty.")
 
+    trimmed = vault_armor.strip()
+    if trimmed.startswith("{") and trimmed.endswith("}"):
+        try:
+            vault_json = json.loads(trimmed)
+            if "ciphertext" in vault_json and ("tag" in vault_json or "iv" in vault_json):
+                cipher_type = vault_json.get("cipher", "AES-256-GCM")
+                salt = base64.b64decode(vault_json.get("salt", ""))
+                iterations = int(vault_json.get("kdf_iterations", 100000))
+                iv = base64.b64decode(vault_json.get("iv", ""))
+                ct_bytes = base64.b64decode(vault_json.get("ciphertext", ""))
+                tag_bytes = base64.b64decode(vault_json.get("tag", "")) if "tag" in vault_json else b""
+
+                try:
+                    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+                    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+                    from cryptography.hazmat.primitives import hashes
+                    kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=iterations)
+                    key = kdf.derive(password.encode("utf-8") if isinstance(password, str) else password)
+                    aesgcm = AESGCM(key)
+                    decrypted_bytes = aesgcm.decrypt(iv, ct_bytes + tag_bytes, None)
+                    return {
+                        "decrypted_content": decrypted_bytes.decode("utf-8"),
+                        "cipher": cipher_type,
+                        "plaintext_bytes": len(decrypted_bytes),
+                        "ciphertext_bytes": len(ct_bytes),
+                    }
+                except ImportError:
+                    pass
+                except Exception:
+                    raise ValueError("Authentication failed: Invalid master password or tampered vault data.")
+        except json.JSONDecodeError:
+            pass
+
     lines = [ln.strip() for ln in vault_armor.strip().splitlines() if ln.strip()]
 
     if not lines or VAULT_HEADER not in lines[0] or VAULT_FOOTER not in lines[-1]:

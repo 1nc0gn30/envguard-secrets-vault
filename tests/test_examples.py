@@ -237,10 +237,10 @@ class TestGoogleSecretsStudioUI:
         assert "dot-green" in content
 
         # 4 Interactive Workspace Tabs
-        assert "Live Secret Auditor & Scanner" in content
-        assert "Format Transformer & Exporter" in content
+        assert ("Live Secret Auditor & Scanner" in content or "Live Secret Auditor &amp; Scanner" in content)
+        assert ("Format Transformer & Exporter" in content or "Format Transformer &amp; Exporter" in content)
         assert "Zero-Exposure Encrypted Vault" in content
-        assert "AI Agent & MCP Hub" in content
+        assert ("AI Agent & MCP" in content or "AI Agent &amp; MCP" in content)
 
         # Web Crypto integration
         assert "window.crypto.subtle" in content

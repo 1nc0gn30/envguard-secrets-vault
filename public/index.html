@@ -51,7 +51,7 @@
           "@type": "Offer",
           "price": "19.00",
           "priceCurrency": "USD",
-          "url": "https://buy.stripe.com/00w00i13L8q4dhK1C0fw40R"
+          "url": "https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X"
         }
       },
       {
@@ -88,8 +88,6 @@
   </script>
 
   <!-- DePay Web3 Solana CDN -->
-  <script src="https://integrate.depay.com/widgets/v13.js"></script>
-
   <style>
     :root {
       --google-blue: #1a73e8;
@@ -870,6 +868,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="wave.css">
+  <link rel="stylesheet" href="wave-states.css">
 </head>
 <body>
 <!-- Google-Style Header -->
@@ -906,7 +906,7 @@
         <span>Detected Secrets:</span>
         <strong id="header-secrets-count" style="color: var(--google-red);">0</strong>
       </div>
-      <a href="https://buy.stripe.com/00w00i13L8q4dhK1C0fw40R" target="_blank" rel="noopener" style="padding: 6px 14px; background: #635BFF; color: #fff; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+      <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" rel="noopener" style="padding: 6px 14px; background: #635BFF; color: #fff; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
         <span>Upgrade Vault ($19)</span>
       </a>
@@ -930,7 +930,7 @@
         </span>
       </div>
       <div id="offer-action-buttons" style="display: flex; align-items: center; gap: 0.5rem;">
-        <a href="https://buy.stripe.com/00w00i13L8q4dhK1C0fw40R" target="_blank" rel="noopener" style="padding: 7px 16px; background: #635BFF; color: #ffffff; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(99,91,255,0.3);">
+        <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" rel="noopener" style="padding: 7px 16px; background: #635BFF; color: #ffffff; border-radius: 6px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(99,91,255,0.3);">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
           <span>Claim Lifetime Pass ($19)</span>
         </a>
@@ -955,13 +955,13 @@
           <line x1="16" y1="16" x2="20" y2="20"></line>
           <line x1="19" y1="21" x2="21" y2="19"></line>
         </svg>
-        <span>Live Secret Auditor &amp; Scanner</span>
+        <span>Live Secret Auditor & Scanner</span>
       </button>
       <button class="tab-btn" data-tab="transformer-tab">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: middle;">
           <path d="M15 4V2m0 20v-2m7-9h-2M4 11H2m15.5 5.5l-1.5-1.5M7 7l-1.5-1.5m11 0l-1.5 1.5M7 16.5l-1.5 1.5M16 11a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"></path>
         </svg>
-        <span>Format Transformer &amp; Exporter</span>
+        <span>Format Transformer & Exporter</span>
       </button>
       <button class="tab-btn" data-tab="vault-tab">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: middle;">
@@ -975,7 +975,7 @@
           <circle cx="12" cy="12" r="9"></circle>
           <path d="M12 3v18M3 12h18"></path>
         </svg>
-        <span>AI Agent &amp; MCP Security Hub</span>
+        <span>AI Agent & MCP Security Hub</span>
       </button>
     </nav>
   </div>
@@ -1196,14 +1196,14 @@ JWT_SECRET=super-secret-jwt-token-value-2026"></textarea>
               </div>
             </div>
             <div style="position: relative; flex: 1; display: flex; flex-direction: column;">
-              <textarea id="transformer-output" class="code-editor" style="filter: blur(6px);" readonly aria-label="Transformed output format"></textarea>
-              <div id="transformerPaywallOverlay" style="display: flex; position: absolute; inset: 0; background: rgba(10,12,18,0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 8px; align-items: center; justify-content: center; z-index: 10;">
+              <textarea id="transformer-output" class="code-editor" style="filter: none;" readonly aria-label="Transformed output format"></textarea>
+              <div id="transformerPaywallOverlay" style="display: flex; position: absolute; inset: 0; background: rgba(10,12,18,0.7); backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 8px; align-items: center; justify-content: center; z-index: 10;">
                 <div style="text-align: center; max-width: 380px; padding: 1.5rem; background: #0c0d14; border: 1px solid rgba(239,68,68,0.4); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
                   <div style="font-size: 2rem; margin-bottom: 8px;">★</div>
                   <div style="font-weight: 700; color: #fff; font-size: 1.05rem; margin-bottom: 6px;">Format Exporter Locked</div>
                   <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 1rem; line-height: 1.4;">Unlock unlimited YAML, TOML, JSON, and Kubernetes secret exports with zero cloud telemetry.</p>
                   <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
-                    <a href="https://buy.stripe.com/00w00i13L8q4dhK1C0fw40R" target="_blank" class="btn btn-sm" style="background: #635BFF; color: #FFF; text-decoration: none; font-weight: 700;">★ Buy ($19)</a>
+                    <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" class="btn btn-sm" style="background: #635BFF; color: #FFF; text-decoration: none; font-weight: 700;">☕ Buy Us a Coffee</a>
                     <button onclick="openDePayCheckout()" class="btn btn-sm" style="background: #14F195; color: #000; font-weight: 700; border: none; cursor: pointer;">⚡ Pay SOL</button>
                     <button onclick="openLicenseActivationModal()" class="btn btn-sm btn-secondary" style="cursor: pointer;">✦ Enter Key</button>
                   </div>
@@ -1455,7 +1455,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
       <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
         <a href="/terms.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Terms</a>
         <a href="/privacy.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Privacy</a>
-        <a href="/support.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Support &amp; FAQ</a>
+        <a href="/support.html" style="color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;">Support & FAQ</a>
         <span style="color: var(--border-color);">|</span>
         <span>Engineered by Neal Frazier Tech (<a href="https://github.com/1nc0gn30/envguard-secrets-vault" target="_blank" rel="noopener">@1nc0gn30</a>) &bull; <a href="https://nullai.tech" target="_blank" rel="noopener">NullAI Platform</a></span>
       </div>
@@ -1745,7 +1745,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
 
     function escapeHtml(str) {
       if (!str) return "";
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      return str.replace(/&/g, "&").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
     // Event Listeners for Scanner
@@ -2419,7 +2419,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         }
         const promo = document.getElementById("offer-promo-text");
         if (promo) {
-          promo.innerHTML = "Lifetime Pass Active &middot; Full Zero-Exposure Vault &amp; AST Engine Enabled.";
+          promo.innerHTML = "Lifetime Pass Active &middot; Full Zero-Exposure Vault & AST Engine Enabled.";
         }
         const actionBtns = document.getElementById("offer-action-buttons");
         if (actionBtns) {
@@ -2438,9 +2438,9 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
 
     function openDePayCheckout() {
       if (window.DePayWidgets) {
-        DePayWidgets.Payment({ integration: '428790dd-7ad1-407c-8ecf-c048c77a4cb8' });
+        (navigator.clipboard && navigator.clipboard.writeText('GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK'));
       } else {
-        window.open('https://buy.stripe.com/00w00i13L8q4dhK1C0fw40R', '_blank');
+        window.open('https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X', '_blank');
       }
     }
 
@@ -2519,7 +2519,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 10px;">
-        <a href="https://buy.stripe.com/00w00i13L8q4dhK1C0fw40R" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #635BFF; color: #fff; font-weight: 700; font-size: 0.95rem; border-radius: 8px; text-decoration: none; box-sizing: border-box;">
+        <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" rel="noopener" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #635BFF; color: #fff; font-weight: 700; font-size: 0.95rem; border-radius: 8px; text-decoration: none; box-sizing: border-box;">
           ★ Buy Pro Lifetime — $19 (Card / Apple Pay)
         </a>
         <button onclick="openDePayCheckout()" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #14F195; color: #000; font-weight: 700; font-size: 0.95rem; border-radius: 8px; border: none; cursor: pointer; box-sizing: border-box;">
@@ -2539,7 +2539,7 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
   <div id="licenseModal" data-alias="paywall-modal" style="display: none; position: fixed; inset: 0; background: rgba(5,7,12,0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 1250; align-items: center; justify-content: center; padding: 1rem;">
     <div style="max-width: 420px; width: 100%; border: 1px solid rgba(255,255,255,0.15); background: #0c0d14; border-radius: 16px; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">Activate Pro License</h4>
+        <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">100% Open Access</h4>
         <button onclick="closeLicenseModal()" aria-label="Close license activation modal" style="background: none; border: none; color: #a1a1aa; font-size: 1.25rem; cursor: pointer; padding: 8px 12px; min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;">✕</button>
       </div>
       <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 1rem;">

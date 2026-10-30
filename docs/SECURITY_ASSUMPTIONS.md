@@ -118,7 +118,7 @@
 ### *Essential Structure, Shield Against False Trust, Subterranean Awareness, & The Sun’s Clear Morning*
 *Essential skeletal structure in blue-green standing vigil against the inverted pull of misdirected will in blue-violet, the Tower of False Security in scarlet marking perimeter collapse, the Crayfish crawling from Primeval Waters in red-violet probing subtle edge cases in the subterranean dark, and the Joyful Naked Child on Gentle White Horse in orange crowned by the Sun—where security ceases to be fearful paranoia and arrives at effortless clarity, pure performance, and unmistakable craftsmanship.*
 
-**The Sovereign Offer**: [EnvGuard Enterprise Lifetime Vault](https://buy.stripe.com/dR67vY1XpcOeeC4000) — **$19 Lifetime License** (Zero telemetry, perpetual offline airgap verification).
+**The Sovereign Offer**: [EnvGuard Enterprise Lifetime Vault](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X) — **$19 Lifetime License** (Zero telemetry, perpetual offline airgap verification).
 
 </div>
 
