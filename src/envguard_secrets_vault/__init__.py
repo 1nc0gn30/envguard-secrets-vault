@@ -11,7 +11,11 @@ __author__ = "EnvGuard Secrets Vault Contributors"
 __license__ = "MIT"
 
 from envguard_secrets_vault.ci_gate import run_security_check
-from envguard_secrets_vault.cli import main as cli_main
+
+
+def cli_main(*args, **kwargs):
+    from envguard_secrets_vault.cli import main
+    return main(*args, **kwargs)
 from envguard_secrets_vault.mcp_server import (
     MCP_PROTOCOL_VERSION,
     MCP_TOOLS_DEFINITIONS,

@@ -445,7 +445,8 @@ class StudioHTTPRequestHandler(SimpleHTTPRequestHandler):
 
         if path in ("/health", "/api/health"):
             self._send_json_response({
-                "status": "healthy",
+                "status": "ok" if path == "/api/health" else "healthy",
+                "app": "envguard-secrets-vault",
                 "service": "envguard-secrets-vault",
                 "version": SERVER_VERSION,
                 "sovereign": True,
