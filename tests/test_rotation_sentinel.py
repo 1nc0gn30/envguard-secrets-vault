@@ -31,7 +31,7 @@ DATABASE_URL=postgres://app:secret123@db.prod.internal:5432/main
 # @owner: payment-eng@example.com
 # @created: 2026-08-01
 # @rotation_days: 90
-# @expires: 2026-10-30
+# @expires: 2027-10-30
 STRIPE_SECRET_KEY=sk_test_51MzxyzFakeStripeKey1234567890
 
 # An unmanaged secret without lifecycle metadata
@@ -62,7 +62,7 @@ def test_parse_rotation_metadata():
     assert r2.owner == "payment-eng@example.com"
     assert r2.created_at == "2026-08-01"
     assert r2.rotation_days == 90
-    assert r2.expires_at == "2026-10-30"
+    assert r2.expires_at == "2027-10-30"
 
     # Record 3: GITHUB_TOKEN
     r3 = records[2]

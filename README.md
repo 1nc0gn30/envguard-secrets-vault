@@ -58,7 +58,7 @@ uv pip install envguard-secrets-vault
 
 ---
 
-## ⚡ Quick Start (ZothOS CLI `envguard-secrets-vault` / `envguard`)
+## ⚡ Quick Start (CLI) — ZothOS `envguard-secrets-vault` / `envguard`
 
 ```bash
 # Check version and JSON telemetry
@@ -188,7 +188,6 @@ Navigate to `http://localhost:8080` for:
 ## 📚 Documentation
 
 - [Threat Model & Security Assumptions (Skeleton in Dark Armor, Inverted Pentagram & Tower of False Security)](docs/SECURITY_ASSUMPTIONS.md)
-- [EnvGuard Enterprise Lifetime Vault ($19 Offline Airgap Offer)](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)
 - [Secret Patterns & Detector Catalog](docs/SECRET_PATTERNS_CATALOG.md)
 - [Model Context Protocol (MCP) Guide](docs/MCP_GUIDE.md)
 - [Zero-Exposure Vault Specification](docs/ZERO_EXPOSURE_VAULT.md)
