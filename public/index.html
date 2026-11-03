@@ -1742,7 +1742,7 @@ OPENAI_API_KEY=sk-proj-..."></textarea>
 
     function escapeHtml(str) {
       if (!str) return "";
-      return str.replace(/&/g, "&").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
     // Event Listeners for Scanner
