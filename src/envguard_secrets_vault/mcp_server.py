@@ -1517,7 +1517,10 @@ class MCPServer:
             ref_date = arguments.get("reference_date")
             reference_date = None
             if ref_date:
-                reference_date = datetime.datetime.fromisoformat(ref_date)
+                clean_ref = str(ref_date).strip()
+                if clean_ref.endswith("Z"):
+                    clean_ref = clean_ref[:-1] + "+00:00"
+                reference_date = datetime.datetime.fromisoformat(clean_ref)
             report = audit_rotation(content, filename=target_path or ".env", reference_date=reference_date)
             return report.to_dict()
 
