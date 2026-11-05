@@ -2464,6 +2464,22 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
     runTransformation();
     renderMCPClientConfig("claude");
   </script>
-  <script src="/assets/sovereign-upgrade.js" defer></script>
+  
+
+  <script src="/sovereign_tutorial.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      if (window.createSovereignTutorial) {
+        window.createSovereignTutorial({
+          toolId: "envguard-secrets-vault",
+          toolName: "EnvGuard Secrets Vault",
+          tagline: "Lock up API keys and passwords with bank-grade encryption!",
+          accentColor: "#10B981",
+          steps: [{"icon": "\ud83d\udd10", "title": "What is an Env Vault?", "desc": "Never leave API keys in open files! EnvGuard encrypts your sensitive secrets so hackers can't steal them from GitHub."}, {"icon": "\ud83d\udee1\ufe0f", "title": "Argon2id + AES-256", "desc": "Uses military-grade cryptography to lock your environment files with a single master password."}, {"icon": "\u26a1", "title": "Zero-Cloud Local Storage", "desc": "Your keys never touch any external server\u2014they stay strictly on your device."}]
+        });
+      }
+    });
+  </script>
+
 </body>
 </html>
