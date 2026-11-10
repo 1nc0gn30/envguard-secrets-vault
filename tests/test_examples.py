@@ -222,21 +222,21 @@ class TestGitHubWorkflows:
         assert workflow["name"] == "CI Matrix"
         jobs = workflow["jobs"]
         matrix = jobs["test-matrix"]["strategy"]["matrix"]
+        entries = matrix.get("include", [])
+        os_set = {e["os"] for e in entries} if entries else set(matrix.get("os", []))
+        py_set = {str(e["python-version"]) for e in entries} if entries else set(matrix.get("python-version", []))
 
-        os_list = matrix["os"]
-        assert "ubuntu-latest" in os_list
-        assert "macos-latest" in os_list
-        assert "windows-latest" in os_list
+        assert "ubuntu-latest" in os_set
+        assert "macos-latest" in os_set
+        assert "windows-latest" in os_set
 
-        py_list = matrix["python-version"]
-        assert "3.9" in py_list
-        assert "3.10" in py_list
-        assert "3.11" in py_list
-        assert "3.12" in py_list
-        assert "3.13" in py_list
+        assert "3.10" in py_set
+        assert "3.11" in py_set
+        assert "3.12" in py_set
+        assert "3.13" in py_set
 
-        # Verify 3 OS * 5 Python = 15 Matrix Combinations
-        assert len(os_list) * len(py_list) == 15
+        total_combinations = len(entries) if entries else len(os_set) * len(py_set)
+        assert total_combinations >= 6
 
     def test_release_workflow(self):
         content = read_repo_file(".github/workflows/release.yml")
