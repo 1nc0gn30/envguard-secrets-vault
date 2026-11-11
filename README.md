@@ -1,258 +1,192 @@
 <div align="center">
-  <img src="assets/hero-banner.svg" alt="EnvGuard Secrets Vault — Sovereign Architecture Banner" width="100%" />
+  <img src="assets/hero-banner.svg" alt="EnvGuard Secrets Vault Banner" width="100%" />
 </div>
 
-<br />
+# EnvGuard Secrets Vault
 
-# 🛡️ EnvGuard Secrets Vault
+[![Zoth Studio v2 Dossier](https://img.shields.io/badge/Zoth_Studio_v2-Dossier-D4AF37?style=flat-square)](https://zoth.nullai.tech/tools/envguard-secrets-vault)
+[![Loopback Daemon](https://img.shields.io/badge/Daemon-127.0.0.1%3A8088-38BDF8?style=flat-square)](http://127.0.0.1:8088)
+[![Cipher](https://img.shields.io/badge/Cipher-AES--256--CTR--HMAC--SHA256-1A73E8?style=flat-square)](#architecture)
+[![MCP Server](https://img.shields.io/badge/MCP-11_Tools-9334E6?style=flat-square)](#cli--mcp-usage)
+[![License: MIT](https://img.shields.io/badge/License-MIT-10B981?style=flat-square)](LICENSE)
 
-<p align="center">
-  <strong>Zero-Exposure Environment Security, AES-256-CTR-HMAC-SHA256 Secrets Vault, Multi-Format Transformer & AI Agent MCP Server</strong>
-</p>
+Zero-dependency `.env` secret scanner, credential masker, authenticated AES-256-CTR-HMAC-SHA256 vault, GF(256) Shamir's Secret Sharing quorum engine, TTL secret rotation sentinel, and 11-tool Model Context Protocol (MCP) server.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Security_Grade-A%2B_Certified-1e8e3e?style=for-the-badge&logoColor=white" alt="Security Grade A+">
-  <img src="https://img.shields.io/badge/Access-100%25%20Free%20%26%20Open-10b981?style=for-the-badge" alt="100% Free & Open">
-  <img src="https://img.shields.io/badge/Cipher-AES--256--CTR--HMAC--SHA256-1a73e8?style=for-the-badge&logo=lock&logoColor=white" alt="AES-256-CTR-HMAC-SHA256">
-  <img src="https://img.shields.io/badge/MCP-Protocol_Ready-9334e6?style=for-the-badge&logo=anthropic&logoColor=white" alt="MCP Ready">
-  <img src="https://img.shields.io/badge/Python-3.9_--_3.13-f9ab00?style=for-the-badge&logo=python&logoColor=white" alt="Python Support">
-  <img src="https://img.shields.io/badge/License-Apache_2.0-202124?style=for-the-badge" alt="License">
-</p>
+## Overview
 
-*100% Free & Open Access with zero paywalls or license keys.*
+**EnvGuard Secrets Vault** (`envguard-secrets-vault`) is implemented in pure Python 3 standard library code (`src/envguard_secrets_vault/`) paired with a local loopback REST server (`127.0.0.1:8088`) and standalone Web Crypto browser studio (`public/index.html`). It integrates with **Zoth Studio v2** (`https://zoth.nullai.tech/tools/envguard-secrets-vault`) and **ZothOS v3.4.0**.
 
-☕ **Support Development**:
-- **Stripe Buy Us a Coffee**: [https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X)
-- **Solana Tip Address**: `GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK`
+| Property | Value |
+| :--- | :--- |
+| **Tool ID** | `envguard-secrets-vault` |
+| **Category** | `Security & Recon` |
+| **Loopback Bind** | `127.0.0.1:8088` (`server.py` / `PORT=8088`) |
+| **Zoth Studio v2 Dossier** | `https://zoth.nullai.tech/tools/envguard-secrets-vault` |
+| **Local Studio Route** | `http://127.0.0.1:3000/tools/envguard-secrets-vault` |
+| **Python Package** | `envguard_secrets_vault` (`requires-python >= 3.8`, zero external runtime deps) |
+| **MCP Protocol** | JSON-RPC 2.0 over `stdio` (`envguard mcp` — 11 tools) |
+| **License** | MIT (100% free and open-source) |
 
----
+## Architecture
 
-## 🌟 Overview
-
-**EnvGuard Secrets Vault** is a next-generation secrets security platform and developer toolkit designed for modern cloud architectures, CI/CD pipelines, and autonomous AI coding agents.
-
-It replaces fragile `.env` file handling with **military-grade envelope encryption (AES-256-CTR-HMAC-SHA256 + PBKDF2)**, scans 50+ provider token patterns, calculates Shannon entropy, identifies dangerous framework prefix leaks (e.g., Next.js `NEXT_PUBLIC_`), injects secrets into runtime processes with **zero disk writes**, and exposes a standardized **Model Context Protocol (MCP)** server for AI assistants (Claude Desktop, Cursor, Cline, Zed).
-
----
-
-## 🚀 Key Highlights
-
-- 🛡️ **Live Secret Auditor & Scanner:** 50+ detection signatures (OpenAI, Anthropic, AWS, Stripe, GitHub, Slack, DB passwords, JWTs, Private Keys) + Shannon entropy scoring.
-- 🔐 **Zero-Exposure Encrypted Vault:** Authenticated AES-256-CTR-HMAC-SHA256 payload with PBKDF2-HMAC-SHA256 key derivation.
-- ⚡ **Zero-Disk Process Execution (`envguard vault run`):** Decrypts secrets directly into process RAM and child environment blocks. No plaintext touches disk.
-- 🤖 **Native Model Context Protocol (MCP) Server:** 11 standardized tools (`env_scan_secrets`, `env_mask_variables`, `env_generate_example`, `env_vault_encrypt`, `env_vault_decrypt`, `env_diff_environments`, `env_get_diagnostics`, `env_shamir_split`, `env_shamir_combine`, `env_audit_rotation`, `env_rotate_secrets`) for AI coding agents.
-- 🔄 **Secret Rotation & Ephemerality Sentinel:** Enforce `# @expires`, `# @created`, and `# @rotation_days` policies with realistic ephemeral replacement tokens across 14+ providers and unified diff generation.
-- 🌐 **EnvGuard Secrets Studio UI (`public/index.html`):** Offline-first web app (design influenced by Material 3) with Web Crypto API encryption, risk gauges, and preset inspection.
-
----
-
-## 📦 Installation
-
-```bash
-# Via pip
-pip install envguard-secrets-vault
-
-# Or using uv
-uv pip install envguard-secrets-vault
+```mermaid
+flowchart LR
+    CLI["envguard CLI / bin/envguard.js"] --> CORE["src/envguard_secrets_vault"]
+    MCP["MCP Clients (Claude / Cursor / Hermes)"] -->|stdio JSON-RPC 2.0| MCP_SRV["mcp_server.py (11 Tools)"]
+    UI["public/index.html"] --> HTTP["server.py / ui_server.py (127.0.0.1:8088)"]
+    MCP_SRV --> CORE
+    HTTP --> CORE
+    CORE --> SCAN["scanner.py + entropy_analyzer.py"]
+    CORE --> VAULT["vault.py (PBKDF2 + AES-256-CTR-HMAC-SHA256)"]
+    CORE --> SHAMIR["shamir_quorum.py (GF(256) k-of-n)"]
+    CORE --> ROTATE["secret_rotation_sentinel.py"]
 ```
 
----
+- **Secret Scanner & Entropy Analyzer (`scanner.py`, `entropy_analyzer.py`)**: Evaluates `.env` files and source trees against 50+ provider token signatures (OpenAI, Anthropic, AWS, Stripe, GitHub, Slack, JWTs, PEM private keys, database DSNs), framework client-bundle prefix leaks (`NEXT_PUBLIC_`, `VITE_`, `REACT_APP_`), and alphabet-aware Shannon entropy thresholds.
+- **Armored Vault (`vault.py`)**: Encrypts plaintext `.env` configurations into ASCII-armored `ENVGUARD ENCRYPTED VAULT` payloads using PBKDF2-HMAC-SHA256 key derivation and Encrypt-then-MAC (`AES-256-CTR` + `HMAC-SHA256`).
+- **Shamir Quorum (`shamir_quorum.py`)**: Splits master keys or `.env` secrets over $GF(2^8)$ into $n$ armored shares requiring any $k$ shares for reconstruction.
+- **Secret Rotation Sentinel (`secret_rotation_sentinel.py`)**: Parses `# @created`, `# @expires`, and `# @rotation_days` lifecycle comments, computes compliance scores, and rotates expired keys with provider-formatted replacement tokens and unified diffs.
 
-## ⚡ Quick Start (CLI) — ZothOS `envguard-secrets-vault` / `envguard`
+## Quickstart
+
+Clone the repository and install the package in editable mode:
 
 ```bash
-# Check version and JSON telemetry
-envguard-secrets-vault --version
-envguard-secrets-vault --json
+git clone https://github.com/1nc0gn30/envguard-secrets-vault.git
+cd envguard-secrets-vault
+pip install -e .
 
-# Start the standalone Web Workstation on port 8088
+# Verify CLI installation
+envguard --version
+envguard --help
+
+# Start the loopback REST & Web Studio server on http://127.0.0.1:8088
 python3 server.py
-# or
-envguard-secrets-vault serve --port 8088
 ```
 
-### 1. Audit Environment Files for Secret Leaks
+Open `http://127.0.0.1:8088` in a browser, or query the loopback REST API:
+
 ```bash
-# Scan a specific environment file
-envguard scan .env.production
+# Service health and diagnostics
+curl -s http://127.0.0.1:8088/health | python3 -m json.tool
+curl -s http://127.0.0.1:8088/api/diagnostics | python3 -m json.tool
 
-# Deep recursive scan of workspace
-envguard audit ./src
+# Scan raw .env content via REST
+curl -s -X POST http://127.0.0.1:8088/api/scan \
+  -H "Content-Type: application/json" \
+  -d '{"content":"PORT=8080\nAWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE"}' \
+  | python3 -m json.tool
 ```
 
-### 2. Generate Safe Sanitized Template (`.env.example`)
+### REST API Endpoints (`127.0.0.1:8088`)
+
+| Method | Route | Description |
+| :--- | :--- | :--- |
+| `GET` | `/health`, `/api/health` | Service health check (`status`, `version`, `port`). |
+| `GET` | `/api/diagnostics` | Runtime Python, OS, cipher suite, and detector diagnostics. |
+| `GET`, `POST` | `/api/mcp/config` | Generates MCP client JSON configurations (`claude`, `cursor`, `cline`, `zed`). |
+| `POST` | `/api/scan` | Scans `.env` text and returns `score`, `grade`, `passed`, and `findings`. |
+| `POST` | `/api/mask` | Masks secret values (`partial` or `full` mode). |
+| `POST` | `/api/example` | Generates a sanitized `.env.example` template. |
+| `POST` | `/api/encrypt`, `/api/decrypt` | Encrypts or decrypts armored `ENVGUARD ENCRYPTED VAULT` payloads. |
+| `POST` | `/api/diff` | Diffs two `.env` payloads for missing keys and type mismatches. |
+| `POST` | `/api/shamir/split`, `/api/shamir/combine` | Splits or reconstructs GF(256) Shamir secret shares. |
+| `POST` | `/api/rotation/audit`, `/api/rotation/execute` | Audits TTL metadata or rotates targeted secret keys. |
+| `POST` | `/api/export-zip` | Bundles sanitized `.env.example`, audit report, and vault artifacts into a ZIP archive. |
+
+## CLI & MCP Usage
+
+### CLI Subcommands (`envguard` / `python3 -m envguard_secrets_vault`)
+
 ```bash
-envguard sanitize .env.production --output .env.example
+# Scan a .env file or directory (exit non-zero if below --min-score)
+envguard scan examples/nextjs-env-audit/.env.production
+envguard scan examples/nextjs-env-audit/.env.production --json --min-score 80
+
+# CI/CD pre-commit security gate (text, github, json, markdown)
+envguard check ./examples --min-score 85 --format json
+
+# Redact sensitive values or generate .env.example
+envguard mask examples/nextjs-env-audit/.env.production --mode partial
+envguard example examples/nextjs-env-audit/.env.production --output /tmp/.env.example
+
+# Encrypt and decrypt armored vault files
+envguard encrypt /tmp/.env.example --password "StrongVaultPassword!99" --out /tmp/secrets.env.enc
+envguard decrypt /tmp/secrets.env.enc --password "StrongVaultPassword!99"
+
+# Compare two environment files
+envguard diff examples/nextjs-env-audit/.env.production examples/nextjs-env-audit/.env.example --json
+
+# Shamir's Secret Sharing (k-of-n threshold quorum)
+envguard shamir split "MasterSigningSecret" --threshold 3 --shares 5 --json
+
+# Audit secret lifetimes and execute rotation diff
+envguard rotate examples/nextjs-env-audit/.env.production --audit-only --json
+envguard rotate examples/nextjs-env-audit/.env.production --diff
+
+# Launch HTTP server or print runtime platform specs
+envguard serve --host 127.0.0.1 --port 8088
+envguard platform
 ```
 
-### 3. Create an Encrypted Vault File
-```bash
-envguard vault create .env.production --output secrets.vault
-```
+On **ZothOS v3.4.0**, the Node/Electron launcher (`./bin/envguard.js` / `envguard-secrets-vault`) and Unicode `U+2800` Braille TUI (`./bin/envguard-secrets-vault-tui --json`) are also available.
 
-### 4. Zero-Disk Runtime Execution
-```bash
-# Run application with secrets injected directly into memory
-envguard vault run --vault secrets.vault -- npm start
+### Model Context Protocol (MCP) Server
 
-# Python Web Server
-envguard vault run --vault secrets.vault -- uvicorn app.main:app --port 8080
-```
-
-### 5. Multi-Format Transformation
-```bash
-# Convert .env to JSON
-envguard convert .env.production --format json
-
-# Convert .env to Docker Compose format
-envguard convert .env.production --format docker
-```
-
-### 6. Secret Rotation & Ephemerality Sentinel
-```bash
-# Audit secret ages, TTLs, and rotation policy compliance
-envguard rotate .env.production --audit-only
-
-# Rotate expired/overdue credentials with ephemeral mock tokens and view unified diff
-envguard rotate .env.production --diff
-
-# Rotate specific secrets and write directly to destination
-envguard rotate .env.production --keys STRIPE_SECRET_KEY DATABASE_URL --output .env.rotated
-```
-
----
-
-## 🐍 Python API Reference
-
-```python
-from envguard_secrets_vault import Vault, SecretAuditor, Sanitizer
-
-# 1. Audit an environment file
-auditor = SecretAuditor()
-report = auditor.scan_file(".env.production")
-print(f"Security Grade: {report.grade} ({report.score}/100)")
-for finding in report.findings:
-    print(f"[{finding.severity}] {finding.key}: {finding.recommendation}")
-
-# 2. Encrypt to Vault
-vault = Vault.encrypt_file(
-    source_path=".env.production",
-    password="your-master-password"
-)
-vault.save("secrets.vault")
-
-# 3. Decrypt in memory (Zero Disk Leak)
-env_vars = Vault.load("secrets.vault").decrypt("your-master-password")
-print(f"Loaded {len(env_vars)} variables into RAM.")
-```
-
----
-
-## 🤖 AI Agent & MCP Integration
-
-EnvGuard includes a standard Model Context Protocol (MCP) server that empowers AI coding agents to manage and use secrets securely:
+Run `envguard mcp` (or `python3 -m envguard_secrets_vault mcp`) to expose all 11 tools over `stdio` JSON-RPC 2.0:
 
 ```json
 {
   "mcpServers": {
     "envguard": {
       "command": "python3",
-      "args": ["-m", "envguard.mcp"],
-      "env": {
-        "ENVGUARD_VAULT_PASSWORD": "${ENVGUARD_VAULT_PASSWORD}"
-      }
+      "args": ["-m", "envguard_secrets_vault", "mcp"]
     }
   }
 }
 ```
 
-See the [MCP Client Integration Guide](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/docs/MCP_GUIDE.md) for Claude Desktop, Cursor, Cline, and Zed configurations.
+Exposed MCP tools: `env_scan_secrets`, `env_mask_variables`, `env_generate_example`, `env_vault_encrypt`, `env_vault_decrypt`, `env_diff_environments`, `env_get_diagnostics`, `env_shamir_split`, `env_shamir_combine`, `env_audit_rotation`, `env_rotate_secrets`.
 
----
+### Python Library API
 
-## 🌐 EnvGuard Secrets Studio Web UI (Design Influenced by Material 3)
+```python
+from envguard_secrets_vault import (
+    scan_secrets,
+    vault_encrypt,
+    vault_decrypt,
+    split_secret_into_shares,
+    combine_shares_to_secret,
+)
 
-Open [`public/index.html`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/public/index.html) in your browser or run:
+report = scan_secrets("PORT=8088\nAWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE")
+encrypted = vault_encrypt("APP_ENV=production\n", "MasterPass!99")
+decrypted = vault_decrypt(encrypted["vault_armor"], "MasterPass!99")
 
-```bash
-python3 -m http.server 8080 --directory public
+quorum = split_secret_into_shares("MasterPass!99", threshold=2, total_shares=3)
+recovered = combine_shares_to_secret(quorum["shares"][:2])
 ```
-Navigate to `http://localhost:8080` for:
-- 🛡️ Interactive Secret Auditor with 0-100 Grade Gauge.
-- 🔄 Format Transformer (Dotenv, JSON, YAML, Docker Compose, Kubernetes Secret).
-- 🔐 In-Browser Web Crypto AES-256-CTR-HMAC-SHA256 Encrypted Vault.
-- 🤖 AI Agent MCP Config Generator.
 
----
+## Documentation
 
-## 📚 Documentation
-
-- [Threat Model & Security Assumptions (Skeleton in Dark Armor, Inverted Pentagram & Tower of False Security)](docs/SECURITY_ASSUMPTIONS.md)
+- [Security Assumptions & Threat Model](docs/SECURITY_ASSUMPTIONS.md)
 - [Secret Patterns & Detector Catalog](docs/SECRET_PATTERNS_CATALOG.md)
 - [Model Context Protocol (MCP) Guide](docs/MCP_GUIDE.md)
 - [Zero-Exposure Vault Specification](docs/ZERO_EXPOSURE_VAULT.md)
-- [Next.js Production Audit Example](examples/nextjs-env-audit/README.md)
-- [Encrypted Vault Workflow Example](examples/encrypted-vault-workflow/README.md)
+- [Examples & Reference Workflows](examples/README.md)
 
----
-
-## 📄 License
-
-Apache License 2.0. Copyright (c) 2026 EnvGuard Contributors.
-
----
-
-## 🏛️ ZothOS v3.4, Zoth Studio v2 & Obsidian Second Brain Ecosystem
-
-```mermaid
-flowchart LR
-    subgraph ZothOS["🐧 ZothOS v3.4 CLI & Braille TUI"]
-        CLI["envguard-secrets-vault --help / --json"]
-        TUI["envguard-secrets-vault-tui<br/>Unicode U+2800 2x4 Braille"]
-    end
-
-    subgraph Workstation["⚡ Sovereign Workstation"]
-        WEB["http://127.0.0.1:8088<br/>REST API & /health"]
-    end
-
-    subgraph Studio["🌌 Zoth Studio v2 & ZothOS-Lite"]
-        GODMODE["http://127.0.0.1:3000/tools/envguard-secrets-vault<br/>God-Mode Workstation"]
-        LITE["http://127.0.0.1:8145<br/>ZothOS-Lite Web Desktop"]
-    end
-
-    subgraph SecondBrain["💎 Obsidian Second Brain & STDP"]
-        TRACKER["http://127.0.0.1:8151<br/>Zoth Obsidian Tracker"]
-        NEURO["http://127.0.0.1:8094<br/>Neuro-Memory STDP Cortex"]
-        NOTE["Studio/Tools/Studio envguard-secrets-vault.md"]
-    end
-
-    CLI --> WEB
-    TUI --> WEB
-    WEB <--> GODMODE
-    WEB <--> LITE
-    WEB --> TRACKER
-    TRACKER <--> NOTE
-    NOTE <--> NEURO
-```
-
-### Cross-Surface Integration Matrix
-
-| Surface | Endpoint / Binary | Capabilities |
-| :--- | :--- | :--- |
-| **Standalone Workstation** | `http://127.0.0.1:8088` | 100% Free & Open-Access Web Deck, live `/health` & REST telemetry |
-| **Zoth Studio v2 Route** | `http://127.0.0.1:3000/tools/envguard-secrets-vault` | Interactive God-Mode component inside Zoth Studio (`https://zoth.nullai.tech`) |
-| **ZothOS v3.4 CLI & TUI** | `envguard-secrets-vault` / `envguard-secrets-vault-tui` | Global binary in `/usr/local/bin/` with Unicode `U+2800` Braille TUI & `--json` output |
-| **ZothOS-Lite Web Desktop** | `http://127.0.0.1:8145` | Browser-native KDE-style window manager & terminal launcher |
-| **Zoth Obsidian Tracker** | `http://127.0.0.1:8151` | Interactive Obsidian Second Brain vault explorer (`~/Documents/Obsidian Vault/Studio/Tools/Studio envguard-secrets-vault.md`) |
-| **Neuro-Memory STDP Cortex** | `http://127.0.0.1:8094` | 3-Factor STDP synaptic memory daemon & 21-tool MCP server |
+## Testing & Verification
 
 ```bash
-# Inspect CLI & Unicode U+2800 Braille TUI on ZothOS v3.4
-envguard-secrets-vault --help
-envguard-secrets-vault-tui --status
-envguard-secrets-vault-tui --json
+# Run the full pytest suite
+python3 -m pytest -q
 
-# Verify Second Brain Vault & 12-Step Verification Gallery on :8151
-zoth-obsidian-tracker --verify
+# Run the built-in self-test command
+envguard test
 ```
 
+## License
+
+Released under the [MIT License](LICENSE). Copyright (c) 2026 [1nc0gn30](https://1nc0gn30.si) (`@1nc0gn30`) & [NullAI](https://nullai.tech).
+
+100% free and open-source with zero paywalls. Optional support: [Buy Us a Coffee (Stripe)](https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X).

@@ -908,7 +908,6 @@
 <div id="zoth-coffee-support-bar" style="background: linear-gradient(90deg, rgba(16,185,129,0.12), rgba(212,175,55,0.14)); border-bottom: 1px solid rgba(212,175,55,0.35); padding: 8px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; z-index: 9999;">
   <span style="color: #10B981; font-weight: 800;">✦ 100% FREE &amp; OPEN ACCESS · ZERO PAYWALLS</span>
   <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" rel="noopener noreferrer" style="background: #D4AF37; color: #08080B; padding: 4px 12px; border-radius: 6px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">☕ Buy Us a Coffee (Stripe)</a>
-  <a href="solana:GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK" onclick="if(navigator.clipboard){navigator.clipboard.writeText('GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK');this.textContent='✓ Copied GG2eQb...dXoK!';}" style="background: rgba(20,241,149,0.15); color: #14F195; border: 1px solid rgba(20,241,149,0.45); padding: 4px 12px; border-radius: 6px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">◎ Solana Tip (GG2e...dXoK)</a>
 </div>
 
 <!-- Google-Style Header -->
@@ -947,9 +946,6 @@
       </div>
       <a href="https://buy.stripe.com/3cIfZg27PdKo2D64Ocfw40X" target="_blank" rel="noopener noreferrer" style="padding: 6px 14px; background: #D4AF37; color: #08080B; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
         <span>☕ Buy Us a Coffee</span>
-      </a>
-      <a href="solana:GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK" onclick="if(navigator.clipboard){navigator.clipboard.writeText('GG2eQbVh8ut1BK6j1A2tz7pSySdLpD38BgyEhGcxdXoK');this.textContent='✓ Copied!';}" style="padding: 6px 14px; background: rgba(20,241,149,0.15); color: #14F195; border: 1px solid rgba(20,241,149,0.45); border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-        <span>◎ Tip SOL</span>
       </a>
     </div>
   </header>
@@ -2473,9 +2469,9 @@ AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY`;
         window.createSovereignTutorial({
           toolId: "envguard-secrets-vault",
           toolName: "EnvGuard Secrets Vault",
-          tagline: "Lock up API keys and passwords with bank-grade encryption!",
+          tagline: "Protect API keys and environment secrets with authenticated AES-256-CTR-HMAC-SHA256 encryption.",
           accentColor: "#10B981",
-          steps: [{"icon": "\ud83d\udd10", "title": "What is an Env Vault?", "desc": "Never leave API keys in open files! EnvGuard encrypts your sensitive secrets so hackers can't steal them from GitHub."}, {"icon": "\ud83d\udee1\ufe0f", "title": "Argon2id + AES-256", "desc": "Uses military-grade cryptography to lock your environment files with a single master password."}, {"icon": "\u26a1", "title": "Zero-Cloud Local Storage", "desc": "Your keys never touch any external server\u2014they stay strictly on your device."}]
+          steps: [{"icon": "\ud83d\udd10", "title": "What is an Env Vault?", "desc": "Never leave API keys in plaintext files. EnvGuard encrypts sensitive secrets into armored vault files."}, {"icon": "\ud83d\udee1\ufe0f", "title": "PBKDF2 + AES-256-CTR-HMAC", "desc": "Uses authenticated AES-256-CTR-HMAC-SHA256 cryptography to lock environment files with a master password."}, {"icon": "\u26a1", "title": "Zero-Cloud Local Storage", "desc": "Your keys never touch any external server\u2014they stay strictly on your device."}]
         });
       }
     });

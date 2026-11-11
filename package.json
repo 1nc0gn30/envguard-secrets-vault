@@ -13,11 +13,11 @@
     "envguard-vault": "./bin/envguard.js"
   },
   "scripts": {
-    "start": "python3 -m http.server 8088 --directory public",
+    "start": "python3 server.py",
     "serve:public": "python3 -m http.server 8088 --directory public",
     "electron": "electron .",
     "app": "electron .",
-    "test": "pytest tests/",
+    "test": "python3 -m pytest -q",
     "test:ui": "python3 scripts/verify_ui.py"
   },
   "keywords": [

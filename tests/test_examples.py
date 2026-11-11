@@ -168,8 +168,8 @@ class TestMcpClientConfigs:
     def test_mcp_clients_readme(self):
         content = read_repo_file("examples/mcp-clients/README.md")
         assert "# EnvGuard MCP Client Configuration & AI Agent Integration Guide" in content
-        assert "scan_env" in content
-        assert "run_with_vault" in content
+        assert "env_scan_secrets" in content
+        assert "env_vault_encrypt" in content
 
 
 class TestGoogleSecretsStudioUI:
@@ -289,10 +289,10 @@ class TestDocumentation:
     def test_root_readme(self):
         content = read_repo_file("README.md")
         assert len(content) > 1000
-        assert "# 🛡️ EnvGuard Secrets Vault" in content
-        assert "EnvGuard Secrets Studio" in content
-        assert "Quick Start (CLI)" in content
-        assert "Python API Reference" in content
+        assert "# EnvGuard Secrets Vault" in content
+        assert "## Overview" in content
+        assert "## Quickstart" in content
+        assert "## CLI & MCP Usage" in content
 
     def test_examples_index_readme(self):
         content = read_repo_file("examples/README.md")

@@ -1,0 +1,16 @@
+title = "EnvGuard Secrets Vault Gitleaks Config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Synthetic secret-scanner test fixtures, example .env samples, and demo presets"
+paths = [
+  '''^tests/''',
+  '''^examples/''',
+  '''^docs/SECRET_PATTERNS_CATALOG\.md$''',
+  '''^src/envguard_secrets_vault/(scanner|cli)\.py$''',
+  '''^src/envguard_secrets_vault/__pycache__/''',
+  '''^\.pytest_cache/''',
+  '''^public/index\.html$''',
+]

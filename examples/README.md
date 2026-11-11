@@ -1,54 +1,45 @@
 # EnvGuard Secrets Vault Examples & Reference Catalog
 
-This directory contains production-ready examples, architectural patterns, configuration files, and workflows demonstrating how to use **EnvGuard Secrets Vault** across modern cloud frameworks, CI/CD pipelines, and AI agent environments.
+This directory contains reference examples, configuration templates, and workflows demonstrating **EnvGuard Secrets Vault** across web frameworks, CI/CD pipelines, and MCP agent clients.
 
----
+## Example Catalog
 
-## 📂 Example Catalog
-
-| Directory / Example | Description | Key Deliverables |
+| Directory | Description | Key Files |
 | :--- | :--- | :--- |
-| [`nextjs-env-audit/`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/nextjs-env-audit/README.md) | Next.js production audit, client bundle leak remediation (`NEXT_PUBLIC_`), and safe `.env.example` generation. | [`.env.production`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/nextjs-env-audit/.env.production), [`.env.example`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/nextjs-env-audit/.env.example) |
-| [`encrypted-vault-workflow/`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/encrypted-vault-workflow/README.md) | End-to-end PBKDF2/AES-256-CTR-HMAC-SHA256 vault encryption, verification, and zero-disk runtime injection (`envguard vault run`). | [`sample.vault`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/encrypted-vault-workflow/sample.vault) |
-| [`mcp-clients/`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/examples/mcp-clients/README.md) | Ready-to-copy Model Context Protocol (MCP) configs for Claude Desktop, Cursor, Cline, Zed, and Windsurf. | JSON configs for all major editors |
+| [`nextjs-env-audit/`](nextjs-env-audit/README.md) | Next.js production audit, client bundle leak remediation (`NEXT_PUBLIC_`), and `.env.example` generation. | [`.env.production`](nextjs-env-audit/.env.production), [`.env.example`](nextjs-env-audit/.env.example) |
+| [`encrypted-vault-workflow/`](encrypted-vault-workflow/README.md) | End-to-end PBKDF2 + AES-256-CTR-HMAC-SHA256 vault encryption and decryption workflow. | [`sample.vault`](encrypted-vault-workflow/sample.vault) |
+| [`mcp-clients/`](mcp-clients/README.md) | Model Context Protocol (MCP) configurations for Claude Desktop, Cursor, Cline, and Zed. | JSON client profiles |
 
----
-
-## ⚡ Quick CLI Cheat Sheet
+## CLI Reference Commands
 
 ```bash
-# 1. Audit a directory or file for secret leaks & entropy anomalies
-envguard scan .env.production
-envguard audit ./src
+# 1. Scan a file or directory for secret leaks and entropy anomalies
+envguard scan examples/nextjs-env-audit/.env.production --json
 
-# 2. Sanitize an existing environment file into a safe template
-envguard sanitize .env.production --output .env.example
+# 2. Mask sensitive credentials (partial or full redaction)
+envguard mask examples/nextjs-env-audit/.env.production --mode partial
 
-# 3. Create an AES-256-CTR-HMAC-SHA256 encrypted vault
-envguard vault create .env.production --output production.vault
+# 3. Generate a sanitized .env.example template
+envguard example examples/nextjs-env-audit/.env.production --output .env.example
 
-# 4. View or inspect vault contents in memory
-envguard vault view production.vault
+# 4. Encrypt and decrypt an armored AES-256-CTR-HMAC-SHA256 vault
+envguard encrypt .env.example --password "ChangeMe!99" --out sample.env.enc
+envguard decrypt sample.env.enc --password "ChangeMe!99"
 
-# 5. Run commands with secrets injected into memory (Zero-Disk Exposure)
-envguard vault run --vault production.vault -- npm run build
+# 5. Split and reconstruct master keys with GF(256) Shamir's Secret Sharing
+envguard shamir split "MasterSecretKey" --threshold 3 --shares 5 --json
 
-# 6. Convert between formats (.env, JSON, YAML, Docker Compose)
-envguard convert .env.production --format json
-envguard convert .env.production --format yaml
-envguard convert .env.production --format docker
+# 6. Audit secret rotation compliance and TTL policies
+envguard rotate examples/nextjs-env-audit/.env.production --audit-only
 
-# 7. Start the MCP Server for AI coding assistants
+# 7. Start the stdio JSON-RPC 2.0 MCP server
 envguard mcp
 ```
 
----
+## Web Workstation
 
-## 🌐 Interactive Web Studio
-
-For an interactive browser experience with drag-and-drop auditing, multi-format transformation, and in-browser Web Crypto encryption/decryption, open [`public/index.html`](file:///media/neo/f2fdda77-178b-4603-ae80-c7aa4cd97908/envguard-secrets-vault/public/index.html) in any modern web browser or serve it locally:
+Launch the loopback REST API and browser workstation on `http://127.0.0.1:8088`:
 
 ```bash
-python3 -m http.server 8080 --directory public
+python3 server.py
 ```
-Then navigate to `http://localhost:8080`.
